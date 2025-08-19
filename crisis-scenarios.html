@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kriz Senaryoları - Çevik Liderlik Eğitimi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0ea5e9',
+                        secondary: '#f97316',
+                        accent: '#10b981',
+                    }
+                },
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="bg-slate-900 text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
+        <div class="p-4">
+            <a href="student-dashboard.html" class="font-bold text-xl text-primary block mb-8 flex items-center">
+                <svg class="w-8 h-8 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+                Çevik Liderlik
+            </a>
+            
+            <div class="mb-8">
+                <div class="flex items-center mb-4">
+                    <div>
+                        <p class="font-medium" id="user-name"></p>
+                        <p class="text-sm text-gray-400" id="user-email"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="space-y-1">
+                <a href="student-dashboard.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    <span>Genel Bakış</span>
+                </a>
+                <a href="courses.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-graduation-cap mr-3"></i>
+                    <span>Eğitim Modülleri</span>
+                </a>
+                <a href="progress.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-chart-line mr-3"></i>
+                    <span>İlerlemem</span>
+                </a>
+                <a href="crisis-scenarios.html" class="flex items-center px-4 py-3 rounded-lg bg-slate-800">
+                    <i class="fas fa-exclamation-triangle mr-3 text-secondary"></i>
+                    <span>Kriz Senaryoları</span>
+                </a>
+                <a href="leadership-tools.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-tools mr-3 text-accent"></i>
+                    <span>Liderlik Araçları</span>
+                </a>
+                <a href="calendar.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="far fa-calendar-alt mr-3"></i>
+                    <span>Eğitim Takvimi</span>
+                </a>
+                <a href="my-notes.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-sticky-note mr-3"></i>
+                    <span>Notlarım</span>
+                </a>
+                <a href="downloads.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-download mr-3"></i>
+                    <span>Kaynaklar</span>
+                </a>
+                <a href="account.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-user-cog mr-3"></i>
+                    <span>Profil Ayarları</span>
+                </a>
+            </nav>
+
+            <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
+                <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    <span>Çıkış Yap</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile menu -->
+    <div class="md:hidden fixed top-0 left-0 right-0 z-20 bg-slate-900 text-white p-4 flex justify-between items-center">
+        <a href="student-dashboard.html" class="font-bold text-xl text-primary">Çevik Liderlik</a>
+        <button class="text-white" id="mobile-menu-button">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Main content -->
+    <main class="md:ml-64 p-4 md:p-8 w-full min-h-screen pt-16 md:pt-8">
+        <div class="max-w-7xl mx-auto">
+            <header class="mb-8">
+                <h1 class="text-3xl font-bold flex items-center">
+                    <i class="fas fa-exclamation-triangle text-secondary mr-3"></i>
+                    Kriz Senaryoları ve Simülasyonlar
+                </h1>
+                <p class="text-gray-600 mt-2">Afet durumlarında çevik liderlik becerilerinizi test edin ve geliştirin</p>
+            </header>
+
+            <!-- Scenario Categories -->
+            <section class="mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-red-500">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-home text-red-500 text-2xl mr-3"></i>
+                            <h3 class="text-lg font-semibold">Deprem Senaryoları</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Deprem anı ve sonrası okul yönetimi</p>
+                        <div class="text-sm text-gray-500">
+                            <p>• 5 aktif senaryo</p>
+                            <p>• Ortalama süre: 15-20 dk</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-orange-500">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-fire text-orange-500 text-2xl mr-3"></i>
+                            <h3 class="text-lg font-semibold">Yangın Senaryoları</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Yangın acil durumu müdahale planları</p>
+                        <div class="text-sm text-gray-500">
+                            <p>• 3 aktif senaryo</p>
+                            <p>• Ortalama süre: 10-15 dk</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-blue-500">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-cloud-rain text-blue-500 text-2xl mr-3"></i>
+                            <h3 class="text-lg font-semibold">Doğal Afet Senaryoları</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Sel, hortum ve diğer doğal afetler</p>
+                        <div class="text-sm text-gray-500">
+                            <p>• 4 aktif senaryo</p>
+                            <p>• Ortalama süre: 12-18 dk</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Active Scenarios -->
+            <section class="mb-8">
+                <h2 class="text-xl font-semibold mb-6 flex items-center">
+                    <i class="fas fa-play text-primary mr-2"></i>
+                    Aktif Kriz Senaryoları
+                </h2>
+
+                <div class="space-y-6">
+                    <!-- Scenario 1 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center mb-3">
+                                        <span class="bg-red-100 text-red-800 text-xs px-3 py-1 rounded-full mr-3">Acil</span>
+                                        <span class="bg-gray-100 text-gray-800 text-xs px-3 py-1 rounded-full">Deprem</span>
+                                    </div>
+                                    <h3 class="text-lg font-semibold mb-2">6.8 Büyüklüğünde Deprem - Ders Saati</h3>
+                                    <p class="text-gray-600 mb-4">
+                                        Okul saatlerinde 6.8 büyüklüğünde bir deprem meydana gelmiştir. 
+                                        Okulda 450 öğrenci ve 35 personel bulunmaktadır. İlk müdahale kararlarınız kritik.
+                                    </p>
+                                    <div class="flex items-center text-sm text-gray-500 space-x-6">
+                                        <span><i class="fas fa-clock mr-1"></i> 20 dakika</span>
+                                        <span><i class="fas fa-users mr-1"></i> 485 kişi</span>
+                                        <span><i class="fas fa-star mr-1"></i> Zorluk: Yüksek</span>
+                                    </div>
+                                </div>
+                                <div class="ml-6">
+                                    <button class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 flex items-center">
+                                        <i class="fas fa-play mr-2"></i>
+                                        Senaryoyu Başlat
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scenario 2 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center mb-3">
+                                        <span class="bg-orange-100 text-orange-800 text-xs px-3 py-1 rounded-full mr-3">Kritik</span>
+                                        <span class="bg-gray-100 text-gray-800 text-xs px-3 py-1 rounded-full">Yangın</span>
+                                    </div>
+                                    <h3 class="text-lg font-semibold mb-2">Elektrik Panosunda Yangın</h3>
+                                    <p class="text-gray-600 mb-4">
+                                        Okulun ana elektrik panosunda yangın çıkmıştır. Elektrikler kesilmiş, 
+                                        duman kokusu yayılmaktadır. Hızlı karar vermeniz gerekiyor.
+                                    </p>
+                                    <div class="flex items-center text-sm text-gray-500 space-x-6">
+                                        <span><i class="fas fa-clock mr-1"></i> 15 dakika</span>
+                                        <span><i class="fas fa-users mr-1"></i> 320 kişi</span>
+                                        <span><i class="fas fa-star mr-1"></i> Zorluk: Orta</span>
+                                    </div>
+                                </div>
+                                <div class="ml-6">
+                                    <button class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 flex items-center">
+                                        <i class="fas fa-play mr-2"></i>
+                                        Senaryoyu Başlat
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scenario 3 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center mb-3">
+                                        <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full mr-3">Uyarı</span>
+                                        <span class="bg-gray-100 text-gray-800 text-xs px-3 py-1 rounded-full">Sel</span>
+                                    </div>
+                                    <h3 class="text-lg font-semibold mb-2">Ani Sel Baskını</h3>
+                                    <p class="text-gray-600 mb-4">
+                                        Şiddetli yağmur sonrası okul bahçesinde sel baskını oluşmuştur. 
+                                        Alt katlarda su birikintisi var, öğrenciler paniklemektedir.
+                                    </p>
+                                    <div class="flex items-center text-sm text-gray-500 space-x-6">
+                                        <span><i class="fas fa-clock mr-1"></i> 18 dakika</span>
+                                        <span><i class="fas fa-users mr-1"></i> 280 kişi</span>
+                                        <span><i class="fas fa-star mr-1"></i> Zorluk: Orta</span>
+                                    </div>
+                                </div>
+                                <div class="ml-6">
+                                    <button class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 flex items-center">
+                                        <i class="fas fa-play mr-2"></i>
+                                        Senaryoyu Başlat
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Completed Scenarios -->
+            <section class="mb-8">
+                <h2 class="text-xl font-semibold mb-6 flex items-center">
+                    <i class="fas fa-check-circle text-accent mr-2"></i>
+                    Tamamlanan Senaryolar
+                </h2>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-4 bg-green-50 rounded-lg">
+                                <div class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                    <div>
+                                        <h4 class="font-medium">Hafif Deprem - Teneffüs Saati</h4>
+                                        <p class="text-sm text-gray-600">5.2 büyüklüğünde deprem simülasyonu</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="flex items-center text-green-600 mb-1">
+                                        <i class="fas fa-star mr-1"></i>
+                                        <span class="font-medium">85/100</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">2 gün önce</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between p-4 bg-green-50 rounded-lg">
+                                <div class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                    <div>
+                                        <h4 class="font-medium">Mutfak Yangını</h4>
+                                        <p class="text-sm text-gray-600">Okul mutfağında yangın çıkması durumu</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="flex items-center text-green-600 mb-1">
+                                        <i class="fas fa-star mr-1"></i>
+                                        <span class="font-medium">92/100</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">1 hafta önce</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Tips -->
+            <section class="mb-8">
+                <h2 class="text-xl font-semibold mb-6 flex items-center">
+                    <i class="fas fa-lightbulb text-accent mr-2"></i>
+                    Kriz Yönetimi İpuçları
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-primary">
+                        <h3 class="font-semibold mb-3 flex items-center">
+                            <i class="fas fa-shield-alt text-primary mr-2"></i>
+                            İlk Müdahale
+                        </h3>
+                        <ul class="space-y-2 text-sm">
+                            <li>• Durumu hızlı değerlendirin</li>
+                            <li>• Öğrenci ve personel güvenliğini önceliklendirin</li>
+                            <li>• Net ve sakin talimatlar verin</li>
+                            <li>• İletişim kanallarını açık tutun</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-orange-50 p-6 rounded-lg border-l-4 border-secondary">
+                        <h3 class="font-semibold mb-3 flex items-center">
+                            <i class="fas fa-users text-secondary mr-2"></i>
+                            Ekip Koordinasyonu
+                        </h3>
+                        <ul class="space-y-2 text-sm">
+                            <li>• Görevleri net şekilde dağıtın</li>
+                            <li>• Düzenli durum raporu alın</li>
+                            <li>• Esnek planlama yapın</li>
+                            <li>• Ekip moralini yüksek tutun</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script src="js/firebase-production.js"></script>
+    <script src="js/user-utils.js"></script>
+    <script>
+        // Initialize user info when page loads
+        document.addEventListener('DOMContentLoaded', async function() {
+            await UserUtils.initializeUserInfo();
+        });
+    </script>
+</body>
+</html> 

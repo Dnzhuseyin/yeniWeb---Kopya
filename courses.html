@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eğitim Modülleri - CyberEdu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#dc2626',
+                        accent: '#059669',
+                        cyber: '#6366f1',
+                        dark: '#0f172a'
+                    }
+                },
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="bg-dark text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
+        <div class="p-4">
+            <a href="student-dashboard.html" class="font-bold text-xl text-cyber block mb-8 flex items-center">
+                <i class="fas fa-shield-alt text-2xl mr-3"></i>
+                CyberEdu
+            </a>
+            
+            <div class="mb-8">
+                <div class="flex items-center mb-4">
+                    <div>
+                        <p class="font-medium" id="user-name"></p>
+                        <p class="text-sm text-gray-400" id="user-email"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="space-y-1">
+                <a href="student-dashboard.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    <span>Genel Bakış</span>
+                </a>
+                <a href="courses.html" class="flex items-center px-4 py-3 rounded-lg bg-slate-800">
+                    <i class="fas fa-graduation-cap mr-3 text-cyber"></i>
+                    <span>Eğitim Modülleri</span>
+                </a>
+                <a href="progress.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-chart-line mr-3"></i>
+                    <span>İlerlemem</span>
+                </a>
+                <a href="my-notes.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-sticky-note mr-3"></i>
+                    <span>Notlarım</span>
+                </a>
+                <a href="downloads.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-download mr-3"></i>
+                    <span>Kaynaklar</span>
+                </a>
+                <a href="account.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-user-cog mr-3"></i>
+                    <span>Profil Ayarları</span>
+                </a>
+            </nav>
+
+            <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
+                <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    <span>Çıkış Yap</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="md:ml-64 p-4 md:p-8 w-full min-h-screen">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <header class="mb-8">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Eğitim Modülleri</h1>
+                        <p class="text-gray-600">Bilgi Sistemleri ve Güvenlik Eğitimi Programı</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="bg-white rounded-lg px-4 py-2 shadow-sm border">
+                            <span class="text-sm text-gray-600">İlerleme:</span>
+                            <span class="font-bold text-cyber ml-1" id="overall-progress">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Progress Overview -->
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold flex items-center">
+                        <i class="fas fa-chart-line text-primary mr-2"></i>
+                        Öğrenme Yolculuğunuz
+                    </h2>
+                    <span class="text-sm text-gray-500" id="completion-stats">0/8 modül tamamlandı</span>
+            </div>
+            
+                <div class="w-full bg-gray-200 rounded-full h-3 mb-4">
+                    <div class="bg-gradient-to-r from-primary to-cyber h-3 rounded-full transition-all duration-500" style="width: 0%" id="progress-bar"></div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-primary" id="completed-modules">0</div>
+                        <div class="text-sm text-gray-600">Tamamlanan</div>
+                                </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-cyber" id="current-modules">0</div>
+                        <div class="text-sm text-gray-600">Devam Eden</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-gray-400" id="locked-modules">8</div>
+                        <div class="text-sm text-gray-600">Kilitli</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modules Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="modules-container">
+                <!-- Modules will be loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase Production DB -->
+    <script src="js/firebase-production.js"></script>
+    <script src="js/user-utils.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        let allModules = [];
+        let userProgress = {};
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize user info using UserUtils
+            await UserUtils.initializeUserInfo();
+            
+            await loadModules();
+            await loadCoordinatorVideosForModules();
+            await loadUserProgress();
+            setupEventListeners();
+        });
+
+        // Load coordinator videos and update modules
+        async function loadCoordinatorVideosForModules() {
+            try {
+                console.log('📹 Koordinatör videoları modüller için yükleniyor...');
+                
+                const coordinatorVideosResult = await DB.load('coordinatorVideos');
+                const coordinatorVideos = (coordinatorVideosResult && coordinatorVideosResult.success) ? coordinatorVideosResult.data : [];
+                
+                console.log(`📹 ${coordinatorVideos.length} koordinatör videosu bulundu`);
+                
+                // Update module video counts
+                allModules.forEach(module => {
+                    const moduleVideos = coordinatorVideos.filter(v => String(v.moduleId) === String(module.id));
+                    module.videoCount = (module.videoCount || 0) + moduleVideos.length;
+                    module.coordinatorVideos = moduleVideos;
+                });
+                
+                // Re-render modules with updated video counts
+                renderModules();
+                
+            } catch (error) {
+                console.error('❌ Koordinatör videoları yükleme hatası:', error);
+            }
+        }
+
+        async function loadModules() {
+            try {
+                console.log('📚 Modüller yükleniyor...');
+                
+                // Wait for Firebase to be ready
+                await new Promise(resolve => {
+                    const checkDB = () => {
+                        if (window.DB) {
+                            resolve();
+                        } else {
+                            setTimeout(checkDB, 100);
+                        }
+                    };
+                    checkDB();
+                });
+
+                // Load modules from Firebase
+                const modulesResult = await DB.loadModules();
+                allModules = modulesResult.success ? modulesResult.data : [];
+                
+                // If no modules exist, create cyber security modules
+                if (allModules.length === 0) {
+                    console.log('📦 Siber güvenlik modülleri oluşturuluyor...');
+                    await createCyberSecurityModules();
+                    const newModulesResult = await DB.loadModules();
+                    allModules = newModulesResult.success ? newModulesResult.data : [];
+                }
+
+                console.log(`📚 ${allModules.length} modül yüklendi`);
+                renderModules();
+
+            } catch (error) {
+                console.error('❌ Modül yükleme hatası:', error);
+                document.getElementById('modules-container').innerHTML = '<p class="text-red-500 text-center py-8">Modüller yüklenirken hata oluştu.</p>';
+            }
+        }
+
+        // Create cyber security modules
+        async function createCyberSecurityModules() {
+            const cyberModules = [
+                {
+                    id: 1,
+                    title: "Bilgi Güvenliği Temelleri",
+                    description: "Bilgi güvenliğinin temel kavramları, CIA üçlüsü (Confidentiality, Integrity, Availability) ve güvenlik politikaları",
+                    difficulty: "Başlangıç",
+                    duration: "4 hafta",
+                    videoCount: 12,
+                    status: "active",
+                    icon: "fa-shield-alt",
+                    color: "primary",
+                    topics: ["Bilgi Güvenliği Nedir?", "CIA Üçlüsü", "Güvenlik Politikaları", "Risk Yönetimi"]
+                },
+                {
+                    id: 2,
+                    title: "Kriptoloji ve Şifreleme",
+                    description: "Klasik ve modern şifreleme teknikleri, hash fonksiyonları, dijital imzalar ve PKI altyapısı",
+                    difficulty: "Orta",
+                    duration: "6 hafta",
+                    videoCount: 18,
+                    status: "active",
+                    icon: "fa-key",
+                    color: "cyber",
+                    topics: ["Simetrik Şifreleme", "Asimetrik Şifreleme", "Hash Fonksiyonları", "Dijital İmzalar"]
+                },
+                {
+                    id: 3,
+                    title: "Ağ Güvenliği",
+                    description: "TCP/IP protokolleri, firewall teknolojileri, IDS/IPS sistemleri ve ağ saldırı türleri",
+                    difficulty: "Orta",
+                    duration: "5 hafta",
+                    videoCount: 15,
+                    status: "active",
+                    icon: "fa-network-wired",
+                    color: "accent",
+                    topics: ["TCP/IP Güvenliği", "Firewall Teknolojileri", "IDS/IPS", "Ağ Saldırıları"]
+                },
+                {
+                    id: 4,
+                    title: "Web Güvenliği",
+                    description: "Web uygulaması güvenlik açıkları, OWASP Top 10, güvenli kodlama teknikleri",
+                    difficulty: "Orta",
+                    duration: "4 hafta",
+                    videoCount: 14,
+                    status: "active",
+                    icon: "fa-globe",
+                    color: "secondary",
+                    topics: ["OWASP Top 10", "SQL Injection", "XSS Saldırıları", "Güvenli Kodlama"]
+                },
+                {
+                    id: 5,
+                    title: "Malware Analizi",
+                    description: "Zararlı yazılım türleri, analiz teknikleri, sandboxing ve reverse engineering",
+                    difficulty: "İleri",
+                    duration: "6 hafta",
+                    videoCount: 16,
+                    status: "active",
+                    icon: "fa-bug",
+                    color: "secondary",
+                    topics: ["Malware Türleri", "Statik Analiz", "Dinamik Analiz", "Reverse Engineering"]
+                },
+                {
+                    id: 6,
+                    title: "Penetrasyon Testleri",
+                    description: "Etik hacking, penetrasyon test metodolojileri, güvenlik açığı değerlendirme",
+                    difficulty: "İleri",
+                    duration: "7 hafta",
+                    videoCount: 20,
+                    status: "active",
+                    icon: "fa-search",
+                    color: "primary",
+                    topics: ["Pentest Metodolojileri", "Vulnerability Assessment", "Exploitation", "Reporting"]
+                },
+                {
+                    id: 7,
+                    title: "Incident Response",
+                    description: "Güvenlik olaylarına müdahale, forensik analiz, olay yönetimi ve iyileştirme",
+                    difficulty: "İleri",
+                    duration: "5 hafta",
+                    videoCount: 13,
+                    status: "active",
+                    icon: "fa-exclamation-triangle",
+                    color: "secondary",
+                    topics: ["Olay Müdahalesi", "Forensik Analiz", "Olay Yönetimi", "İyileştirme Süreçleri"]
+                },
+                {
+                    id: 8,
+                    title: "Compliance ve Standartlar",
+                    description: "ISO 27001, NIST Framework, GDPR ve diğer güvenlik standartları ve uyumluluk",
+                    difficulty: "İleri",
+                    duration: "4 hafta",
+                    videoCount: 11,
+                    status: "active",
+                    icon: "fa-certificate",
+                    color: "accent",
+                    topics: ["ISO 27001", "NIST Framework", "GDPR", "Compliance Süreçleri"]
+                }
+            ];
+
+            for (const module of cyberModules) {
+                await DB.save('modules', module, module.id.toString());
+            }
+            
+            console.log('✅ Siber güvenlik modülleri oluşturuldu');
+        }
+
+        function renderModules() {
+            const modulesContainer = document.getElementById('modules-container');
+            
+            if (allModules.length === 0) {
+                modulesContainer.innerHTML = '<p class="text-gray-500 text-center py-8 col-span-full">Henüz modül bulunmuyor.</p>';
+                return;
+            }
+
+            modulesContainer.innerHTML = allModules.map(module => {
+                const progress = userProgress[module.id] || 0;
+                const isCompleted = progress >= 100;
+                const isAccessible = true; // Tüm modüller erişilebilir
+                
+                const difficultyColors = {
+                    'Başlangıç': 'bg-green-100 text-green-800',
+                    'Orta': 'bg-yellow-100 text-yellow-800',
+                    'İleri': 'bg-red-100 text-red-800'
+                };
+
+                return `
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow ${!isAccessible ? 'opacity-60' : ''}">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-gradient-to-br from-${module.color || 'cyber'} to-primary rounded-lg flex items-center justify-center">
+                                    <i class="fas ${module.icon || 'fa-book'} text-white text-xl"></i>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-xs px-2 py-1 ${difficultyColors[module.difficulty] || 'bg-gray-100 text-gray-800'} rounded-full">
+                                        ${module.difficulty || 'Orta'}
+                                    </span>
+                                    ${isCompleted ? '<i class="fas fa-check-circle text-accent text-xl"></i>' : ''}
+                                    ${!isAccessible ? '<i class="fas fa-lock text-gray-400 text-xl"></i>' : ''}
+                                </div>
+                            </div>
+                            
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">${module.title}</h3>
+                            <p class="text-sm text-gray-600 mb-4 line-clamp-3">${module.description}</p>
+                            
+                            <div class="mb-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-medium text-gray-600">İlerleme</span>
+                                    <span class="text-xs font-bold text-${module.color || 'cyber'}">${Math.round(progress)}%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-gradient-to-r from-${module.color || 'cyber'} to-primary h-2 rounded-full transition-all duration-300" style="width: ${progress}%"></div>
+                    </div>
+                </div>
+                
+                            <div class="flex items-center justify-between text-xs text-gray-500 mb-4">
+                            <div class="flex items-center">
+                                    <i class="fas fa-video mr-1"></i>
+                                    <span>${module.videoCount || 0} video</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-clock mr-1"></i>
+                                    <span>${module.duration || '4 hafta'}</span>
+                    </div>
+                </div>
+                
+                            <div class="space-y-2 mb-4">
+                                <h4 class="text-xs font-medium text-gray-700">Konular:</h4>
+                                <div class="flex flex-wrap gap-1">
+                                    ${(module.topics || []).slice(0, 3).map(topic => `
+                                        <span class="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded">
+                                            ${topic}
+                                        </span>
+                                    `).join('')}
+                                    ${(module.topics || []).length > 3 ? `<span class="text-xs text-gray-400">+${(module.topics || []).length - 3} daha</span>` : ''}
+                                </div>
+                            </div>
+                            
+                            <button onclick="openModule('${module.id}')" 
+                                class="w-full py-3 px-4 rounded-lg font-medium transition-all ${
+                                    isAccessible ? 
+                                    `bg-gradient-to-r from-${module.color || 'cyber'} to-primary text-white hover:opacity-90 transform hover:scale-105` : 
+                                    'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                }" ${!isAccessible ? 'disabled' : ''}>
+                                <i class="fas ${isCompleted ? 'fa-redo' : isAccessible ? 'fa-play' : 'fa-lock'} mr-2"></i>
+                                ${isCompleted ? 'Tekrar İzle' : isAccessible ? 'Modüle Başla' : 'Kilitli'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function loadUserProgress() {
+            try {
+                const userEmail = localStorage.getItem('userEmail');
+                if (!userEmail) return;
+                
+                const progressResult = await DB.load('userProgress');
+                const progressData = (progressResult && progressResult.success) ? progressResult.data : [];
+                const userProgressData = progressData.filter(p => p.userEmail === userEmail);
+                
+                // Convert to module-based progress
+                userProgress = {};
+                userProgressData.forEach(progress => {
+                    if (progress.moduleId) {
+                        userProgress[progress.moduleId] = progress.completionRate || 0;
+                    }
+                });
+                
+                // Update progress UI
+                updateProgressUI();
+                
+            } catch (error) {
+                console.error('❌ Kullanıcı ilerlemesi yükleme hatası:', error);
+            }
+        }
+
+        function updateProgressUI() {
+            const totalModules = allModules.length || 8;
+            const completedCount = Object.values(userProgress).filter(p => p >= 100).length;
+            const currentCount = Object.values(userProgress).filter(p => p > 0 && p < 100).length;
+            const lockedCount = totalModules - completedCount - currentCount;
+            const overallProgress = Math.round((completedCount / totalModules) * 100);
+            
+            // Update progress bar
+            const progressBar = document.getElementById('progress-bar');
+            if (progressBar) {
+                progressBar.style.width = `${overallProgress}%`;
+            }
+            
+            // Update stats
+            document.getElementById('overall-progress').textContent = `${overallProgress}%`;
+            document.getElementById('completion-stats').textContent = `${completedCount}/${totalModules} modül tamamlandı`;
+            document.getElementById('completed-modules').textContent = completedCount;
+            document.getElementById('current-modules').textContent = currentCount;
+            document.getElementById('locked-modules').textContent = lockedCount;
+        }
+
+        function openModule(moduleId) {
+            console.log('📖 Modül açılıyor:', moduleId);
+            window.location.href = `module-detail.html?module=${moduleId}`;
+        }
+
+        function setupEventListeners() {
+            // Add any additional event listeners here
+        }
+    </script>
+</body>
+</html> 

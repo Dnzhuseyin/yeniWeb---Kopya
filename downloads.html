@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaynaklar - CyberEdu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#dc2626',
+                        accent: '#059669',
+                        cyber: '#6366f1',
+                        dark: '#0f172a'
+                    }
+                },
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-production.js"></script>
+    <script src="js/user-utils.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="bg-dark text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
+        <div class="p-4">
+            <a href="student-dashboard.html" class="font-bold text-xl text-cyber block mb-8 flex items-center">
+                <i class="fas fa-shield-alt text-2xl mr-3"></i>
+                CyberEdu
+            </a>
+            
+            <div class="mb-8">
+                <div class="flex items-center mb-4">
+                    <div>
+                        <p class="font-medium" id="user-name"></p>
+                        <p class="text-sm text-gray-400" id="user-email"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="space-y-1">
+                <a href="student-dashboard.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    <span>Genel Bakış</span>
+                </a>
+                <a href="courses.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-graduation-cap mr-3"></i>
+                    <span>Eğitim Modülleri</span>
+                </a>
+                <a href="progress.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-chart-line mr-3"></i>
+                    <span>İlerlemem</span>
+                </a>
+                <a href="my-notes.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-sticky-note mr-3"></i>
+                    <span>Notlarım</span>
+                </a>
+                <a href="downloads.html" class="flex items-center px-4 py-3 rounded-lg bg-slate-800">
+                    <i class="fas fa-download mr-3 text-cyber"></i>
+                    <span>Kaynaklar</span>
+                </a>
+                <a href="account.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-user-cog mr-3"></i>
+                    <span>Profil Ayarları</span>
+                </a>
+            </nav>
+
+            <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
+                <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    <span>Çıkış Yap</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile menu -->
+    <div class="md:hidden fixed top-0 left-0 right-0 z-20 bg-slate-900 text-white p-4 flex justify-between items-center">
+        <a href="student-dashboard.html" class="font-bold text-xl text-primary">Çevik Liderlik</a>
+        <button class="text-white" id="mobile-menu-button">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Main content -->
+    <main class="md:ml-64 p-4 md:p-8 w-full min-h-screen">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <header class="mb-8">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2 flex items-center">
+                            <i class="fas fa-download text-cyber mr-3"></i>
+                            Kaynaklar
+                        </h1>
+                        <p class="text-gray-600">Siber güvenlik eğitimi için gerekli tüm kaynaklara buradan ulaşabilirsiniz</p>
+                    </div>
+                    <div class="bg-white rounded-lg px-4 py-2 shadow-sm border border-gray-100">
+                        <span class="text-sm text-gray-600">Toplam Kaynak:</span>
+                        <span class="font-bold text-cyber ml-1" id="total-resources">43</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">PDF Dokümanlar</h3>
+                        <div class="h-10 w-10 bg-secondary/10 text-secondary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900">24</p>
+                    <p class="text-xs text-gray-500 mt-1">eğitim materyali</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Video Kaynaklar</h3>
+                        <div class="h-10 w-10 bg-cyber/10 text-cyber rounded-lg flex items-center justify-center">
+                            <i class="fas fa-video"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900">12</p>
+                    <p class="text-xs text-gray-500 mt-1">ek video</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Araçlar & Yazılım</h3>
+                        <div class="h-10 w-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900">7</p>
+                    <p class="text-xs text-gray-500 mt-1">güvenlik aracı</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Toplam İndirme</h3>
+                        <div class="h-10 w-10 bg-accent/10 text-accent rounded-lg flex items-center justify-center">
+                            <i class="fas fa-download"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900">1,247</p>
+                    <p class="text-xs text-gray-500 mt-1">bu ay</p>
+                </div>
+            </div>
+
+            <!-- Filter and Search -->
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-100">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Arama</label>
+                        <input type="text" placeholder="Kaynak ara..." 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                               id="search-resources">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Kategori</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                                id="filter-category">
+                            <option value="">Tüm Kategoriler</option>
+                            <option value="pdf">PDF Dokümanlar</option>
+                            <option value="video">Video Kaynaklar</option>
+                            <option value="tools">Araçlar & Yazılım</option>
+                            <option value="template">Şablonlar</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Modül</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                                id="filter-module">
+                            <option value="">Tüm Modüller</option>
+                            <option value="1">Bilgi Güvenliği Temelleri</option>
+                            <option value="2">Kriptoloji ve Şifreleme</option>
+                            <option value="3">Ağ Güvenliği</option>
+                            <option value="4">Web Güvenliği</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Sıralama</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                                id="sort-resources">
+                            <option value="newest">En Yeni</option>
+                            <option value="popular">En Popüler</option>
+                            <option value="name">İsim</option>
+                            <option value="size">Boyut</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Resources -->
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-100">
+                <h2 class="text-xl font-semibold mb-6 flex items-center">
+                    <i class="fas fa-star text-cyber mr-2"></i>
+                    Öne Çıkan Kaynaklar
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-gradient-to-br from-cyber/5 to-primary/5 rounded-lg p-4 border border-cyber/20">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-cyber/10 text-cyber rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Siber Güvenlik El Kitabı</h3>
+                                <p class="text-xs text-gray-600">2.4 MB • PDF</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">Kapsamlı siber güvenlik rehberi ve best practices</p>
+                        <button class="w-full bg-cyber text-white py-2 rounded-lg text-sm hover:bg-cyber/90">
+                            <i class="fas fa-download mr-2"></i>İndir
+                        </button>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg p-4 border border-primary/20">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Penetrasyon Test Araçları</h3>
+                                <p class="text-xs text-gray-600">125 MB • ZIP</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">Etik hacking için gerekli araç koleksiyonu</p>
+                        <button class="w-full bg-primary text-white py-2 rounded-lg text-sm hover:bg-primary/90">
+                            <i class="fas fa-download mr-2"></i>İndir
+                        </button>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-accent/5 to-secondary/5 rounded-lg p-4 border border-accent/20">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-accent/10 text-accent rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-file-excel"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Risk Değerlendirme Şablonu</h3>
+                                <p class="text-xs text-gray-600">156 KB • XLSX</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">Güvenlik risk analizi için Excel şablonu</p>
+                        <button class="w-full bg-accent text-white py-2 rounded-lg text-sm hover:bg-accent/90">
+                            <i class="fas fa-download mr-2"></i>İndir
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resources Grid -->
+            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                <h2 class="text-xl font-semibold mb-6 flex items-center">
+                    <i class="fas fa-folder-open text-primary mr-2"></i>
+                    Tüm Kaynaklar
+                </h2>
+                
+                <div class="grid grid-cols-1 gap-4" id="resources-container">
+                    <!-- Resources will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize user info
+            const isLoggedIn = await UserUtils.initializeUserInfo();
+            if (!isLoggedIn) return;
+            
+            setupEventListeners();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Mobile menu functionality
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', function() {
+                    // Add mobile menu toggle logic here if needed
+                });
+            }
+
+            // Logout functionality
+            document.querySelectorAll('a[href="index.html"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('loginTime');
+                    
+                    console.log('Öğrenci çıkışı yapıldı');
+                    window.location.href = 'index.html';
+                });
+            });
+        }
+
+        // Show notification function
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg text-white transition-all duration-300 transform translate-x-full`;
+            
+            switch (type) {
+                case 'success':
+                    notification.classList.add('bg-green-500');
+                    break;
+                case 'error':
+                    notification.classList.add('bg-red-500');
+                    break;
+                case 'warning':
+                    notification.classList.add('bg-yellow-500');
+                    break;
+                default:
+                    notification.classList.add('bg-blue-500');
+            }
+            
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <span>${message}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (notification.parentElement) {
+                        notification.remove();
+                    }
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html> 

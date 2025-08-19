@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eğitim Takvimi - Çevik Liderlik Eğitimi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0ea5e9',
+                        secondary: '#f97316',
+                        accent: '#10b981',
+                    }
+                },
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="bg-slate-900 text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
+        <div class="p-4">
+            <a href="student-dashboard.html" class="font-bold text-xl text-primary block mb-8 flex items-center">
+                <svg class="w-8 h-8 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+                Çevik Liderlik
+            </a>
+            
+            <div class="mb-8">
+                <div class="flex items-center mb-4">
+                    <div>
+                        <p class="font-medium" id="user-name"></p>
+                        <p class="text-sm text-gray-400" id="user-email"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="space-y-1">
+                <a href="student-dashboard.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    <span>Genel Bakış</span>
+                </a>
+                <a href="courses.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-graduation-cap mr-3"></i>
+                    <span>Eğitim Modülleri</span>
+                </a>
+                <a href="progress.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-chart-line mr-3"></i>
+                    <span>İlerlemem</span>
+                </a>
+                <a href="crisis-scenarios.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-exclamation-triangle mr-3 text-secondary"></i>
+                    <span>Kriz Senaryoları</span>
+                </a>
+                <a href="leadership-tools.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-tools mr-3 text-accent"></i>
+                    <span>Liderlik Araçları</span>
+                </a>
+                <a href="calendar.html" class="flex items-center px-4 py-3 rounded-lg bg-slate-800">
+                    <i class="far fa-calendar-alt mr-3 text-primary"></i>
+                    <span>Eğitim Takvimi</span>
+                </a>
+                <a href="my-notes.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-sticky-note mr-3"></i>
+                    <span>Notlarım</span>
+                </a>
+                <a href="downloads.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-download mr-3"></i>
+                    <span>Kaynaklar</span>
+                </a>
+                <a href="account.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-user-cog mr-3"></i>
+                    <span>Profil Ayarları</span>
+                </a>
+            </nav>
+
+            <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
+                <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    <span>Çıkış Yap</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile menu -->
+    <div class="md:hidden fixed top-0 left-0 right-0 z-20 bg-slate-900 text-white p-4 flex justify-between items-center">
+        <a href="student-dashboard.html" class="font-bold text-xl text-primary">Çevik Liderlik</a>
+        <button class="text-white" id="mobile-menu-button">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Main content -->
+    <main class="md:ml-64 p-4 md:p-8 w-full min-h-screen pt-16 md:pt-8">
+        <div class="max-w-7xl mx-auto">
+            <header class="mb-8">
+                <h1 class="text-3xl font-bold flex items-center">
+                    <i class="far fa-calendar-alt text-primary mr-3"></i>
+                    Eğitim Takvimi
+                </h1>
+                <p class="text-gray-600 mt-2">Çevik liderlik eğitim programınızın programı ve önemli tarihler</p>
+            </header>
+            
+            <!-- Calendar Navigation -->
+            <section class="mb-8">
+                <div class="bg-white p-4 rounded-lg shadow-md flex items-center justify-between">
+                    <button class="text-gray-600 hover:text-primary flex items-center">
+                        <i class="fas fa-chevron-left mr-2"></i>
+                        Önceki Ay
+                        </button>
+                    <h2 class="text-xl font-semibold">Mart 2024</h2>
+                    <button class="text-gray-600 hover:text-primary flex items-center">
+                        Sonraki Ay
+                        <i class="fas fa-chevron-right ml-2"></i>
+                        </button>
+                </div>
+            </section>
+                
+                <!-- Calendar Grid -->
+            <section class="mb-8">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <!-- Calendar Header -->
+                    <div class="grid grid-cols-7 bg-gray-50 text-center text-sm font-medium text-gray-600">
+                        <div class="p-3">Pazartesi</div>
+                        <div class="p-3">Salı</div>
+                        <div class="p-3">Çarşamba</div>
+                        <div class="p-3">Perşembe</div>
+                        <div class="p-3">Cuma</div>
+                        <div class="p-3">Cumartesi</div>
+                        <div class="p-3">Pazar</div>
+                    </div>
+                    
+                    <!-- Calendar Body -->
+                    <div class="grid grid-cols-7 border-t">
+                        <!-- Week 1 -->
+                        <div class="p-3 border-r border-b text-gray-400 min-h-[100px]">
+                            <span class="text-sm">26</span>
+                        </div>
+                        <div class="p-3 border-r border-b text-gray-400 min-h-[100px]">
+                            <span class="text-sm">27</span>
+                        </div>
+                        <div class="p-3 border-r border-b text-gray-400 min-h-[100px]">
+                            <span class="text-sm">28</span>
+                        </div>
+                        <div class="p-3 border-r border-b text-gray-400 min-h-[100px]">
+                            <span class="text-sm">29</span>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px]">
+                            <span class="text-sm">1</span>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px]">
+                            <span class="text-sm">2</span>
+                        </div>
+                        <div class="p-3 border-b min-h-[100px]">
+                            <span class="text-sm">3</span>
+                        </div>
+
+                        <!-- Week 2 -->
+                        <div class="p-3 border-r border-b min-h-[100px]">
+                            <span class="text-sm">4</span>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px]">
+                            <span class="text-sm">5</span>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px]">
+                            <span class="text-sm">6</span>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px]">
+                            <span class="text-sm">7</span>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px]">
+                            <span class="text-sm">8</span>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px]">
+                            <span class="text-sm">9</span>
+                        </div>
+                        <div class="p-3 border-b min-h-[100px]">
+                            <span class="text-sm">10</span>
+                        </div>
+
+                        <!-- Week 3 -->
+                        <div class="p-3 border-r border-b min-h-[100px]">
+                            <span class="text-sm">11</span>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px]">
+                            <span class="text-sm">12</span>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px]">
+                            <span class="text-sm">13</span>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px]">
+                            <span class="text-sm">14</span>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px] bg-green-50">
+                            <span class="text-sm">15</span>
+                            <div class="text-xs bg-green-100 text-green-800 p-1 rounded mt-1">
+                                Modül 1 Tamamlandı
+                            </div>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px]">
+                            <span class="text-sm">16</span>
+                        </div>
+                        <div class="p-3 border-b min-h-[100px]">
+                            <span class="text-sm">17</span>
+                        </div>
+
+                        <!-- Week 4 -->
+                        <div class="p-3 border-r border-b min-h-[100px] bg-green-50">
+                            <span class="text-sm">18</span>
+                            <div class="text-xs bg-green-100 text-green-800 p-1 rounded mt-1">
+                                Modül 3 Tamamlandı
+                            </div>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px]">
+                            <span class="text-sm">19</span>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px]">
+                            <span class="text-sm">20</span>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px]">
+                            <span class="text-sm">21</span>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px] bg-blue-50">
+                            <span class="text-sm">22</span>
+                            <div class="text-xs bg-blue-100 text-blue-800 p-1 rounded mt-1">
+                                Modül 2 Devam
+                            </div>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px]">
+                            <span class="text-sm">23</span>
+                        </div>
+                        <div class="p-3 border-b min-h-[100px] bg-orange-50">
+                            <span class="text-sm">24</span>
+                            <div class="text-xs bg-orange-100 text-orange-800 p-1 rounded mt-1">
+                                Modül 4 Başladı
+                            </div>
+                        </div>
+
+                        <!-- Week 5 -->
+                        <div class="p-3 border-r border-b min-h-[100px] bg-blue-50 border-2 border-primary">
+                            <span class="text-sm font-bold">25</span>
+                            <div class="text-xs bg-blue-100 text-blue-800 p-1 rounded mt-1">
+                                Bugün
+                            </div>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px]">
+                            <span class="text-sm">26</span>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px]">
+                            <span class="text-sm">27</span>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px] bg-yellow-50">
+                            <span class="text-sm">28</span>
+                            <div class="text-xs bg-yellow-100 text-yellow-800 p-1 rounded mt-1">
+                                Kriz Senaryosu
+                            </div>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px]">
+                            <span class="text-sm">29</span>
+                        </div>
+                        <div class="p-3 border-r border-b min-h-[100px]">
+                            <span class="text-sm">30</span>
+                            </div>
+                        <div class="p-3 border-b min-h-[100px]">
+                            <span class="text-sm">31</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Upcoming Events -->
+            <section class="mb-8">
+                <h2 class="text-xl font-semibold mb-6 flex items-center">
+                    <i class="fas fa-clock text-primary mr-2"></i>
+                    Yaklaşan Etkinlikler
+                </h2>
+                <div class="space-y-4">
+                    <div class="bg-white p-4 rounded-lg shadow-md border-l-4 border-orange-500">
+                        <div class="flex items-center justify-between">
+                                    <div>
+                                <h3 class="font-semibold">Kriz Senaryosu: Büyük Deprem</h3>
+                                <p class="text-gray-600 text-sm">6.8 büyüklüğünde deprem simülasyonu</p>
+                                <div class="flex items-center text-sm text-gray-500 mt-2">
+                                    <i class="far fa-calendar mr-2"></i>
+                                    <span>28 Mart 2024, 14:00</span>
+                                </div>
+                                    </div>
+                            <span class="bg-orange-100 text-orange-800 text-xs px-3 py-1 rounded-full">3 gün kaldı</span>
+                                    </div>
+                                </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow-md border-l-4 border-green-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="font-semibold">Modül 5: Personel ve Veli İletişimi</h3>
+                                <p class="text-gray-600 text-sm">Kriz durumlarında etkili iletişim stratejileri</p>
+                                <div class="flex items-center text-sm text-gray-500 mt-2">
+                                    <i class="far fa-calendar mr-2"></i>
+                                    <span>1 Nisan 2024, 09:00</span>
+                                </div>
+                                    </div>
+                            <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">1 hafta kaldı</span>
+                                    </div>
+                                </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow-md border-l-4 border-purple-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="font-semibold">Webinar: Afet Sonrası Liderlik</h3>
+                                <p class="text-gray-600 text-sm">Uzman konuşmacı ile canlı soru-cevap</p>
+                                <div class="flex items-center text-sm text-gray-500 mt-2">
+                                    <i class="far fa-calendar mr-2"></i>
+                                    <span>5 Nisan 2024, 20:00</span>
+                                </div>
+                            </div>
+                            <span class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">İsteğe bağlı</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Legend -->
+            <section class="mb-8">
+                <h2 class="text-xl font-semibold mb-6 flex items-center">
+                    <i class="fas fa-info-circle text-accent mr-2"></i>
+                    Takvim Rehberi
+                </h2>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-green-100 border border-green-500 rounded mr-3"></div>
+                            <span class="text-sm">Tamamlanan Modül</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-blue-100 border border-blue-500 rounded mr-3"></div>
+                            <span class="text-sm">Devam Eden Modül</span>
+                                </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-orange-100 border border-orange-500 rounded mr-3"></div>
+                            <span class="text-sm">Yeni Başlayan Modül</span>
+                                </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-yellow-100 border border-yellow-500 rounded mr-3"></div>
+                            <span class="text-sm">Kriz Senaryosu</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script src="js/firebase-production.js"></script>
+    <script src="js/user-utils.js"></script>
+    <script>
+        // Initialize user info when page loads
+        document.addEventListener('DOMContentLoaded', async function() {
+            await UserUtils.initializeUserInfo();
+        });
+        
+        let currentDate = new Date();
+        let currentMonth = currentDate.getMonth() + 1;
+        let currentYear = currentDate.getFullYear();
+        
+        // Takvim verilerini yükle
+        async function loadCalendar(year = currentYear, month = currentMonth) {
+            try {
+                // localStorage'dan etkinlikleri al, yoksa varsayılan etkinlikleri oluştur
+                let storedEvents = localStorage.getItem('calendarEvents');
+                let events = [];
+                
+                if (!storedEvents) {
+                    // İlk kez yükleniyorsa varsayılan etkinlikleri oluştur
+                    events = createDefaultEvents();
+                    localStorage.setItem('calendarEvents', JSON.stringify(events));
+                } else {
+                    events = JSON.parse(storedEvents);
+                }
+                
+                // Ay boyunca etkinlikleri filtrele
+                const startDate = new Date(year, month - 1, 1);
+                const endDate = new Date(year, month, 0);
+                
+                const monthEvents = events.filter(event => {
+                    const eventDate = new Date(event.date);
+                    return eventDate >= startDate && eventDate <= endDate;
+                });
+                
+                // Takvim başlığını güncelle
+                updateCalendarHeader(year, month);
+                
+                // Takvim grid'ini oluştur
+                renderCalendarGrid(monthEvents, year, month);
+                
+                // Yaklaşan etkinlikleri göster
+                renderUpcomingEvents(events);
+                
+                // Global değişkenleri güncelle
+                currentYear = year;
+                currentMonth = month;
+                
+            } catch (error) {
+                console.error('Takvim yüklenirken hata:', error);
+                showNotification('Takvim yüklenirken hata oluştu: ' + error.message, 'error');
+            }
+        }
+        
+        function createDefaultEvents() {
+            const today = new Date();
+            const currentYear = today.getFullYear();
+            const currentMonth = today.getMonth();
+            
+            return [
+                {
+                    id: '1',
+                    title: 'Modül 1: Çevik Liderlik Temelleri',
+                    description: 'Çevik liderlik yaklaşımının temel ilkeleri',
+                    date: new Date(currentYear, currentMonth, 15).toISOString().split('T')[0],
+                    time: '09:00',
+                    type: 'module',
+                    module_id: 1,
+                    status: 'completed'
+                },
+                {
+                    id: '2',
+                    title: 'Modül 2: Kriz Durumlarında Liderlik',
+                    description: 'Acil durumlarda etkili liderlik yaklaşımları',
+                    date: new Date(currentYear, currentMonth, 20).toISOString().split('T')[0],
+                    time: '09:00',
+                    type: 'module',
+                    module_id: 2,
+                    status: 'scheduled'
+                },
+                {
+                    id: '3',
+                    title: 'Modül 3: Afet Öncesi Hazırlık',
+                    description: 'Okul afet hazırlık planları oluşturma',
+                    date: new Date(currentYear, currentMonth, 25).toISOString().split('T')[0],
+                    time: '09:00',
+                    type: 'module',
+                    module_id: 3,
+                    status: 'scheduled'
+                },
+                {
+                    id: '4',
+                    title: 'Kriz Senaryosu: Büyük Deprem',
+                    description: '6.8 büyüklüğünde deprem simülasyonu',
+                    date: new Date(currentYear, currentMonth, 28).toISOString().split('T')[0],
+                    time: '14:00',
+                    type: 'scenario',
+                    status: 'scheduled'
+                },
+                {
+                    id: '5',
+                    title: 'Modül 4: Acil Durum Protokolleri',
+                    description: 'Acil durum müdahale prosedürleri',
+                    date: new Date(currentYear, currentMonth + 1, 1).toISOString().split('T')[0],
+                    time: '09:00',
+                    type: 'module',
+                    module_id: 4,
+                    status: 'scheduled'
+                },
+                {
+                    id: '6',
+                    title: 'Webinar: Afet Sonrası Liderlik',
+                    description: 'Uzman konuşmacı ile canlı soru-cevap',
+                    date: new Date(currentYear, currentMonth + 1, 5).toISOString().split('T')[0],
+                    time: '20:00',
+                    type: 'webinar',
+                    status: 'scheduled'
+                }
+            ];
+        }
+        
+        // Takvim başlığını güncelle
+        function updateCalendarHeader(year, month) {
+            const monthNames = [
+                'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+                'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
+            ];
+            
+            document.querySelector('.bg-white.p-4.rounded-lg.shadow-md h2').textContent = 
+                `${monthNames[month - 1]} ${year}`;
+        }
+        
+        // Takvim grid'ini oluştur
+        function renderCalendarGrid(events, year, month) {
+            const calendarBody = document.querySelector('.grid.grid-cols-7.border-t');
+            
+            // Önceki ayın son günlerini hesapla
+            const firstDay = new Date(year, month - 1, 1);
+            const firstDayOfWeek = firstDay.getDay();
+            const startDate = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1; // Pazartesi = 0
+            
+            // Sonraki ayın ilk günlerini hesapla
+            const lastDay = new Date(year, month, 0);
+            const daysInMonth = lastDay.getDate();
+            const totalCells = Math.ceil((daysInMonth + startDate) / 7) * 7;
+            
+            let html = '';
+            
+            for (let i = 0; i < totalCells; i++) {
+                const dayNumber = i - startDate + 1;
+                const isCurrentMonth = dayNumber > 0 && dayNumber <= daysInMonth;
+                const isToday = isCurrentMonth && 
+                    dayNumber === new Date().getDate() && 
+                    month === new Date().getMonth() + 1 && 
+                    year === new Date().getFullYear();
+                
+                let dayData = null;
+                if (isCurrentMonth) {
+                    const dateStr = `${year}-${month.toString().padStart(2, '0')}-${dayNumber.toString().padStart(2, '0')}`;
+                    dayData = events.find(event => event.date === dateStr);
+                }
+                
+                const cellClass = `p-3 border-r border-b min-h-[100px] ${
+                    !isCurrentMonth ? 'text-gray-400' : ''
+                } ${isToday ? 'bg-blue-50 border-2 border-primary' : ''}`;
+                
+                html += `<div class="${cellClass}">`;
+                
+                if (isCurrentMonth) {
+                    html += `<span class="text-sm ${isToday ? 'font-bold' : ''}">${dayNumber}</span>`;
+                    
+                    if (dayData) {
+                        const eventClass = getEventClass(dayData.type, dayData.status);
+                        html += `
+                            <div class="${eventClass} p-1 rounded mt-1" title="${dayData.description || ''}">
+                                ${dayData.title}
+                                ${dayData.time ? ` - ${dayData.time}` : ''}
+                            </div>
+                        `;
+                    }
+                    
+                    if (isToday) {
+                        html += '<div class="text-xs bg-blue-100 text-blue-800 p-1 rounded mt-1">Bugün</div>';
+                    }
+                } else {
+                    // Önceki/sonraki ay günleri
+                    const displayDay = dayNumber <= 0 ? 
+                        new Date(year, month - 1, dayNumber).getDate() :
+                        dayNumber - daysInMonth;
+                    html += `<span class="text-sm">${displayDay}</span>`;
+                }
+                
+                html += '</div>';
+            }
+            
+            calendarBody.innerHTML = html;
+        }
+        
+        // Etkinlik tipine göre CSS class döndür
+        function getEventClass(type, status) {
+            const baseClasses = 'text-xs p-1 rounded mt-1';
+            
+            if (status === 'completed') {
+                return `${baseClasses} bg-green-100 text-green-800`;
+            }
+            
+            switch (type) {
+                case 'module':
+                    return `${baseClasses} bg-blue-100 text-blue-800`;
+                case 'exam':
+                    return `${baseClasses} bg-red-100 text-red-800`;
+                case 'webinar':
+                    return `${baseClasses} bg-purple-100 text-purple-800`;
+                case 'scenario':
+                    return `${baseClasses} bg-yellow-100 text-yellow-800`;
+                default:
+                    return `${baseClasses} bg-gray-100 text-gray-800`;
+            }
+        }
+        
+        // Yaklaşan etkinlikleri göster
+        function renderUpcomingEvents(allEvents) {
+            const container = document.querySelector('.space-y-4');
+            
+            // Yaklaşan etkinlikleri filtrele (sonraki 30 gün)
+            const today = new Date();
+            const thirtyDaysLater = new Date(today);
+            thirtyDaysLater.setDate(today.getDate() + 30);
+            
+            const upcomingEvents = allEvents.filter(event => {
+                const eventDate = new Date(event.date);
+                return eventDate >= today && eventDate <= thirtyDaysLater && event.status === 'scheduled';
+            }).slice(0, 10); // En fazla 10 etkinlik
+            
+            if (upcomingEvents.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <i class="fas fa-calendar-check text-4xl text-gray-400 mb-4"></i>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Yaklaşan etkinlik yok</h3>
+                        <p class="text-gray-600">Önümüzdeki 30 gün içinde planlanmış etkinlik bulunmuyor.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = upcomingEvents.map(event => {
+                const borderColor = getEventBorderColor(event.type);
+                const eventDate = new Date(event.date);
+                const diffTime = eventDate - today;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                const daysText = diffDays === 0 ? 'Bugün' : 
+                    diffDays === 1 ? 'Yarın' : 
+                    `${diffDays} gün kaldı`;
+                
+                return `
+                    <div class="bg-white p-4 rounded-lg shadow-md border-l-4 ${borderColor}">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="font-semibold">${event.title}</h3>
+                                <p class="text-gray-600 text-sm">${event.description || ''}</p>
+                                <div class="flex items-center text-sm text-gray-500 mt-2">
+                                    <i class="far fa-calendar mr-2"></i>
+                                    <span>${formatEventDate(event.date)} ${event.time ? `, ${event.time}` : ''}</span>
+                                </div>
+                            </div>
+                            <span class="bg-${getEventColor(event.type)}-100 text-${getEventColor(event.type)}-800 text-xs px-3 py-1 rounded-full">
+                                ${daysText}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Etkinlik tipine göre border rengi
+        function getEventBorderColor(type) {
+            switch (type) {
+                case 'module': return 'border-green-500';
+                case 'exam': return 'border-red-500';
+                case 'webinar': return 'border-purple-500';
+                case 'scenario': return 'border-orange-500';
+                default: return 'border-blue-500';
+            }
+        }
+        
+        // Etkinlik tipine göre renk
+        function getEventColor(type) {
+            switch (type) {
+                case 'module': return 'green';
+                case 'exam': return 'red';
+                case 'webinar': return 'purple';
+                case 'scenario': return 'orange';
+                default: return 'blue';
+            }
+        }
+        
+        // Tarihi formatla
+        function formatEventDate(dateStr) {
+            const date = new Date(dateStr);
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            if (date.toDateString() === today.toDateString()) {
+                return 'Bugün';
+            } else if (date.toDateString() === tomorrow.toDateString()) {
+                return 'Yarın';
+            } else {
+                return date.toLocaleDateString('tr-TR', { 
+                    day: 'numeric', 
+                    month: 'long', 
+                    year: 'numeric' 
+                });
+            }
+        }
+        
+        // Önceki ay
+        function previousMonth() {
+            if (currentMonth === 1) {
+                currentMonth = 12;
+                currentYear--;
+            } else {
+                currentMonth--;
+            }
+            loadCalendar(currentYear, currentMonth);
+        }
+        
+        // Sonraki ay
+        function nextMonth() {
+            if (currentMonth === 12) {
+                currentMonth = 1;
+                currentYear++;
+            } else {
+                currentMonth++;
+            }
+            loadCalendar(currentYear, currentMonth);
+        }
+        
+        // Bildirim göster
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg text-white ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 'bg-blue-500'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // İlk yükleme
+            loadCalendar();
+            
+            // Navigasyon butonları
+            document.querySelector('button:has(.fa-chevron-left)').addEventListener('click', previousMonth);
+            document.querySelector('button:has(.fa-chevron-right)').addEventListener('click', nextMonth);
+        });
+    </script>
+</body>
+</html> 

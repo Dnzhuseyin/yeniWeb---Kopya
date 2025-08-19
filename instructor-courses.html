@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eğitim Modülleri - CyberEdu Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#dc2626',
+                        accent: '#059669',
+                        cyber: '#6366f1',
+                        dark: '#0f172a'
+                    }
+                },
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-production.js"></script>
+    <script src="js/user-utils.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="bg-dark text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
+        <div class="p-4">
+            <a href="instructor-dashboard.html" class="font-bold text-xl text-secondary block mb-8 flex items-center">
+                <i class="fas fa-shield-alt text-2xl mr-3"></i>
+                CyberEdu Admin
+            </a>
+            
+            <div class="mb-8">
+                <div class="flex items-center mb-4">
+                    <div>
+                        <p class="font-medium" id="instructor-name"></p>
+                        <p class="text-sm text-gray-400" id="instructor-email"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="space-y-1">
+                <a href="instructor-dashboard.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    <span>Genel Bakış</span>
+                </a>
+                <a href="instructor-courses.html" class="flex items-center px-4 py-3 rounded-lg bg-slate-800">
+                    <i class="fas fa-graduation-cap mr-3 text-secondary"></i>
+                    <span>Eğitim Modülleri</span>
+                </a>
+                <a href="instructor-content.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-video mr-3"></i>
+                    <span>Video Yönetimi</span>
+                </a>
+                <a href="instructor-students.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-users mr-3"></i>
+                    <span>Öğrenci Yönetimi</span>
+                </a>
+            </nav>
+
+            <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
+                <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    <span>Çıkış Yap</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile Top Navbar -->
+    <div class="md:hidden fixed top-0 left-0 right-0 z-20 bg-slate-900 text-white p-4 flex justify-between items-center">
+        <a href="instructor-dashboard.html" class="font-bold text-xl text-primary">Koordinatör</a>
+        
+        <button class="text-white" id="mobile-menu-button">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Mobile sidebar (hidden by default) -->
+    <div class="md:hidden fixed inset-0 bg-black bg-opacity-75 z-10 hidden" id="mobile-sidebar-overlay">
+        <div class="bg-slate-900 text-white w-64 min-h-screen overflow-y-auto">
+            <div class="p-4 flex justify-end">
+                <button id="close-mobile-menu" class="text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="p-4">
+                <div class="flex items-center mb-6">
+                    <div>
+                        <p class="font-medium"></p>
+                        <p class="text-sm text-gray-400"></p>
+                    </div>
+                </div>
+
+                <nav class="space-y-1">
+                    <a href="instructor-dashboard.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                        <i class="fas fa-tachometer-alt mr-3"></i>
+                        <span>Genel Bakış</span>
+                    </a>
+                    <a href="instructor-courses.html" class="flex items-center px-4 py-3 rounded-lg bg-slate-800">
+                        <i class="fas fa-graduation-cap mr-3 text-primary"></i>
+                        <span>Eğitim Modülleri</span>
+                    </a>
+                    <a href="instructor-content.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                        <i class="fas fa-video mr-3 text-secondary"></i>
+                        <span>Video Yükleme</span>
+                    </a>
+                    <a href="instructor-students.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                        <i class="fas fa-users mr-3 text-accent"></i>
+                        <span>Öğrenci Yönetimi</span>
+                    </a>
+                </nav>
+
+                <div class="mt-8 pt-4 border-t border-slate-800">
+                    <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                        <i class="fas fa-sign-out-alt mr-3"></i>
+                        <span>Çıkış Yap</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <main class="md:ml-64 p-4 md:p-8 w-full min-h-screen">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <header class="mb-8">
+                <div class="flex items-center justify-between">
+                <div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Eğitim Modülleri</h1>
+                        <p class="text-gray-600">Siber güvenlik eğitim modüllerini yönetin ve düzenleyin</p>
+                    </div>
+                    <button class="bg-cyber text-white px-4 py-2 rounded-lg flex items-center" id="add-module">
+                        <i class="fas fa-plus mr-2"></i>
+                        Yeni Modül Ekle
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Module Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Toplam Modül</h3>
+                        <div class="h-10 w-10 bg-cyber/10 text-cyber rounded-lg flex items-center justify-center">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900" id="total-modules">8</p>
+                    <p class="text-xs text-gray-500 mt-1">aktif modül</p>
+                        </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Toplam Video</h3>
+                        <div class="h-10 w-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-video"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900" id="total-videos">127</p>
+                    <p class="text-xs text-gray-500 mt-1">eğitim videosu</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Aktif Öğrenci</h3>
+                        <div class="h-10 w-10 bg-accent/10 text-accent rounded-lg flex items-center justify-center">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900" id="active-students">342</p>
+                    <p class="text-xs text-gray-500 mt-1">kayıtlı öğrenci</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Tamamlanma Oranı</h3>
+                        <div class="h-10 w-10 bg-secondary/10 text-secondary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900">73%</p>
+                    <p class="text-xs text-gray-500 mt-1">ortalama başarı</p>
+                        </div>
+                    </div>
+
+            <!-- Modules Grid -->
+            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-semibold flex items-center">
+                        <i class="fas fa-graduation-cap text-primary mr-2"></i>
+                        Siber Güvenlik Modülleri
+                    </h2>
+                    <div class="flex items-center space-x-3">
+                        <select class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent text-sm">
+                            <option>Tüm Modüller</option>
+                            <option>Aktif</option>
+                            <option>Taslak</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="modules-container">
+                    <!-- Modules will be loaded here -->
+            </div>
+            </div>
+        </div>
+    </main>
+        
+    <!-- Add Module Modal -->
+    <div id="add-module-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 hidden">
+        <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
+            <div class="mt-3">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-medium text-gray-900">Yeni Modül Ekle</h3>
+                    <button id="close-modal" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+                </div>
+                
+                <form id="module-form" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Modül Adı</label>
+                            <input type="text" id="module-title" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Modül adını girin">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Zorluk Seviyesi</label>
+                            <select id="module-difficulty" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="">Seçiniz</option>
+                                <option value="beginner">Başlangıç</option>
+                                <option value="intermediate">Orta</option>
+                                <option value="advanced">İleri</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Açıklama</label>
+                        <textarea id="module-description" required rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Modül açıklamasını girin"></textarea>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tahmini Süre (saat)</label>
+                            <input type="number" id="module-duration" step="0.1" min="0" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="2.5">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Renk Teması</label>
+                            <select id="module-color" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="">Seçiniz</option>
+                                <option value="primary">Mavi</option>
+                                <option value="secondary">Turuncu</option>
+                                <option value="accent">Yeşil</option>
+                                <option value="purple">Mor</option>
+                                <option value="blue">Koyu Mavi</option>
+                                <option value="pink">Pembe</option>
+                                <option value="red">Kırmızı</option>
+                                <option value="yellow">Sarı</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Durum</label>
+                            <select id="module-status" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="draft">Taslak</option>
+                                <option value="active">Aktif</option>
+                                <option value="completed">Tamamlandı</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">İkon Seçimi</label>
+                        <div class="grid grid-cols-6 gap-2" id="icon-selector">
+                            <button type="button" class="icon-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 text-center" data-icon="fas fa-graduation-cap">
+                                <i class="fas fa-graduation-cap text-xl"></i>
+                            </button>
+                            <button type="button" class="icon-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 text-center" data-icon="fas fa-exclamation-triangle">
+                                <i class="fas fa-exclamation-triangle text-xl"></i>
+                            </button>
+                            <button type="button" class="icon-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 text-center" data-icon="fas fa-shield-alt">
+                                <i class="fas fa-shield-alt text-xl"></i>
+                            </button>
+                            <button type="button" class="icon-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 text-center" data-icon="fas fa-comments">
+                                <i class="fas fa-comments text-xl"></i>
+                            </button>
+                            <button type="button" class="icon-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 text-center" data-icon="fas fa-users">
+                                <i class="fas fa-users text-xl"></i>
+                            </button>
+                            <button type="button" class="icon-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 text-center" data-icon="fas fa-tools">
+                                <i class="fas fa-tools text-xl"></i>
+                            </button>
+                            <button type="button" class="icon-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 text-center" data-icon="fas fa-book">
+                                <i class="fas fa-book text-xl"></i>
+                            </button>
+                            <button type="button" class="icon-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 text-center" data-icon="fas fa-lightbulb">
+                                <i class="fas fa-lightbulb text-xl"></i>
+                            </button>
+                            <button type="button" class="icon-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 text-center" data-icon="fas fa-chart-line">
+                                <i class="fas fa-chart-line text-xl"></i>
+                            </button>
+                            <button type="button" class="icon-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 text-center" data-icon="fas fa-cogs">
+                                <i class="fas fa-cogs text-xl"></i>
+                            </button>
+                            <button type="button" class="icon-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 text-center" data-icon="fas fa-heart">
+                                <i class="fas fa-heart text-xl"></i>
+                            </button>
+                            <button type="button" class="icon-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 text-center" data-icon="fas fa-star">
+                                <i class="fas fa-star text-xl"></i>
+                            </button>
+                        </div>
+                        <input type="hidden" id="module-icon" value="fas fa-graduation-cap">
+                    </div>
+
+                    <div class="flex justify-end space-x-3 pt-4">
+                        <button type="button" id="cancel-module" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors">
+                            İptal
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:from-primary/90 hover:to-accent/90 transition-all">
+                            <i class="fas fa-save mr-2"></i>
+                            Modül Ekle
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        let allModules = [];
+        let filteredModules = [];
+        
+        // Color mapping for gradients
+        const colorMap = {
+            'primary': 'from-primary to-accent',
+            'secondary': 'from-secondary to-red-600',
+            'accent': 'from-accent to-green-600',
+            'purple': 'from-purple-500 to-purple-700',
+            'blue': 'from-blue-500 to-blue-700',
+            'pink': 'from-pink-500 to-pink-700',
+            'red': 'from-red-500 to-red-700',
+            'yellow': 'from-yellow-500 to-yellow-700'
+        };
+        
+        // Status badge mapping
+        const statusMap = {
+            'active': { class: 'bg-green-100 text-green-800', text: 'Aktif' },
+            'draft': { class: 'bg-yellow-100 text-yellow-800', text: 'Taslak' },
+            'completed': { class: 'bg-blue-100 text-blue-800', text: 'Tamamlandı' }
+        };
+        
+        // Difficulty mapping
+        const difficultyMap = {
+            'beginner': 'Başlangıç',
+            'intermediate': 'Orta',
+            'advanced': 'İleri'
+        };
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize user info using UserUtils
+            await UserUtils.initializeUserInfo();
+            
+            // Update coordinator-specific display names
+            const userEmail = localStorage.getItem('userEmail');
+            if (userEmail) {
+                const userName = userEmail.split('@')[0];
+                const displayName = 'Koordinatör ' + userName.charAt(0).toUpperCase() + userName.slice(1);
+                
+                // Desktop sidebar güncelle
+                const instructorNameEl = document.getElementById('instructor-name');
+                const instructorEmailEl = document.getElementById('instructor-email');
+                
+                if (instructorNameEl) instructorNameEl.textContent = displayName;
+                if (instructorEmailEl) instructorEmailEl.textContent = '';
+            }
+            
+            await loadModules();
+            setupEventListeners();
+        });
+
+        // Load modules from Firebase
+        async function loadModules() {
+            try {
+                document.getElementById('loading-indicator').style.display = 'block';
+                document.getElementById('modules-container').innerHTML = '';
+                
+                // Try to load modules
+                const modulesResult = await DB.loadModules();
+                allModules = modulesResult.success ? modulesResult.data : [];
+        
+                // If no modules exist, create default ones
+                if (allModules.length === 0) {
+                    console.log('📦 Varsayılan modüller oluşturuluyor...');
+                    await DB.createDefaultModules();
+                    const newModulesResult = await DB.loadModules();
+                    allModules = newModulesResult.success ? newModulesResult.data : [];
+                }
+                
+                filteredModules = [...allModules];
+                
+                // Update stats
+                await updateStats();
+        
+                // Render modules
+                renderModules();
+                
+                document.getElementById('loading-indicator').style.display = 'none';
+                document.getElementById('pagination').style.display = 'flex';
+                
+            } catch (error) {
+                console.error('❌ Modül yükleme hatası:', error);
+                document.getElementById('loading-indicator').innerHTML = `
+                    <div class="text-red-600">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        Modüller yüklenirken hata oluştu: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Update statistics
+        async function updateStats() {
+            try {
+                const statsResult = await DB.getModuleStats();
+                const stats = (statsResult && statsResult.success) ? statsResult.data : {};
+                document.getElementById('total-modules').textContent = stats.totalModules || 0;
+                document.getElementById('active-modules').textContent = stats.activeModules || 0;
+                document.getElementById('draft-modules').textContent = stats.draftModules || 0;
+                document.getElementById('completed-modules').textContent = stats.completedModules || 0;
+            } catch (error) {
+                console.error('❌ İstatistik güncelleme hatası:', error);
+            }
+        }
+
+        // Render modules
+        function renderModules() {
+            const container = document.getElementById('modules-container');
+            
+            if (filteredModules.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <i class="fas fa-graduation-cap text-6xl text-gray-300 mb-4"></i>
+                        <h3 class="text-xl font-medium text-gray-600 mb-2">Henüz modül bulunmuyor</h3>
+                        <p class="text-gray-500 mb-4">İlk modülünüzü oluşturmak için "Yeni Modül" butonuna tıklayın.</p>
+                        <button onclick="showAddModuleModal()" class="px-6 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:from-primary/90 hover:to-accent/90 transition-all">
+                            <i class="fas fa-plus mr-2"></i>
+                            Yeni Modül Ekle
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = filteredModules.map(module => `
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br ${colorMap[module.color] || 'from-primary to-accent'} relative">
+                        <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="${statusMap[module.status]?.class || 'bg-gray-100 text-gray-800'} text-xs px-3 py-1 rounded-full font-medium">
+                                ${statusMap[module.status]?.text || module.status}
+                            </span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-xl font-bold mb-1">${module.title}</h3>
+                            <p class="text-sm opacity-90">Modül ${module.order || module.id}</p>
+                        </div>
+                        <div class="absolute top-4 left-4 text-white">
+                            <i class="${module.icon || 'fas fa-graduation-cap'} text-2xl"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        ${module.rating > 0 ? `
+                        <div class="flex items-center text-yellow-400 mb-3">
+                            <div class="flex mr-2">
+                                ${generateStars(module.rating)}
+                            </div>
+                            <span class="text-gray-600 text-sm">${module.rating} (${module.reviewCount} değerlendirme)</span>
+                        </div>
+                        ` : `
+                        <div class="flex items-center text-gray-400 mb-3">
+                            <div class="flex mr-2">
+                                ${generateStars(0)}
+                            </div>
+                            <span class="text-gray-600 text-sm">Henüz değerlendirme yok</span>
+                        </div>
+                        `}
+                        <p class="text-gray-600 text-sm mb-4">${module.description}</p>
+                        <div class="grid grid-cols-2 gap-4 text-sm text-gray-500 mb-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-users mr-2 text-primary"></i>
+                                <span>${module.enrollmentCount || 0} yönetici</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-clock mr-2 text-secondary"></i>
+                                <span>${module.estimatedDuration} saat</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-video mr-2 text-accent"></i>
+                                <span>${module.videoCount || 0} video</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-chart-line mr-2 text-purple-600"></i>
+                                <span>${module.completionRate || 0}% tamamlama</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between pt-4 border-t border-gray-200">
+                            <button onclick="editModule('${module.id}')" class="text-primary hover:text-primary/80 font-medium">
+                                <i class="fas fa-edit mr-1"></i>
+                                Düzenle
+                            </button>
+                            <button onclick="deleteModule('${module.id}')" class="text-red-600 hover:text-red-800 font-medium">
+                                <i class="fas fa-trash mr-1"></i>
+                                Sil
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Generate star rating HTML
+        function generateStars(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 !== 0;
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+            
+            let stars = '';
+            for (let i = 0; i < fullStars; i++) {
+                stars += '<i class="fas fa-star"></i>';
+            }
+            if (hasHalfStar) {
+                stars += '<i class="fas fa-star-half-alt"></i>';
+            }
+            for (let i = 0; i < emptyStars; i++) {
+                stars += '<i class="far fa-star"></i>';
+            }
+            return stars;
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Mobile menu
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileSidebar = document.getElementById('mobile-sidebar-overlay');
+            const closeMobileMenu = document.getElementById('close-mobile-menu');
+            
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileSidebar.classList.toggle('hidden');
+                    document.body.classList.toggle('overflow-hidden');
+        });
+            }
+            
+            if (closeMobileMenu) {
+                closeMobileMenu.addEventListener('click', function() {
+                    mobileSidebar.classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden');
+                });
+            }
+
+            // Add module button
+            document.getElementById('add-module-btn').addEventListener('click', showAddModuleModal);
+            
+            // Modal close buttons
+            document.getElementById('close-modal').addEventListener('click', hideAddModuleModal);
+            document.getElementById('cancel-module').addEventListener('click', hideAddModuleModal);
+            
+            // Module form submission
+            document.getElementById('module-form').addEventListener('submit', handleModuleSubmit);
+            
+            // Icon selector
+            document.querySelectorAll('.icon-option').forEach(button => {
+                button.addEventListener('click', function() {
+                    document.querySelectorAll('.icon-option').forEach(btn => btn.classList.remove('border-primary', 'bg-primary/10'));
+                    this.classList.add('border-primary', 'bg-primary/10');
+                    document.getElementById('module-icon').value = this.dataset.icon;
+                });
+        });
+        
+            // Search and filter
+            document.getElementById('module-search').addEventListener('input', filterModules);
+            document.getElementById('module-filter').addEventListener('change', filterModules);
+
+            // Logout functionality
+            document.querySelectorAll('a[href="index.html"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('loginTime');
+                    
+                    console.log('Koordinatör çıkışı yapıldı');
+                    window.location.href = 'index.html';
+                });
+            });
+        }
+
+        // Show add module modal
+        function showAddModuleModal() {
+            document.getElementById('add-module-modal').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            
+            // Reset form
+            document.getElementById('module-form').reset();
+            document.getElementById('module-icon').value = 'fas fa-graduation-cap';
+            document.querySelectorAll('.icon-option').forEach(btn => btn.classList.remove('border-primary', 'bg-primary/10'));
+            document.querySelector('.icon-option').classList.add('border-primary', 'bg-primary/10');
+        }
+
+        // Hide add module modal
+        function hideAddModuleModal() {
+            document.getElementById('add-module-modal').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            }
+            
+        // Handle module form submission
+        async function handleModuleSubmit(e) {
+            e.preventDefault();
+            
+            try {
+                const formData = new FormData(e.target);
+                const moduleData = {
+                    title: document.getElementById('module-title').value,
+                    description: document.getElementById('module-description').value,
+                    difficulty: document.getElementById('module-difficulty').value,
+                    estimatedDuration: document.getElementById('module-duration').value,
+                    color: document.getElementById('module-color').value,
+                    status: document.getElementById('module-status').value,
+                    icon: document.getElementById('module-icon').value,
+                    videoCount: 0,
+                    enrollmentCount: 0,
+                    completionRate: 0,
+                    rating: 0,
+                    reviewCount: 0,
+                    order: allModules.length + 1
+                };
+                
+                // Save to Firebase
+                const success = await DB.saveModule(moduleData);
+                
+                if (success) {
+                    hideAddModuleModal();
+                    await loadModules(); // Reload modules
+                    
+                    // Show success message
+                    showNotification('✅ Modül başarıyla eklendi!', 'success');
+                } else {
+                    throw new Error('Modül kaydedilemedi');
+                }
+                
+            } catch (error) {
+                console.error('❌ Modül ekleme hatası:', error);
+                showNotification('❌ Modül eklenirken hata oluştu: ' + error.message, 'error');
+            }
+        }
+
+        // Filter modules
+        function filterModules() {
+            const searchTerm = document.getElementById('module-search').value.toLowerCase();
+            const statusFilter = document.getElementById('module-filter').value;
+            
+            filteredModules = allModules.filter(module => {
+                const matchesSearch = module.title.toLowerCase().includes(searchTerm) || 
+                                    module.description.toLowerCase().includes(searchTerm);
+                const matchesStatus = statusFilter === 'all' || module.status === statusFilter;
+                
+                return matchesSearch && matchesStatus;
+            });
+            
+            renderModules();
+        }
+
+        // Edit module
+        function editModule(moduleId) {
+            // TODO: Implement edit functionality
+            showNotification('🔧 Düzenleme özelliği yakında eklenecek!', 'info');
+        }
+
+        // Delete module
+        async function deleteModule(moduleId) {
+            if (!confirm('Bu modülü silmek istediğinizden emin misiniz?')) {
+                return;
+            }
+            
+            try {
+                const success = await DB.deleteModule(moduleId);
+                
+                if (success) {
+                    await loadModules(); // Reload modules
+                    showNotification('✅ Modül başarıyla silindi!', 'success');
+                } else {
+                    throw new Error('Modül silinemedi');
+                }
+                
+            } catch (error) {
+                console.error('❌ Modül silme hatası:', error);
+                showNotification('❌ Modül silinirken hata oluştu: ' + error.message, 'error');
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg text-white transition-all duration-300 transform translate-x-full`;
+            
+            switch (type) {
+                case 'success':
+                    notification.classList.add('bg-green-500');
+                    break;
+                case 'error':
+                    notification.classList.add('bg-red-500');
+                    break;
+                case 'warning':
+                    notification.classList.add('bg-yellow-500');
+                    break;
+                default:
+                    notification.classList.add('bg-blue-500');
+            }
+            
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <span>${message}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (notification.parentElement) {
+                        notification.remove();
+            }
+                }, 300);
+            }, 5000);
+        }
+    </script>
+</body>
+</html> 

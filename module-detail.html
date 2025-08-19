@@ -1,0 +1,2031 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modül Detayı - CyberEdu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#dc2626',
+                        accent: '#059669',
+                        cyber: '#6366f1',
+                        dark: '#0f172a'
+                    }
+                },
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="bg-dark text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
+        <div class="p-4">
+            <a href="student-dashboard.html" class="font-bold text-xl text-cyber block mb-8 flex items-center">
+                <i class="fas fa-shield-alt text-2xl mr-3"></i>
+                CyberEdu
+            </a>
+            
+            <div class="mb-8">
+                <div class="flex items-center mb-4">
+                    <div>
+                        <p class="font-medium" id="user-name"></p>
+                        <p class="text-sm text-gray-400" id="user-email"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="space-y-1">
+                <a href="student-dashboard.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    <span>Genel Bakış</span>
+                </a>
+                <a href="courses.html" class="flex items-center px-4 py-3 rounded-lg bg-slate-800">
+                    <i class="fas fa-graduation-cap mr-3 text-cyber"></i>
+                    <span>Eğitim Modülleri</span>
+                </a>
+                <a href="progress.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-chart-line mr-3"></i>
+                    <span>İlerlemem</span>
+                </a>
+                <a href="my-notes.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-sticky-note mr-3"></i>
+                    <span>Notlarım</span>
+                </a>
+                <a href="downloads.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-download mr-3"></i>
+                    <span>Kaynaklar</span>
+                </a>
+                <a href="account.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-user-cog mr-3"></i>
+                    <span>Profil Ayarları</span>
+                </a>
+            </nav>
+
+            <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
+                <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    <span>Çıkış Yap</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="md:ml-64 p-4 md:p-8 w-full min-h-screen">
+        <div class="max-w-6xl mx-auto">
+            <!-- Header -->
+            <header class="mb-8">
+                <div class="flex items-center mb-4">
+                    <a href="courses.html" class="text-cyber hover:text-primary mr-4">
+                        <i class="fas fa-arrow-left text-xl"></i>
+                    </a>
+                    <div>
+                        <h1 class="text-3xl font-bold flex items-center" id="module-title">
+                            <i class="fas fa-shield-alt text-cyber mr-3"></i>
+                            Modül 2: Kriptoloji ve Şifreleme
+                        </h1>
+                        <p class="text-gray-600 mt-2" id="module-description">Şifreleme algoritmaları, hash fonksiyonları ve dijital imzalar</p>
+                    </div>
+                </div>
+                
+                <!-- Progress Bar -->
+                <div class="bg-white p-4 rounded-lg shadow-md border border-gray-100">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm font-medium">Modül İlerlemesi</span>
+                        <span class="text-sm font-bold text-cyber" id="module-progress">60%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-cyber to-primary h-2 rounded-full" style="width: 60%" id="progress-bar"></div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Video Content -->
+                <div class="lg:col-span-2">
+                    <!-- Video Player -->
+                    <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-6 border border-gray-100">
+                        <div class="aspect-video bg-black relative" id="video-container">
+                            <video class="w-full h-full" controls id="main-video">
+                                <source src="#" type="video/mp4" id="video-source">
+                                Video yüklenemedi.
+                            </video>
+                            <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white" id="video-placeholder">
+                                <div class="text-center">
+                                    <i class="fas fa-play-circle text-6xl mb-4 opacity-75"></i>
+                                    <p class="text-lg">Video Yükleniyor...</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h2 class="text-xl font-semibold mb-2" id="video-title">Bölüm 3: Asimetrik Şifreleme</h2>
+                            <p class="text-gray-600 mb-4" id="video-description">RSA, ECC ve public key kriptografi</p>
+                            
+                            <!-- Video Controls -->
+                            <div class="flex items-center justify-between border-t pt-4">
+                                <div class="flex items-center space-x-4">
+                                    <button class="text-gray-600 hover:text-cyber" id="prev-video">
+                                        <i class="fas fa-step-backward"></i> Önceki
+                                    </button>
+                                    <button class="text-gray-600 hover:text-cyber" id="next-video">
+                                        Sonraki <i class="fas fa-step-forward"></i>
+                                    </button>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <button class="text-gray-600 hover:text-cyber" id="add-note">
+                                        <i class="far fa-sticky-note mr-1"></i> Not Ekle
+                                    </button>
+                                    <button class="text-gray-600 hover:text-cyber" id="bookmark-video">
+                                        <i class="far fa-bookmark mr-1"></i> İşaretle
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Analysis Section -->
+                    <div id="ai-analysis-section" class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-100" style="display: none;">
+                        <h2 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-brain text-cyber mr-2"></i>
+                            AI Öğrenme Analizi
+                        </h2>
+                        
+                        <div id="wrong-answers-analysis" class="mb-6">
+                            <h3 class="text-lg font-medium mb-3 text-secondary">Yanlış Cevapladığınız Sorular:</h3>
+                            <div id="wrong-answers-list" class="space-y-4">
+                                <!-- Wrong answers will be populated here -->
+                            </div>
+                        </div>
+                        
+                        <div id="ai-recommendations" class="mb-6">
+                            <h3 class="text-lg font-medium mb-3 text-primary">AI Önerileri:</h3>
+                            <div id="ai-recommendations-content" class="bg-blue-50 p-4 rounded-lg">
+                                <!-- AI recommendations will be populated here -->
+                            </div>
+                        </div>
+                        
+                        <div id="similar-questions-section">
+                            <h3 class="text-lg font-medium mb-3 text-accent">Benzer Sorular:</h3>
+                            <div id="similar-questions-container" class="space-y-4">
+                                <!-- Similar questions will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Questions Section -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100" id="questions-section" style="display: none;">
+                        <h3 class="text-xl font-semibold mb-6 flex items-center">
+                            <i class="fas fa-question-circle text-cyber mr-2"></i>
+                            Video Değerlendirme Soruları
+                        </h3>
+                        
+                        <div id="questions-container">
+                            <!-- Questions will be loaded here -->
+                        </div>
+
+                        <div class="mt-6 flex justify-between items-center">
+                            <button class="bg-gray-500 text-white px-4 py-2 rounded-lg" id="show-results" style="display: none;">
+                                Sonuçları Göster
+                            </button>
+                            <div class="flex space-x-3">
+                                <button class="bg-cyber text-white px-6 py-2 rounded-lg" id="submit-answers">
+                                    Cevapları Gönder
+                                </button>
+                                <button class="bg-accent text-white px-6 py-2 rounded-lg" id="continue-module" style="display: none;">
+                                    Modüle Devam Et
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="lg:col-span-1">
+                    <!-- Module Contents -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-100">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center">
+                            <i class="fas fa-list mr-2 text-cyber"></i>
+                            Modül İçeriği
+                        </h3>
+                        
+                        <div class="space-y-3" id="video-list">
+                            <!-- Video list will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- Notes Section -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-100">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center">
+                            <i class="far fa-sticky-note mr-2 text-accent"></i>
+                            Hızlı Notlar
+                        </h3>
+                        
+                        <textarea 
+                            class="w-full p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-cyber focus:border-transparent" 
+                            rows="4" 
+                            placeholder="Notlarınızı buraya yazın..."
+                            id="quick-notes"></textarea>
+                        
+                        <button class="w-full mt-3 bg-accent text-white py-2 rounded-lg hover:bg-green-600" id="save-note">
+                            <i class="fas fa-save mr-2"></i>Notu Kaydet
+                        </button>
+                        
+                        <div class="mt-4 space-y-2" id="saved-notes">
+                            <!-- Saved notes will appear here -->
+                        </div>
+                    </div>
+
+                    <!-- AI Help -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 sidebar-ai-container border border-gray-100">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center">
+                            <i class="fas fa-brain text-cyber mr-2"></i>
+                            AI Öğrenme Analizi
+                        </h3>
+                        
+                        <!-- AI Analysis Content -->
+                        <div id="sidebar-ai-analysis" style="display: none;">
+                            <div id="sidebar-wrong-answers" class="mb-4">
+                                <h4 class="text-sm font-medium mb-2 text-secondary">Yanlış Cevaplar:</h4>
+                                <div id="sidebar-wrong-answers-list" class="space-y-2 text-xs">
+                                    <!-- Wrong answers will be populated here -->
+                                </div>
+                            </div>
+                            
+                            <div id="sidebar-ai-recommendations" class="mb-4">
+                                <h4 class="text-sm font-medium mb-2 text-primary">AI Önerileri:</h4>
+                                <div id="sidebar-ai-recommendations-content" class="bg-blue-50 p-3 rounded text-xs">
+                                    <!-- AI recommendations will be populated here -->
+                                </div>
+                            </div>
+                            
+                            <div id="sidebar-similar-questions">
+                                <h4 class="text-sm font-medium mb-2 text-accent">Benzer Sorular:</h4>
+                                <div id="sidebar-similar-questions-container" class="space-y-2">
+                                    <!-- Similar questions will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Default message when no analysis -->
+                        <div id="sidebar-ai-default" class="text-sm text-gray-600 mb-3">
+                            Yanlış cevapladığınız sorularla ilgili AI analizi ve ek pratik soruları burada bulabilirsiniz.
+                        </div>
+                        
+                        <div id="ai-questions" class="space-y-3 ai-text-content">
+                            <div class="text-center text-gray-500 py-4">
+                                <i class="fas fa-lightbulb text-2xl mb-2"></i>
+                                <p class="text-sm">Henüz ek soru önerisi yok</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <!-- Note Modal -->
+    <div id="note-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg p-6 w-full max-w-md">
+                <h3 class="text-lg font-semibold mb-4">Video Notu Ekle</h3>
+                <textarea 
+                    class="w-full p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-cyber" 
+                    rows="4" 
+                    placeholder="Notunuzu yazın..."
+                    id="video-note-text"></textarea>
+                <div class="flex justify-end space-x-3 mt-4">
+                    <button class="px-4 py-2 text-gray-600 hover:text-gray-800" id="cancel-note">İptal</button>
+                    <button class="bg-cyber text-white px-4 py-2 rounded-lg" id="save-video-note">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase Production DB -->
+    <script src="js/firebase-production.js"></script>
+    <script src="js/user-utils.js"></script>
+    <script src="js/gemini-api.js"></script>
+    <script src="js/main.js"></script>
+    
+    <script>
+        // Initialize user info when page loads
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize user info using UserUtils
+            await UserUtils.initializeUserInfo();
+            
+            loadModuleContent();
+        });
+        
+        // Load module content including coordinator videos
+        async function loadModuleContent() {
+            // Wait for Firebase Production DB to initialize
+            await new Promise(resolve => {
+                const checkDB = () => {
+                    if (window.DB) {
+                        console.log('✅ Firebase Production DB hazır!');
+                        resolve();
+                    } else {
+                        console.log('⚠️ DB henüz hazır değil, bekleniyor...');
+                        setTimeout(checkDB, 100);
+                    }
+                };
+                checkDB();
+            });
+            
+            console.log('🔥 Firebase Production DB sistemi hazır!');
+            
+            // Get module from URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const moduleParam = urlParams.get('module');
+            if (moduleParam) {
+                // Handle both numeric and string module IDs
+                currentModule = isNaN(moduleParam) ? moduleParam : parseInt(moduleParam);
+            }
+            
+            console.log('🎯 Current module from URL:', currentModule, 'Type:', typeof currentModule);
+
+            // Set initial video based on module
+            if (currentModule === 1) {
+                currentVideoId = 1;
+            } else if (currentModule === 3) {
+                currentVideoId = 1;
+            } else if (currentModule === 4) {
+                currentVideoId = 2;
+            } else {
+                currentVideoId = 3; // Default for module 2
+            }
+
+            // Load coordinator videos and merge with module data
+            await loadCoordinatorVideos();
+            
+            loadModule();
+            setupEventListeners();
+            loadSavedNotes();
+        }
+        
+        // Remove old API configuration - now using Gemini API
+        
+        // Module data - Cyber Security Education
+        const moduleData = {
+            1: {
+                title: "Modül 1: Bilgi Güvenliği Temelleri",
+                description: "Bilgi güvenliğinin temel kavramları, CIA üçlüsü ve güvenlik politikaları",
+                videos: [
+                    {
+                        id: 1,
+                        title: "Bölüm 1: Bilgi Güvenliği Nedir?",
+                        description: "Bilgi güvenliğinin tanımı ve temel kavramları",
+                        duration: "25:30",
+                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+                        completed: true
+                    },
+                    {
+                        id: 2,
+                        title: "Bölüm 2: CIA Üçlüsü",
+                        description: "Confidentiality, Integrity, Availability prensipleri",
+                        duration: "32:45",
+                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
+                        completed: true
+                    },
+                    {
+                        id: 3,
+                        title: "Bölüm 3: Güvenlik Politikaları",
+                        description: "Kurumsal güvenlik politikalarının oluşturulması",
+                        duration: "28:20",
+                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+                        completed: true
+                    },
+                    {
+                        id: 4,
+                        title: "Bölüm 4: Risk Yönetimi",
+                        description: "Bilgi güvenliği risk değerlendirme ve yönetimi",
+                        duration: "35:15",
+                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
+                        completed: true
+                    }
+                ],
+                questions: {
+                    1: [
+                        {
+                            id: 1,
+                            question: "CIA üçlüsünde 'C' harfi neyi temsil eder?",
+                            options: [
+                                "Cryptography",
+                                "Confidentiality",
+                                "Compliance",
+                                "Control"
+                            ],
+                            correct: 1,
+                            explanation: "CIA üçlüsünde C harfi Confidentiality (Gizlilik) prensibini temsil eder."
+                        },
+                        {
+                            id: 2,
+                            question: "Bilgi güvenliğinde en önemli varlık hangisidir?",
+                            options: [
+                                "Donanım",
+                                "Yazılım",
+                                "Veri",
+                                "Ağ altyapısı"
+                            ],
+                            correct: 2,
+                            explanation: "Bilgi güvenliğinde en değerli varlık veridir. Diğer tüm bileşenler veriyi korumak için vardır."
+                        },
+                        {
+                            id: 3,
+                            question: "Güvenlik politikalarının temel amacı nedir?",
+                            options: [
+                                "Kullanıcıları kısıtlamak",
+                                "Sistemleri yavaşlatmak",
+                                "Bilgi varlıklarını korumak",
+                                "Maliyeti artırmak"
+                            ],
+                            correct: 2,
+                            explanation: "Güvenlik politikalarının temel amacı organizasyonun bilgi varlıklarını korumaktır."
+                        }
+                    ]
+                }
+            },
+            2: {
+                title: "Modül 2: Kriptoloji ve Şifreleme",
+                description: "Şifreleme algoritmaları, hash fonksiyonları ve dijital imzalar",
+                videos: [
+                    {
+                        id: 1,
+                        title: "Bölüm 1: Kriptoloji Temelleri",
+                        description: "Şifreleme biliminin temel prensipleri",
+                        duration: "35:20",
+                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+                        completed: true
+                    },
+                    {
+                        id: 2,
+                        title: "Bölüm 2: Simetrik Şifreleme",
+                        description: "AES, DES ve diğer simetrik şifreleme algoritmaları",
+                        duration: "28:45",
+                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
+                        completed: true
+                    },
+                    {
+                        id: 3,
+                        title: "Bölüm 3: Asimetrik Şifreleme",
+                        description: "RSA, ECC ve public key kriptografi",
+                        duration: "42:15",
+                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+                        completed: false,
+                        current: true
+                    },
+                    {
+                        id: 4,
+                        title: "Bölüm 4: Hash Fonksiyonları",
+                        description: "SHA, MD5 ve hash algoritmaları",
+                        duration: "38:30",
+                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
+                        completed: false
+                    },
+                    {
+                        id: 5,
+                        title: "Bölüm 5: Dijital İmzalar",
+                        description: "Dijital imza algoritmaları ve PKI",
+                        duration: "45:10",
+                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+                        completed: false
+                    }
+                ],
+                questions: {
+                    1: [
+                        {
+                            id: 1,
+                            question: "Kriptolojinin temel amacı nedir?",
+                            options: [
+                                "Verileri yavaşlatmak",
+                                "Verileri gizlemek ve korumak",
+                                "Sistemleri karmaşıklaştırmak",
+                                "Maliyeti artırmak"
+                            ],
+                            correct: 1,
+                            explanation: "Kriptolojinin temel amacı verileri yetkisiz erişimlerden korumak ve gizliliğini sağlamaktır."
+                        },
+                        {
+                            id: 2,
+                            question: "Simetrik şifreleme sistemlerinde hangi durum geçerlidir?",
+                            options: [
+                                "Şifreleme ve çözme için farklı anahtarlar kullanılır",
+                                "Şifreleme ve çözme için aynı anahtar kullanılır",
+                                "Anahtar kullanılmaz",
+                                "Sadece çözme için anahtar gerekir"
+                            ],
+                            correct: 1,
+                            explanation: "Simetrik şifreleme sistemlerinde şifreleme ve çözme işlemleri için aynı anahtar kullanılır."
+                        }
+                    ],
+                    2: [
+                        {
+                            id: 1,
+                            question: "AES şifreleme algoritmasında anahtar uzunluğu kaç bit olabilir?",
+                            options: [
+                                "Sadece 128 bit",
+                                "128, 192 veya 256 bit",
+                                "Sadece 256 bit",
+                                "64 veya 128 bit"
+                            ],
+                            correct: 1,
+                            explanation: "AES algoritması 128, 192 ve 256 bit anahtar uzunluklarını destekler."
+                        },
+                        {
+                            id: 2,
+                            question: "DES algoritmasının ana güvenlik sorunu nedir?",
+                            options: [
+                                "Çok yavaş çalışması",
+                                "Anahtar uzunluğunun kısa olması (56 bit)",
+                                "Çok karmaşık olması",
+                                "Sadece metinleri şifreleyebilmesi"
+                            ],
+                            correct: 1,
+                            explanation: "DES'in 56 bitlik anahtar uzunluğu günümüz standartlarında güvensiz kabul edilir."
+                        }
+                    ],
+                    3: [
+                        {
+                            id: 1,
+                            question: "RSA algoritmasının güvenliği hangi matematiksel probleme dayanır?",
+                            options: [
+                                "Logaritma problemi",
+                                "Büyük sayıları çarpanlarına ayırma problemi",
+                                "Karekökleme problemi",
+                                "Toplama problemi"
+                            ],
+                            correct: 1,
+                            explanation: "RSA'nın güvenliği büyük sayıları asal çarpanlarına ayırmanın zorluğuna dayanır."
+                        },
+                        {
+                            id: 2,
+                            question: "Public key kriptografide hangi anahtar şifreleme için kullanılır?",
+                            options: [
+                                "Private key",
+                                "Public key",
+                                "Her ikisi de kullanılabilir",
+                                "Hiçbiri"
+                            ],
+                            correct: 1,
+                            explanation: "Public key kriptografide şifreleme için alıcının public key'i kullanılır."
+                        },
+                        {
+                            id: 3,
+                            question: "ECC (Elliptic Curve Cryptography) algoritmasının avantajı nedir?",
+                            options: [
+                                "Daha yavaş çalışması",
+                                "Daha büyük anahtar gerektirmesi",
+                                "Aynı güvenlik seviyesi için daha küçük anahtar kullanması",
+                                "Sadece hash işlemi yapabilmesi"
+                            ],
+                            correct: 2,
+                            explanation: "ECC, RSA'ya göre aynı güvenlik seviyesi için çok daha küçük anahtarlar kullanır."
+                        },
+                        {
+                            id: 4,
+                            question: "Dijital imzanın temel amacı nedir?",
+                            options: [
+                                "Veriyi şifrelemek",
+                                "Kimlik doğrulama ve bütünlük sağlamak",
+                                "Veriyi sıkıştırmak",
+                                "Ağ trafiğini hızlandırmak"
+                            ],
+                            correct: 1,
+                            explanation: "Dijital imza, gönderenin kimliğini doğrulamak ve verinin bütünlüğünü sağlamak için kullanılır."
+                        }
+                    ]
+                }
+            },
+            3: {
+                title: "Modül 3: Ağ Güvenliği",
+                description: "TCP/IP protokolleri, firewall teknolojileri ve ağ saldırı türleri",
+                videos: [
+                    {
+                        id: 1,
+                        title: "Bölüm 1: TCP/IP Güvenliği",
+                        description: "TCP/IP protokol ailesinin güvenlik açıkları",
+                        duration: "30:45",
+                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+                        completed: true
+                    },
+                    {
+                        id: 2,
+                        title: "Bölüm 2: Firewall Teknolojileri",
+                        description: "Ağ güvenlik duvarları ve filtreleme teknikleri",
+                        duration: "45:20",
+                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
+                        completed: true
+                    },
+                    {
+                        id: 3,
+                        title: "Bölüm 3: IDS ve IPS Sistemleri",
+                        description: "Saldırı tespit ve önleme sistemleri",
+                        duration: "35:15",
+                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+                        completed: true
+                    },
+                    {
+                        id: 4,
+                        title: "Bölüm 4: Ağ Saldırı Türleri",
+                        description: "DDoS, Man-in-the-Middle ve diğer ağ saldırıları",
+                        duration: "40:30",
+                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
+                        completed: true
+                    }
+                ],
+                questions: {
+                    1: [
+                        {
+                            id: 1,
+                            question: "TCP protokolünde hangi saldırı türü üç yollu el sıkışmayı hedefler?",
+                            options: [
+                                "DDoS saldırısı",
+                                "SYN Flood saldırısı",
+                                "Man-in-the-Middle",
+                                "SQL Injection"
+                            ],
+                            correct: 1,
+                            explanation: "SYN Flood saldırısı TCP'nin üç yollu el sıkışma mekanizmasını hedef alır."
+                        }
+                    ]
+                }
+            },
+            4: {
+                title: "Modül 4: Web Güvenliği",
+                description: "Web uygulaması güvenlik açıkları ve OWASP Top 10",
+                videos: [
+                    {
+                        id: 1,
+                        title: "Bölüm 1: OWASP Top 10",
+                        description: "Web uygulamalarındaki en yaygın güvenlik açıkları",
+                        duration: "38:20",
+                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+                        completed: true
+                    },
+                    {
+                        id: 2,
+                        title: "Bölüm 2: SQL Injection Saldırıları",
+                        description: "SQL injection saldırıları ve korunma yöntemleri",
+                        duration: "42:15",
+                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
+                        completed: false,
+                        current: true
+                    },
+                    {
+                        id: 3,
+                        title: "Bölüm 3: XSS Saldırıları",
+                        description: "Cross-Site Scripting saldırıları ve önleme teknikleri",
+                        duration: "50:30",
+                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+                        completed: false
+                    },
+                    {
+                        id: 4,
+                        title: "Bölüm 4: Güvenli Kodlama",
+                        description: "Güvenli web uygulaması geliştirme prensipleri",
+                        duration: "35:45",
+                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
+                        completed: false
+                    },
+                    {
+                        id: 5,
+                        title: "Bölüm 5: Web Application Firewall",
+                        description: "WAF teknolojileri ve konfigürasyonu",
+                        duration: "25:20",
+                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+                        completed: false
+                    },
+                    {
+                        id: 6,
+                        title: "Bölüm 6: HTTPS ve SSL/TLS",
+                        description: "Güvenli web iletişimi ve sertifika yönetimi",
+                        duration: "32:40",
+                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
+                        completed: false
+                    }
+                ],
+                questions: {
+                    2: [
+                        {
+                            id: 1,
+                            question: "SQL Injection saldırısından korunmak için en etkili yöntem hangisidir?",
+                            options: [
+                                "Input validation",
+                                "Prepared statements kullanmak",
+                                "Firewall kurmak",
+                                "Şifreleme kullanmak"
+                            ],
+                            correct: 1,
+                            explanation: "Prepared statements kullanmak SQL Injection saldırılarına karşı en etkili koruma yöntemidir."
+                        }
+                    ]
+                }
+            }
+        };
+
+        let currentModule = 2;
+        let currentVideoId = 3;
+        let userAnswers = {};
+        let wrongAnswers = [];
+
+        async function loadCoordinatorVideos() {
+            console.log('=== LOADING COORDINATOR VIDEOS FROM FIREBASE ===');
+            console.log('Current Module:', currentModule);
+            
+            try {
+                // Use Firebase database system to load videos
+                const coordinatorVideosResult = await window.DB.load('coordinatorVideos');
+                const coordinatorVideos = (coordinatorVideosResult && coordinatorVideosResult.success) ? coordinatorVideosResult.data : [];
+                
+                const studentVideosResult = await window.DB.load('studentVideos');
+                const studentVideos = (studentVideosResult && studentVideosResult.success) ? studentVideosResult.data : [];
+                
+                console.log('Coordinator videos from Firebase:', coordinatorVideos);
+                console.log('Student videos from Firebase:', studentVideos);
+                
+                // Only use coordinatorVideos and studentVideos (avoid moduleVideos to prevent index issues)
+                const allCoordinatorVideos = [...coordinatorVideos, ...studentVideos]
+                    .filter(video => {
+                        // Handle both string and numeric comparisons
+                        const videoModuleId = String(video.moduleId);
+                        const currentModuleId = String(currentModule);
+                        console.log(`🔍 Comparing video module ${videoModuleId} with current module ${currentModuleId}`);
+                        return videoModuleId === currentModuleId;
+                    })
+                    .filter((video, index, self) => 
+                        // Remove duplicates based on ID
+                        index === self.findIndex(v => v.id === video.id)
+                    );
+                
+                console.log('Filtered coordinator videos for module', currentModule, ':', allCoordinatorVideos);
+                
+                // Add coordinator videos to moduleData
+                if (allCoordinatorVideos.length > 0) {
+                    if (!moduleData[currentModule]) {
+                        moduleData[currentModule] = {
+                            title: `Modül ${currentModule}`,
+                            description: `Modül ${currentModule} içeriği`,
+                            videos: [],
+                            questions: {}
+                        };
+                    }
+                    
+                    // Add coordinator videos to the module
+                    allCoordinatorVideos.forEach(video => {
+                        const videoData = {
+                            id: video.id,
+                            title: video.title,
+                            description: video.description,
+                            duration: video.duration + ' dk',
+                            videoUrl: video.youtubeUrl,
+                            youtubeVideoId: video.youtubeVideoId,
+                            completed: video.progress >= 100,
+                            current: false,
+                            isCoordinatorVideo: true
+                        };
+                        
+                        // Add video to module videos
+                        moduleData[currentModule].videos.push(videoData);
+                        
+                        // Add questions to moduleData
+                        if (video.questions && video.questions.length > 0) {
+                            const questionData = video.questions.map((q, qIndex) => ({
+                                id: qIndex + 1,
+                                question: q.question,
+                                options: q.options,
+                                correct: q.correct,
+                                explanation: q.explanation || 'Açıklama mevcut değil.'
+                            }));
+                            
+                            // Store with multiple key formats
+                            moduleData[currentModule].questions[video.id] = questionData;
+                            moduleData[currentModule].questions[String(video.id)] = questionData;
+                            if (!isNaN(video.id)) {
+                                moduleData[currentModule].questions[parseInt(video.id)] = questionData;
+                            }
+                        }
+                    });
+                }
+                
+                console.log('=== END LOADING COORDINATOR VIDEOS FROM FIREBASE ===');
+                return allCoordinatorVideos;
+            } catch (error) {
+                console.error('Error loading coordinator videos:', error);
+                return [];
+            }
+        }
+
+        function loadModule() {
+            const module = moduleData[currentModule];
+            if (!module) return;
+
+            // Update header
+            document.getElementById('module-title').innerHTML = `
+                <i class="fas fa-shield-alt text-cyber mr-3"></i>
+                ${module.title}
+            `;
+            document.getElementById('module-description').textContent = module.description;
+
+            // Load video list
+            loadVideoList(module.videos);
+            
+            // Load current video
+            loadCurrentVideo();
+        }
+
+        function loadVideoList(videos) {
+            const videoList = document.getElementById('video-list');
+            videoList.innerHTML = '';
+
+            videos.forEach(video => {
+                const videoItem = document.createElement('div');
+                videoItem.className = `flex items-center justify-between p-3 rounded-lg border ${
+                    video.current ? 'bg-blue-50 border-blue-200' : 'hover:bg-gray-50 border-gray-200'
+                } cursor-pointer`;
+                
+                // Special styling for coordinator videos
+                const coordinatorBadge = video.isCoordinatorVideo ? 
+                    '<span class="ml-2 bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">👨‍🏫 Koordinatör</span>' : '';
+                
+                const videoIcon = video.isCoordinatorVideo ? 
+                    '<i class="fab fa-youtube text-red-500 mr-2"></i>' : '';
+                
+                videoItem.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full ${
+                            video.completed ? 'bg-green-500' : 
+                            video.current ? 'bg-blue-500' : 'bg-gray-300'
+                        } flex items-center justify-center mr-3">
+                            <i class="fas ${
+                                video.completed ? 'fa-check' : 
+                                video.current ? 'fa-play' : 'fa-play'
+                            } text-white text-sm"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center">
+                                ${videoIcon}
+                                <p class="font-medium text-sm">${video.title}</p>
+                                ${coordinatorBadge}
+                            </div>
+                            <p class="text-xs text-gray-600">${video.duration}</p>
+                        </div>
+                    </div>
+                `;
+                
+                videoItem.addEventListener('click', () => {
+                    // Allow access to all coordinator videos
+                    if (video.isCoordinatorVideo || video.completed || video.current) {
+                        loadVideo(video.id);
+                    }
+                });
+
+                videoList.appendChild(videoItem);
+            });
+        }
+
+        function loadCurrentVideo() {
+            const module = moduleData[currentModule];
+            const currentVideo = module.videos.find(v => String(v.id) === String(currentVideoId));
+            
+            console.log('=== LOAD CURRENT VIDEO DEBUG ===');
+            console.log('Looking for video ID:', currentVideoId, 'Type:', typeof currentVideoId);
+            console.log('Available videos:', module.videos);
+            console.log('Found video:', currentVideo);
+            
+            if (currentVideo) {
+                document.getElementById('video-title').textContent = currentVideo.title;
+                document.getElementById('video-description').textContent = currentVideo.description;
+                
+                // Check if this is a coordinator video with YouTube URL
+                if (currentVideo.isCoordinatorVideo && currentVideo.youtubeVideoId) {
+                    // Hide placeholder and show YouTube iframe
+                    const videoPlaceholder = document.getElementById('video-placeholder');
+                    if (videoPlaceholder) {
+                        videoPlaceholder.style.display = 'none';
+                    }
+                    
+                    // Get the video container and replace content with YouTube iframe
+                    const videoContainer = document.getElementById('video-container');
+                    if (videoContainer) {
+                        videoContainer.innerHTML = `
+                            <iframe 
+                                width="100%" 
+                                height="100%" 
+                                src="https://www.youtube.com/embed/${currentVideo.youtubeVideoId}?autoplay=0&rel=0&modestbranding=1" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen
+                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                            </iframe>
+                        `;
+                    }
+                    
+                    console.log('Loaded YouTube video:', currentVideo.youtubeVideoId);
+                } else {
+                    // Show placeholder for regular videos
+                    const videoPlaceholder = document.getElementById('video-placeholder');
+                    const mainVideo = document.getElementById('main-video');
+                    
+                    if (videoPlaceholder) {
+                        videoPlaceholder.style.display = 'flex';
+                    }
+                    if (mainVideo) {
+                        mainVideo.style.display = 'block';
+                    }
+                    
+                    console.log('Loading default video:', currentVideo.title);
+                }
+                
+                // Load questions for the current video
+                setTimeout(() => {
+                    console.log('Loading questions for video ID:', currentVideoId);
+                    loadQuestions();
+                }, 500);
+            } else {
+                console.log('Video not found for ID:', currentVideoId);
+            }
+            console.log('=== END LOAD CURRENT VIDEO DEBUG ===');
+        }
+
+        function loadVideo(videoId) {
+            console.log('=== LOAD VIDEO DEBUG ===');
+            console.log('Setting current video ID to:', videoId, 'Type:', typeof videoId);
+            currentVideoId = videoId;
+            
+            // Update video list highlighting
+            const module = moduleData[currentModule];
+            module.videos.forEach(video => {
+                video.current = String(video.id) === String(videoId);
+            });
+            
+            // Reload video list to update highlighting
+            loadVideoList(module.videos);
+            
+            loadCurrentVideo();
+            console.log('=== END LOAD VIDEO DEBUG ===');
+        }
+
+        function loadQuestions() {
+            console.log('=== LOAD QUESTIONS DEBUG ===');
+            console.log('Current module:', currentModule);
+            console.log('Current video ID:', currentVideoId, 'Type:', typeof currentVideoId);
+            console.log('Module data questions:', moduleData[currentModule].questions);
+            
+            // Try both string and number versions of the video ID
+            let questions = moduleData[currentModule].questions[currentVideoId];
+            if (!questions) {
+                // Try string version if number didn't work
+                questions = moduleData[currentModule].questions[String(currentVideoId)];
+            }
+            if (!questions) {
+                // Try number version if string didn't work
+                questions = moduleData[currentModule].questions[parseInt(currentVideoId)];
+            }
+            
+            console.log('Found questions for video ID', currentVideoId, ':', questions);
+            
+            if (!questions) {
+                console.log('No questions found for video ID:', currentVideoId);
+                console.log('Available question keys:', Object.keys(moduleData[currentModule].questions));
+                
+                // Hide questions section if no questions found
+                const questionsSection = document.getElementById('questions-section');
+                if (questionsSection) {
+                    questionsSection.style.display = 'none';
+                }
+                console.log('=== END LOAD QUESTIONS DEBUG ===');
+                return;
+            }
+
+            const questionsContainer = document.getElementById('questions-container');
+            questionsContainer.innerHTML = '';
+
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'mb-6 p-4 border border-gray-200 rounded-lg';
+                
+                questionDiv.innerHTML = `
+                    <h4 class="font-semibold mb-3">${index + 1}. ${question.question}</h4>
+                    <div class="space-y-2">
+                        ${question.options.map((option, optIndex) => `
+                            <label class="flex items-center p-2 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="radio" name="question_${question.id}" value="${optIndex}" 
+                                       class="mr-3 text-primary focus:ring-primary">
+                                <span>${option}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+
+                questionsContainer.appendChild(questionDiv);
+            });
+
+            document.getElementById('questions-section').style.display = 'block';
+            console.log('Questions loaded successfully, count:', questions.length);
+            console.log('=== END LOAD QUESTIONS DEBUG ===');
+        }
+
+        async function generateAIQuestions() {
+            const aiQuestionsContainer = document.getElementById('ai-questions');
+            aiQuestionsContainer.innerHTML = '<div class="text-center p-6"><i class="fas fa-robot fa-spin text-3xl text-primary mb-3"></i><p class="text-lg font-medium">🤖 AI Analiz Yapıyor...</p><p class="text-sm text-gray-600">Yanlış cevaplarınız analiz ediliyor ve kişiselleştirilmiş öneriler hazırlanıyor...</p></div>';
+
+            let aiAnalysisResults = [];
+
+            for (const wrongAnswer of wrongAnswers) {
+                // AI ile detaylı analiz yap
+                const analysis = await analyzeWrongAnswer(wrongAnswer);
+                if (analysis) {
+                    aiAnalysisResults.push(analysis);
+                }
+            }
+
+            // Sonuçları göster
+            displayAIAnalysis(aiAnalysisResults);
+        }
+
+        async function analyzeWrongAnswer(wrongAnswer) {
+            try {
+                console.log('🤖 Gemini AI ile yanlış cevap analizi yapılıyor...');
+                
+                const context = `Sen bir çevik liderlik ve afet yönetimi uzmanısın. Okul müdürü eğitim programında yanlış cevaplanan sorulara dayanarak analiz ve öneriler yapıyorsun. Türkçe yanıt ver.`;
+                
+                const prompt = `Bu yanlış cevaplanan soruyu analiz et:
+
+SORU: ${wrongAnswer.question}
+KULLANICININ YANLIŞ CEVABI: ${wrongAnswer.userAnswer}
+DOĞRU CEVAP: ${wrongAnswer.correctAnswer}
+AÇIKLAMA: ${wrongAnswer.explanation}
+
+Lütfen şu analizi yap:
+1. Kullanıcının hangi konuda eksikliği olduğunu tespit et
+2. Bu eksikliği gidermek için hangi modül ve video bölümüne geri dönmesi gerektiğini öner
+3. Konuya dair 2 adet yeni pratik soru üret
+4. Kısa bir çalışma planı öner
+
+JSON formatında döndür:
+{
+    "eksikKonu": "eksik olan konu",
+    "onerilenModul": "Modül X",
+    "onerilenVideo": "Bölüm Y: Video Başlığı",
+    "aciklama": "Neden bu videoya dönmesi gerektiğinin açıklaması",
+    "yeniSorular": [
+        {
+            "soru": "pratik soru 1",
+            "secenekler": ["A", "B", "C", "D"],
+            "dogruCevap": 0,
+            "aciklama": "açıklama"
+        },
+        {
+            "soru": "pratik soru 2", 
+            "secenekler": ["A", "B", "C", "D"],
+            "dogruCevap": 1,
+            "aciklama": "açıklama"
+        }
+    ],
+    "calismaPlani": "kısa çalışma önerisi"
+}`;
+
+                const result = await window.GeminiAPI.generateContent(prompt, context);
+                
+                if (result.success) {
+                    console.log('✅ Gemini AI analiz yanıtı alındı:', result.text);
+                    
+                    // Try to parse JSON from response
+                    const jsonMatch = result.text.match(/\{[\s\S]*\}/);
+                    if (jsonMatch) {
+                        const analysis = JSON.parse(jsonMatch[0]);
+                        console.log('✅ Analiz başarıyla parse edildi:', analysis);
+                        return analysis;
+                    } else {
+                        console.warn('⚠️ JSON formatı bulunamadı, fallback analiz kullanılıyor');
+                        return generateFallbackAnalysis(wrongAnswer);
+                    }
+                } else {
+                    console.warn('⚠️ Gemini API hatası:', result.error);
+                    return generateFallbackAnalysis(wrongAnswer);
+                }
+                
+            } catch (error) {
+                console.error('❌ AI analiz hatası:', error);
+                return generateFallbackAnalysis(wrongAnswer);
+            }
+        }
+        
+        // Generate fallback analysis when AI fails
+        function generateFallbackAnalysis(wrongAnswer) {
+            return {
+                eksikKonu: "Kriz Yönetimi Temelleri",
+                onerilenModul: "Modül 2",
+                onerilenVideo: "Bölüm 1: Kriz Liderliği Temelleri",
+                aciklama: "Bu konudaki temel prensipleri tekrar gözden geçirmeniz önerilir.",
+                yeniSorular: [
+                    {
+                        soru: "Bu konu hakkında daha fazla çalışma yapmanız gerekiyor. Hangi yaklaşım daha etkili olur?",
+                        secenekler: ["Sadece okumak", "Video izleyip not almak", "Başkalarından yardım istemek", "Konuyu atlamak"],
+                        dogruCevap: 1,
+                        aciklama: "Aktif öğrenme yöntemleri daha etkilidir."
+                    },
+                    {
+                        soru: "Yanlış cevapladığınız konularda hangi strateji önerilir?",
+                        secenekler: ["Konuyu görmezden gelmek", "Tekrar çalışıp pratik yapmak", "Başka konuya geçmek", "Sadece ezberlemek"],
+                        dogruCevap: 1,
+                        aciklama: "Tekrar çalışma ve pratik yapma en etkili öğrenme yöntemidir."
+                    }
+                ],
+                calismaPlani: "İlgili videoyu tekrar izleyin ve not alın."
+            };
+        }
+
+        function displayAIAnalysis(analysisResults) {
+            const aiQuestionsContainer = document.getElementById('ai-questions');
+            aiQuestionsContainer.innerHTML = '';
+
+            if (analysisResults.length === 0) {
+                aiQuestionsContainer.innerHTML = `
+                    <div class="text-center text-gray-500 p-6">
+                        <i class="fas fa-exclamation-triangle text-2xl mb-3"></i>
+                        <p>AI analizi tamamlanamadı. Lütfen daha sonra tekrar deneyin.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Başlık ekle
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'bg-gradient-to-r from-purple-500 to-blue-500 text-white p-4 rounded-t-lg';
+            headerDiv.innerHTML = `
+                <h4 class="text-lg font-bold flex items-center">
+                    <i class="fas fa-robot mr-2"></i>
+                    🤖 AI Kişiselleştirilmiş Öneriler
+                </h4>
+                <p class="text-sm opacity-90 mt-1">Yanlış cevaplarınız analiz edildi ve size özel öneriler hazırlandı</p>
+            `;
+            aiQuestionsContainer.appendChild(headerDiv);
+
+            // Her analiz için kart oluştur
+            analysisResults.forEach((analysis, index) => {
+                const analysisCard = document.createElement('div');
+                analysisCard.className = 'bg-white border-l-4 border-purple-500 p-6 mb-4';
+                
+                analysisCard.innerHTML = `
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="ai-text-content">
+                            <h5 class="font-bold text-lg text-purple-700">📚 Eksik Konu: ${analysis.eksikKonu}</h5>
+                            <p class="text-sm text-gray-600 mt-1">${analysis.aciklama}</p>
+                        </div>
+                        <span class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Analiz ${index + 1}</span>
+                    </div>
+
+                    <div class="ai-content-grid">
+                        <!-- Önerilen Video -->
+                        <div class="bg-blue-50 p-4 rounded-lg ai-text-content">
+                            <h6 class="font-semibold text-blue-800 mb-2 flex items-center">
+                                <i class="fas fa-video mr-2"></i>
+                                Tekrar İzlemeniz Önerilen Video
+                            </h6>
+                            <div class="bg-white p-3 rounded border border-blue-200">
+                                <p class="font-medium">${analysis.onerilenModul}</p>
+                                <p class="text-sm text-gray-600">${analysis.onerilenVideo}</p>
+                                <div class="ai-button-container">
+                                    <a href="module-detail.html?module=${analysis.onerilenModul.match(/\d+/)[0]}&video=1" 
+                                       class="ai-button ai-button-primary">
+                                        <i class="fas fa-play mr-1"></i> Videoyu İzle
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Çalışma Planı -->
+                        <div class="bg-green-50 p-4 rounded-lg ai-text-content">
+                            <h6 class="font-semibold text-green-800 mb-2 flex items-center">
+                                <i class="fas fa-clipboard-list mr-2"></i>
+                                Önerilen Çalışma Planı
+                            </h6>
+                            <div class="bg-white p-3 rounded border border-green-200">
+                                <p class="text-sm">${analysis.calismaPlani}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Yeni Sorular -->
+                    <div class="mt-6 ai-text-content">
+                        <h6 class="font-semibold text-orange-800 mb-3 flex items-center">
+                            <i class="fas fa-question-circle mr-2"></i>
+                            Konu Pekiştirme Soruları
+                        </h6>
+                        <div class="space-y-4">
+                            ${analysis.yeniSorular.map((soru, qIndex) => `
+                                <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 ai-question-card">
+                                    <p class="font-medium mb-3">${qIndex + 1}. ${soru.soru}</p>
+                                    <div class="ai-options-grid">
+                                        ${soru.secenekler.map((secenek, sIndex) => `
+                                            <div class="ai-option-item ${sIndex === soru.dogruCevap ? 'bg-green-100 border border-green-300' : 'bg-white border border-gray-200'}">
+                                                <span class="ai-option-icon ${sIndex === soru.dogruCevap ? 'bg-green-500 text-white' : 'bg-gray-300'}">
+                                                    ${String.fromCharCode(65 + sIndex)}
+                                                </span>
+                                                <span class="ai-option-text">${secenek}</span>
+                                                ${sIndex === soru.dogruCevap ? '<i class="fas fa-check text-green-500 ai-option-check"></i>' : ''}
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                    <div class="bg-blue-50 border-l-4 border-blue-400 p-3 mt-3">
+                                        <p class="text-xs text-blue-800"><strong>Açıklama:</strong> ${soru.aciklama}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+
+                aiQuestionsContainer.appendChild(analysisCard);
+            });
+
+            // Genel öneriler ekle
+            const generalTipsDiv = document.createElement('div');
+            generalTipsDiv.className = 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white p-4 rounded-b-lg';
+            generalTipsDiv.innerHTML = `
+                <h5 class="font-bold mb-2 flex items-center">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    💡 Genel Öneriler
+                </h5>
+                <ul class="text-sm space-y-1 opacity-90">
+                    <li>• Önerilen videoları aktif bir şekilde izleyin ve not alın</li>
+                    <li>• Konuları günlük hayattaki örneklerle ilişkilendirin</li>
+                    <li>• Diğer okul müdürleriyle deneyimlerinizi paylaşın</li>
+                    <li>• Düzenli olarak konu tekrarı yapın</li>
+                </ul>
+            `;
+            aiQuestionsContainer.appendChild(generalTipsDiv);
+        }
+
+        function setupEventListeners() {
+            // Submit answers
+            document.getElementById('submit-answers').addEventListener('click', async function() {
+                const questions = moduleData[currentModule].questions[currentVideoId];
+                if (!questions) return;
+
+                let correctCount = 0;
+                wrongAnswers = [];
+
+                for (const question of questions) {
+                    const selectedOption = document.querySelector(`input[name="question_${question.id}"]:checked`);
+                    if (selectedOption) {
+                        const selectedValue = parseInt(selectedOption.value);
+                        userAnswers[question.id] = selectedValue;
+
+                        if (selectedValue === question.correct) {
+                            correctCount++;
+                        } else {
+                            wrongAnswers.push({
+                                question: question.question,
+                                userAnswer: question.options[selectedValue],
+                                correctAnswer: question.options[question.correct],
+                                explanation: question.explanation
+                            });
+                        }
+                    }
+                }
+
+                // Show results
+                showResults(correctCount, questions.length);
+
+                // Only generate AI analysis if there are wrong answers
+                if (wrongAnswers.length > 0) {
+                    console.log('Yanlış cevaplar var, AI analizi başlatılıyor...');
+                    await analyzeWrongAnswers();
+                } else {
+                    console.log('Tüm sorular doğru cevaplandı, AI analizi gerekmiyor.');
+                }
+            });
+
+            // Notes functionality
+            document.getElementById('save-note').addEventListener('click', saveQuickNote);
+            document.getElementById('add-note').addEventListener('click', openNoteModal);
+            document.getElementById('save-video-note').addEventListener('click', saveVideoNote);
+            document.getElementById('cancel-note').addEventListener('click', closeNoteModal);
+
+            // Video controls
+            document.getElementById('next-video').addEventListener('click', () => {
+                const nextVideo = moduleData[currentModule].videos.find(v => v.id === currentVideoId + 1);
+                if (nextVideo) {
+                    loadVideo(nextVideo.id);
+                }
+            });
+
+            document.getElementById('prev-video').addEventListener('click', () => {
+                const prevVideo = moduleData[currentModule].videos.find(v => v.id === currentVideoId - 1);
+                if (prevVideo) {
+                    loadVideo(prevVideo.id);
+                }
+            });
+        }
+
+        function showResults(correctCount, totalCount) {
+            const percentage = Math.round((correctCount / totalCount) * 100);
+            
+            const resultDiv = document.createElement('div');
+            
+            if (percentage === 100) {
+                // All answers correct
+                resultDiv.className = 'mt-6 p-4 rounded-lg bg-green-50 border border-green-200';
+                resultDiv.innerHTML = `
+                    <h4 class="font-semibold mb-2 text-green-800 flex items-center">
+                        <i class="fas fa-trophy mr-2"></i>
+                        Mükemmel Performans!
+                    </h4>
+                    <p class="text-lg text-green-700">Tüm soruları doğru cevapladınız! (%${percentage})</p>
+                    <p class="text-sm text-green-600 mt-2">Tebrikler! Bu konuda çok başarılısınız.</p>
+                `;
+            } else {
+                // Some answers wrong
+                resultDiv.className = 'mt-6 p-4 rounded-lg bg-blue-50 border border-blue-200';
+                resultDiv.innerHTML = `
+                    <h4 class="font-semibold mb-2 text-blue-800">Sonuçlar</h4>
+                    <p class="text-lg text-blue-700">Doğru Cevap: ${correctCount}/${totalCount} (%${percentage})</p>
+                    ${wrongAnswers.length > 0 ? '<p class="text-sm text-orange-600 mt-2"><i class="fas fa-brain mr-1"></i>Yanlış cevaplarınız için AI analizi hazırlanıyor...</p>' : ''}
+                `;
+            }
+
+            document.getElementById('questions-container').appendChild(resultDiv);
+            document.getElementById('submit-answers').style.display = 'none';
+            document.getElementById('continue-module').style.display = 'inline-block';
+        }
+
+        // Notes functionality
+        function saveQuickNote() {
+            const noteText = document.getElementById('quick-notes').value.trim();
+            if (!noteText) return;
+
+            const note = {
+                module_id: currentModule,
+                video_id: currentVideoId,
+                title: `Video ${currentVideoId} Notu`,
+                content: noteText,
+                video_time: 0
+            };
+
+            saveNoteToDatabase(note);
+            document.getElementById('quick-notes').value = '';
+        }
+
+        async function saveNoteToDatabase(note) {
+            try {
+                console.log('💾 Not kaydediliyor...');
+                
+                const userEmail = localStorage.getItem('userEmail');
+                if (!userEmail) {
+                    throw new Error('Kullanıcı e-postası bulunamadı');
+                }
+                
+                // Wait for DB to be ready
+                if (!window.DB) {
+                    console.warn('⚠️ DB henüz hazır değil, bekleniyor...');
+                    await new Promise(resolve => {
+                        const checkDB = () => {
+                            if (window.DB) {
+                                resolve();
+                            } else {
+                                setTimeout(checkDB, 100);
+                            }
+                        };
+                        checkDB();
+                    });
+                }
+                
+                // Yeni not için ID oluştur
+                const noteId = Date.now().toString() + Math.random().toString(36).substr(2, 9);
+                const newNote = {
+                    id: noteId,
+                    userEmail: userEmail,
+                    moduleId: note.module_id,
+                    videoId: note.video_id,
+                    moduleName: getModuleName(note.module_id),
+                    title: note.title,
+                    content: note.content,
+                    videoTime: note.video_time || 0,
+                    timestamp: new Date().toISOString(),
+                    createdAt: new Date().toISOString()
+                };
+                
+                // Firebase'e kaydet
+                const success = await DB.save('userNotes', newNote, noteId);
+                
+                if (success) {
+                    showNotification('Not başarıyla kaydedildi', 'success');
+                    loadSavedNotes(); // Notları yenile
+                    console.log('✅ Not başarıyla kaydedildi');
+                } else {
+                    throw new Error('Not kaydedilemedi');
+                }
+                
+            } catch (error) {
+                console.error('❌ Not kaydedilirken hata:', error);
+                showNotification('Not kaydedilirken hata oluştu: ' + error.message, 'error');
+            }
+        }
+        
+        function getModuleName(moduleId) {
+            const moduleNames = {
+                1: 'Temel Kavramlar',
+                2: 'Risk Değerlendirme',
+                3: 'Kriz Yönetimi',
+                4: 'İletişim',
+                5: 'Liderlik',
+                6: 'Uygulama',
+                7: 'İyileşme',
+                8: 'Mastery'
+            };
+            return moduleNames[moduleId] || 'Bilinmeyen Modül';
+        }
+
+        async function loadSavedNotes() {
+            try {
+                console.log('📝 Kaydedilmiş notlar yükleniyor...');
+                
+                const userEmail = localStorage.getItem('userEmail');
+                if (!userEmail) {
+                    console.warn('⚠️ Kullanıcı e-postası bulunamadı');
+                    return;
+                }
+                
+                // Wait for DB to be ready
+                if (!window.DB) {
+                    console.warn('⚠️ DB henüz hazır değil, bekleniyor...');
+                    await new Promise(resolve => {
+                        const checkDB = () => {
+                            if (window.DB) {
+                                resolve();
+                            } else {
+                                setTimeout(checkDB, 100);
+                            }
+                        };
+                        checkDB();
+                    });
+                }
+                
+                // Firebase'den notları al
+                let notesData = [];
+                try {
+                    const notesResult = await DB.load('userNotes');
+                    notesData = (notesResult && notesResult.success) ? notesResult.data : [];
+                    console.log('✅ Notes data yüklendi:', notesData.length);
+                } catch (error) {
+                    console.warn('⚠️ Notes data yüklenemedi:', error);
+                    notesData = [];
+                }
+                
+                // Ensure data is array
+                if (!Array.isArray(notesData)) {
+                    console.warn('⚠️ Notes data array değil, düzeltiliyor');
+                    notesData = [];
+                }
+                
+                // Kullanıcının ve mevcut modülün notlarını filtrele
+                const moduleNotes = notesData.filter(note => 
+                    note.userEmail === userEmail && 
+                    (note.moduleId === currentModule || note.moduleId === currentModule.toString())
+                );
+
+                const savedNotesContainer = document.getElementById('saved-notes');
+                if (savedNotesContainer) {
+                    savedNotesContainer.innerHTML = '';
+
+                    moduleNotes.forEach(note => {
+                        displaySavedNote(note);
+                    });
+                }
+                
+                console.log('✅ Kaydedilmiş notlar yüklendi:', moduleNotes.length);
+
+            } catch (error) {
+                console.error('❌ Notlar yüklenirken hata:', error);
+                showNotification('Notlar yüklenirken hata oluştu: ' + error.message, 'error');
+            }
+        }
+
+        function displaySavedNote(note) {
+            const noteDiv = document.createElement('div');
+            noteDiv.className = 'bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm';
+            noteDiv.innerHTML = `
+                <div class="flex justify-between items-start mb-1">
+                    <span class="text-xs text-gray-500">${formatDate(note.timestamp)}</span>
+                    <button class="text-red-500 hover:text-red-700 text-xs" onclick="deleteNote(${note.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <p>${note.content}</p>
+                ${note.videoTime ? `<span class="text-xs text-gray-400 mt-1 block">Zaman: ${Math.floor(note.videoTime / 60)}:${(note.videoTime % 60).toString().padStart(2, '0')}</span>` : ''}
+            `;
+            document.getElementById('saved-notes').appendChild(noteDiv);
+        }
+
+        async function deleteNote(noteId) {
+            if (!confirm('Bu notu silmek istediğinizden emin misiniz?')) {
+                return;
+            }
+
+            try {
+                console.log('🗑️ Not siliniyor:', noteId);
+                
+                // Firebase'den notu sil
+                const success = await DB.delete('userNotes', noteId);
+                
+                if (success) {
+                    showNotification('Not başarıyla silindi', 'success');
+                    loadSavedNotes(); // Notları yenile
+                    console.log('✅ Not başarıyla silindi');
+                } else {
+                    throw new Error('Not silinemedi');
+                }
+                
+            } catch (error) {
+                console.error('❌ Not silinirken hata:', error);
+                showNotification('Not silinirken hata oluştu: ' + error.message, 'error');
+            }
+        }
+
+        function openNoteModal() {
+            document.getElementById('note-modal').classList.remove('hidden');
+        }
+
+        function closeNoteModal() {
+            document.getElementById('note-modal').classList.add('hidden');
+            document.getElementById('video-note-text').value = '';
+        }
+
+        async function saveVideoNote() {
+            const noteText = document.getElementById('video-note-text').value.trim();
+            if (!noteText) return;
+
+            const videoTime = document.getElementById('main-video').currentTime || 0;
+            const note = {
+                module_id: currentModule,
+                video_id: currentVideoId,
+                title: `Video ${currentVideoId} - ${Math.floor(videoTime / 60)}:${(videoTime % 60).toString().padStart(2, '0')}`,
+                content: noteText,
+                video_time: Math.floor(videoTime)
+            };
+
+            await saveNoteToDatabase(note);
+            closeNoteModal();
+        }
+
+        // Tarihi formatla
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) {
+                return 'Bugün ' + date.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+            } else if (diffDays === 1) {
+                return 'Dün ' + date.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+            } else if (diffDays < 7) {
+                return diffDays + ' gün önce';
+            } else {
+                return date.toLocaleDateString('tr-TR');
+            }
+        }
+
+        // Bildirim göster
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg text-white ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 'bg-blue-500'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // AI Analysis Functions - Updated for Sidebar
+        async function analyzeWrongAnswers() {
+            console.log('=== AI ANALYSIS STARTED (SIDEBAR) ===');
+            console.log('Wrong answers:', wrongAnswers);
+            
+            if (wrongAnswers.length === 0) {
+                console.log('No wrong answers to analyze');
+                return;
+            }
+            
+            // Hide main AI analysis section and show sidebar
+            document.getElementById('ai-analysis-section').style.display = 'none';
+            document.getElementById('sidebar-ai-analysis').style.display = 'block';
+            document.getElementById('sidebar-ai-default').style.display = 'none';
+            
+            // Display wrong answers in sidebar
+            displayWrongAnswersSidebar();
+            
+            // Generate AI recommendations in sidebar
+            generateAIRecommendationsSidebar();
+            
+            // Generate similar questions in sidebar
+            await generateSimilarQuestionsSidebar();
+            
+            console.log('=== AI ANALYSIS COMPLETED (SIDEBAR) ===');
+        }
+        
+        function displayWrongAnswersSidebar() {
+            const wrongAnswersList = document.getElementById('sidebar-wrong-answers-list');
+            wrongAnswersList.innerHTML = '';
+            
+            wrongAnswers.forEach((wrongAnswer, index) => {
+                const wrongAnswerDiv = document.createElement('div');
+                wrongAnswerDiv.className = 'bg-red-50 border-l-2 border-red-400 p-2 rounded text-xs';
+                wrongAnswerDiv.innerHTML = `
+                    <p class="font-medium text-red-700 mb-1">Soru ${index + 1}:</p>
+                    <p class="text-gray-600 mb-1">${wrongAnswer.question.substring(0, 60)}...</p>
+                    <p class="text-red-600 text-xs">❌ ${wrongAnswer.userAnswer}</p>
+                    <p class="text-green-600 text-xs">✅ ${wrongAnswer.correctAnswer}</p>
+                `;
+                wrongAnswersList.appendChild(wrongAnswerDiv);
+            });
+        }
+        
+        function generateAIRecommendationsSidebar() {
+            const aiRecommendationsContent = document.getElementById('sidebar-ai-recommendations-content');
+            
+            const moduleTopics = {
+                1: 'Afet Yönetimi Temelleri',
+                2: 'Kriz Liderliği',
+                3: 'Acil Durum Planlaması',
+                4: 'İletişim Stratejileri',
+                5: 'Karar Verme Süreçleri',
+                6: 'Ekip Yönetimi',
+                7: 'Stres Yönetimi',
+                8: 'İyileştirme Süreçleri'
+            };
+            
+            const currentModuleTopic = moduleTopics[currentModule] || 'Genel Konular';
+            
+            let recommendations = `
+                <div class="mb-2">
+                    <p class="font-medium text-blue-800 text-xs mb-1">📚 Öneriler:</p>
+                    <ul class="text-xs space-y-1">
+                        <li>• <strong>${currentModuleTopic}</strong> konusunda eksiklik tespit edildi</li>
+                        <li>• Modül ${currentModule} videolarını tekrar izleyin</li>
+                        <li>• Aşağıdaki benzer soruları çözün</li>
+                    </ul>
+                </div>
+            `;
+            
+            if (wrongAnswers.length >= 3) {
+                recommendations += `
+                    <div class="bg-yellow-100 border border-yellow-300 rounded p-2 mt-2">
+                        <p class="text-yellow-800 font-medium text-xs">⚠️ ${wrongAnswers.length} soru yanlış! Bu konuları tekrar çalışın.</p>
+                    </div>
+                `;
+            }
+            
+            aiRecommendationsContent.innerHTML = recommendations;
+        }
+        
+        async function generateSimilarQuestionsSidebar() {
+            const similarQuestionsContainer = document.getElementById('sidebar-similar-questions-container');
+            
+            // Show loading
+            similarQuestionsContainer.innerHTML = `
+                <div class="flex items-center justify-center py-4">
+                    <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                    <span class="ml-2 text-xs text-gray-600">AI sorular üretiyor...</span>
+                </div>
+            `;
+            
+            try {
+                const similarQuestions = await generateQuestionsBasedOnWrongAnswers(wrongAnswers);
+                
+                if (similarQuestions.length === 0) {
+                    similarQuestionsContainer.innerHTML = `
+                        <div class="text-center py-2">
+                            <p class="text-xs text-gray-600">Şu anda benzer sorular üretilemiyor.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Display similar questions in compact format
+                let questionsHTML = '';
+                similarQuestions.forEach((question, index) => {
+                    questionsHTML += `
+                        <div class="bg-green-50 border border-green-200 rounded p-2 mb-2">
+                            <p class="font-medium text-green-800 text-xs mb-2">Soru ${index + 1}:</p>
+                            <p class="text-xs text-gray-700 mb-2">${question.question}</p>
+                            <div class="space-y-1">
+                                ${question.options.map((option, optIndex) => `
+                                    <div class="flex items-center text-xs">
+                                        <input type="radio" id="sidebar-q${index}-opt${optIndex}" 
+                                               name="sidebar-question-${index}" value="${optIndex}" 
+                                               class="mr-1 scale-75">
+                                        <label for="sidebar-q${index}-opt${optIndex}" class="text-gray-700 text-xs">
+                                            ${String.fromCharCode(65 + optIndex)}) ${option.substring(0, 30)}...
+                                        </label>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="mt-2 hidden" id="sidebar-answer-${index}">
+                                <div class="bg-white border border-green-300 rounded p-2">
+                                    <p class="text-green-700 font-medium text-xs">Doğru: ${String.fromCharCode(65 + question.correctAnswer)}</p>
+                                </div>
+                            </div>
+                            <button onclick="checkSidebarQuestion(${index}, ${question.correctAnswer})" 
+                                    class="mt-2 bg-green-600 text-white px-2 py-1 rounded text-xs hover:bg-green-700">
+                                Kontrol Et
+                            </button>
+                        </div>
+                    `;
+                });
+                
+                similarQuestionsContainer.innerHTML = questionsHTML;
+                
+            } catch (error) {
+                console.error('Error generating similar questions:', error);
+                similarQuestionsContainer.innerHTML = `
+                    <div class="bg-red-50 border border-red-200 rounded p-2">
+                        <p class="text-red-600 text-xs">Sorular üretilirken hata oluştu.</p>
+                    </div>
+                `;
+            }
+        }
+        
+        function checkSidebarQuestion(questionIndex, correctAnswer) {
+            const selectedOption = document.querySelector(`input[name="sidebar-question-${questionIndex}"]:checked`);
+            const answerDiv = document.getElementById(`sidebar-answer-${questionIndex}`);
+            
+            if (!selectedOption) {
+                alert('Lütfen bir seçenek seçin!');
+                return;
+            }
+            
+            const userAnswer = parseInt(selectedOption.value);
+            answerDiv.classList.remove('hidden');
+            
+            if (userAnswer === correctAnswer) {
+                answerDiv.querySelector('div').className = 'bg-green-100 border border-green-300 rounded p-2';
+                answerDiv.querySelector('p').innerHTML = '✅ Doğru!';
+            } else {
+                answerDiv.querySelector('div').className = 'bg-red-100 border border-red-300 rounded p-2';
+                answerDiv.querySelector('p').innerHTML = '❌ Yanlış';
+            }
+        }
+        
+        // Generate questions based on wrong answers - improved version
+        async function generateQuestionsBasedOnWrongAnswers(wrongAnswers) {
+            try {
+                console.log('🤖 Yanlış cevaplara dayalı sorular üretiliyor:', wrongAnswers);
+                
+                if (!wrongAnswers || wrongAnswers.length === 0) {
+                    console.warn('⚠️ Yanlış cevap bulunamadı');
+                    return getFallbackQuestions();
+                }
+
+                const newQuestions = [];
+
+                for (let i = 0; i < wrongAnswers.length && i < 3; i++) {
+                    const wrongAnswer = wrongAnswers[i];
+                    
+                    // Get the original question details
+                    const originalQuestion = wrongAnswer.question;
+                    const wrongOption = wrongAnswer.options[wrongAnswer.userAnswer];
+                    const correctOption = wrongAnswer.options[wrongAnswer.correct];
+                    const topic = extractTopicFromQuestion(originalQuestion);
+                    
+                    console.log(`📝 Soru ${i + 1} analizi:`, {
+                        originalQuestion: originalQuestion,
+                        topic: topic,
+                        wrongChoice: wrongOption,
+                        correctChoice: correctOption
+                    });
+
+                    try {
+                        // Try to use Gemini API if available
+                        if (window.GeminiAPI) {
+                            const prompt = `Aşağıdaki siber güvenlik sorusu yanlış cevaplanmıştır. Bu sorunun konusu ve yanlış cevaba dayanarak, aynı konuda ama farklı bir soru oluşturun:
+
+Orijinal Soru: "${originalQuestion}"
+Doğru Cevap: "${correctOption}"
+Yanlış Seçilen: "${wrongOption}"
+Konu: "${topic}"
+
+Lütfen aynı konuda ama tamamen farklı bir açıdan yaklaşan, 4 seçenekli çoktan seçmeli bir soru oluşturun. Cevabı JSON formatında verin:
+
+{
+    "question": "Yeni soru metni",
+    "options": ["A seçeneği", "B seçeneği", "C seçeneği", "D seçeneği"],
+    "correct": 0,
+    "explanation": "Doğru cevabın açıklaması"
+}`;
+
+                            const response = await window.GeminiAPI.generateContent(prompt);
+                            
+                            if (response && response.success) {
+                                try {
+                                    // Try to parse JSON from response
+                                    const jsonMatch = response.data.match(/\{[\s\S]*\}/);
+                                    if (jsonMatch) {
+                                        const questionData = JSON.parse(jsonMatch[0]);
+                                        
+                                        if (questionData.question && questionData.options && 
+                                            Array.isArray(questionData.options) && questionData.options.length === 4) {
+                                            
+                                            newQuestions.push({
+                                                question: questionData.question,
+                                                options: questionData.options,
+                                                correct: parseInt(questionData.correct) || 0,
+                                                explanation: questionData.explanation || '',
+                                                relatedTo: originalQuestion,
+                                                generatedFrom: 'ai-analysis'
+                                            });
+                                            
+                                            console.log(`✅ AI soru ${i + 1} başarıyla oluşturuldu`);
+                                            continue;
+                                        }
+                                    }
+                                } catch (parseError) {
+                                    console.warn('⚠️ AI yanıtı parse edilemedi:', parseError);
+                                }
+                            }
+                        }
+                        
+                        // Fallback: Generate topic-specific question
+                        const topicQuestion = generateTopicSpecificQuestion(topic, originalQuestion, wrongOption);
+                        if (topicQuestion) {
+                            newQuestions.push({
+                                ...topicQuestion,
+                                relatedTo: originalQuestion,
+                                generatedFrom: 'topic-analysis'
+                            });
+                            console.log(`✅ Konu bazlı soru ${i + 1} oluşturuldu`);
+                        }
+                        
+                    } catch (error) {
+                        console.error(`❌ Soru ${i + 1} üretim hatası:`, error);
+                        
+                        // Final fallback
+                        const fallbackQuestion = generateTopicSpecificQuestion(topic, originalQuestion, wrongOption);
+                        if (fallbackQuestion) {
+                            newQuestions.push({
+                                ...fallbackQuestion,
+                                relatedTo: originalQuestion,
+                                generatedFrom: 'fallback'
+                            });
+                        }
+                    }
+                }
+
+                if (newQuestions.length === 0) {
+                    console.warn('⚠️ Hiç yeni soru üretilemedi, fallback sorular kullanılıyor');
+                    return getFallbackQuestions();
+                }
+
+                console.log(`✅ ${newQuestions.length} yeni soru başarıyla üretildi`);
+                return newQuestions;
+
+            } catch (error) {
+                console.error('❌ Soru üretim genel hatası:', error);
+                return getFallbackQuestions();
+            }
+        }
+
+        // Extract topic from question text
+        function extractTopicFromQuestion(questionText) {
+            const topicKeywords = {
+                'şifreleme': 'Kriptoloji ve Şifreleme',
+                'kriptoloji': 'Kriptoloji ve Şifreleme',
+                'aes': 'Kriptoloji ve Şifreleme',
+                'rsa': 'Kriptoloji ve Şifreleme',
+                'hash': 'Kriptoloji ve Şifreleme',
+                'firewall': 'Ağ Güvenliği',
+                'ağ': 'Ağ Güvenliği',
+                'tcp': 'Ağ Güvenliği',
+                'ip': 'Ağ Güvenliği',
+                'ddos': 'Ağ Güvenliği',
+                'sql': 'Web Güvenliği',
+                'xss': 'Web Güvenliği',
+                'web': 'Web Güvenliği',
+                'https': 'Web Güvenliği',
+                'malware': 'Malware Analizi',
+                'virüs': 'Malware Analizi',
+                'trojan': 'Malware Analizi',
+                'cia': 'Bilgi Güvenliği Temelleri',
+                'güvenlik': 'Bilgi Güvenliği Temelleri',
+                'risk': 'Bilgi Güvenliği Temelleri'
+            };
+            
+            const lowerText = questionText.toLowerCase();
+            for (const [keyword, topic] of Object.entries(topicKeywords)) {
+                if (lowerText.includes(keyword)) {
+                    return topic;
+                }
+            }
+            
+            return 'Bilgi Güvenliği Temelleri';
+        }
+
+        // Generate topic-specific question
+        function generateTopicSpecificQuestion(topic, originalQuestion, wrongOption) {
+            const questionTemplates = {
+                'Kriptoloji ve Şifreleme': [
+                    {
+                        question: "Hangi şifreleme algoritması simetrik anahtar kullanır?",
+                        options: ["AES", "RSA", "ECC", "DSA"],
+                        correct: 0,
+                        explanation: "AES (Advanced Encryption Standard) simetrik şifreleme algoritmasıdır."
+                    },
+                    {
+                        question: "Hash fonksiyonlarının temel özelliği nedir?",
+                        options: ["Geri çevrilebilir olması", "Tek yönlü olması", "Anahtarlı olması", "Hızlı olması"],
+                        correct: 1,
+                        explanation: "Hash fonksiyonları tek yönlü fonksiyonlardır, geri çevrilemezler."
+                    }
+                ],
+                'Ağ Güvenliği': [
+                    {
+                        question: "IDS ve IPS arasındaki temel fark nedir?",
+                        options: ["Hız farkı", "IDS izler, IPS engeller", "Maliyet farkı", "Kurulum farkı"],
+                        correct: 1,
+                        explanation: "IDS sadece izler ve uyarı verir, IPS aktif olarak saldırıları engeller."
+                    },
+                    {
+                        question: "Firewall hangi katmanda çalışır?",
+                        options: ["Fiziksel", "Veri bağı", "Ağ", "Uygulama"],
+                        correct: 2,
+                        explanation: "Geleneksel firewall'lar ağ katmanında (Layer 3) çalışır."
+                    }
+                ],
+                'Web Güvenliği': [
+                    {
+                        question: "SQL Injection saldırısını önlemenin en etkili yolu nedir?",
+                        options: ["Güçlü şifre", "Parameterized queries", "HTTPS kullanımı", "Firewall"],
+                        correct: 1,
+                        explanation: "Parameterized queries (hazır ifadeler) SQL Injection'ı önlemenin en etkili yoludur."
+                    },
+                    {
+                        question: "XSS saldırısının hedefi nedir?",
+                        options: ["Sunucu", "Veritabanı", "Kullanıcının tarayıcısı", "Ağ"],
+                        correct: 2,
+                        explanation: "XSS saldırıları kullanıcının web tarayıcısında zararlı kod çalıştırmayı hedefler."
+                    }
+                ],
+                'Bilgi Güvenliği Temelleri': [
+                    {
+                        question: "CIA üçlüsünde 'I' harfi neyi temsil eder?",
+                        options: ["Information", "Integrity", "Implementation", "Infrastructure"],
+                        correct: 1,
+                        explanation: "CIA üçlüsünde 'I' Integrity (Bütünlük) anlamına gelir."
+                    },
+                    {
+                        question: "Risk değerlendirmesinde hangi faktörler dikkate alınır?",
+                        options: ["Sadece tehditler", "Sadece zafiyetler", "Tehdit, zafiyet ve etki", "Sadece etki"],
+                        correct: 2,
+                        explanation: "Risk değerlendirmesinde tehdit, zafiyet ve etki faktörleri birlikte değerlendirilir."
+                    }
+                ]
+            };
+
+            const templates = questionTemplates[topic] || questionTemplates['Bilgi Güvenliği Temelleri'];
+            const randomIndex = Math.floor(Math.random() * templates.length);
+            return templates[randomIndex];
+        }
+
+        // Get fallback questions when AI fails
+        function getFallbackQuestions() {
+            return [
+                {
+                    question: "Siber güvenlikte en önemli ilke hangisidir?",
+                    options: ["Hız", "Güvenlik", "Maliyet", "Kullanım kolaylığı"],
+                    correct: 1,
+                    explanation: "Siber güvenlikte güvenlik her zaman öncelikli ilkedir."
+                },
+                {
+                    question: "Güçlü bir şifrenin özelliği nedir?",
+                    options: ["Kısa olması", "Sadece harf içermesi", "Karmaşık ve uzun olması", "Kolay hatırlanması"],
+                    correct: 2,
+                    explanation: "Güçlü şifreler karmaşık, uzun ve farklı karakter tiplerini içerir."
+                }
+            ];
+        }
+    </script>
+</body>
+</html> 

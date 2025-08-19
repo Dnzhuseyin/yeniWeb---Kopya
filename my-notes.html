@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notlarım - CyberEdu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#dc2626',
+                        accent: '#059669',
+                        cyber: '#6366f1',
+                        dark: '#0f172a'
+                    }
+                },
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-production.js"></script>
+    <script src="js/user-utils.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="bg-dark text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
+        <div class="p-4">
+            <a href="student-dashboard.html" class="font-bold text-xl text-cyber block mb-8 flex items-center">
+                <i class="fas fa-shield-alt text-2xl mr-3"></i>
+                CyberEdu
+            </a>
+            
+            <div class="mb-8">
+                <div class="flex items-center mb-4">
+                    <div>
+                        <p class="font-medium" id="user-name"></p>
+                        <p class="text-sm text-gray-400" id="user-email"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="space-y-1">
+                <a href="student-dashboard.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    <span>Genel Bakış</span>
+                </a>
+                <a href="courses.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-graduation-cap mr-3"></i>
+                    <span>Eğitim Modülleri</span>
+                </a>
+                <a href="progress.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-chart-line mr-3"></i>
+                    <span>İlerlemem</span>
+                </a>
+                <a href="my-notes.html" class="flex items-center px-4 py-3 rounded-lg bg-slate-800">
+                    <i class="fas fa-sticky-note mr-3 text-cyber"></i>
+                    <span>Notlarım</span>
+                </a>
+                <a href="downloads.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-download mr-3"></i>
+                    <span>Kaynaklar</span>
+                </a>
+                <a href="account.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-user-cog mr-3"></i>
+                    <span>Profil Ayarları</span>
+                </a>
+            </nav>
+
+            <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
+                <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    <span>Çıkış Yap</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="md:ml-64 p-4 md:p-8 w-full min-h-screen">
+        <div class="max-w-6xl mx-auto">
+            <!-- Header -->
+            <header class="mb-8">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2 flex items-center">
+                            <i class="fas fa-sticky-note text-cyber mr-3"></i>
+                            Notlarım
+                        </h1>
+                        <p class="text-gray-600">Siber güvenlik eğitimi notlarınızı buradan yönetebilirsiniz</p>
+                    </div>
+                    <button class="bg-cyber text-white px-4 py-2 rounded-lg flex items-center" id="add-new-note">
+                        <i class="fas fa-plus mr-2"></i>
+                        Yeni Not Ekle
+                    </button>
+                </div>
+            </header>
+
+            <!-- Filter and Search -->
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-100">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Arama</label>
+                        <input type="text" placeholder="Not ara..." 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                               id="search-notes">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Modül</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                                id="filter-module">
+                            <option value="">Tüm Modüller</option>
+                            <option value="1">Bilgi Güvenliği Temelleri</option>
+                            <option value="2">Kriptoloji ve Şifreleme</option>
+                            <option value="3">Ağ Güvenliği</option>
+                            <option value="4">Web Güvenliği</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Sıralama</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                                id="sort-notes">
+                            <option value="newest">En Yeni</option>
+                            <option value="oldest">En Eski</option>
+                            <option value="module">Modül</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notes Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="notes-container">
+                <!-- Notes will be loaded here -->
+            </div>
+
+            <!-- Empty State -->
+            <div class="text-center py-12" id="empty-state" style="display: none;">
+                <i class="fas fa-sticky-note text-6xl text-gray-400 mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-600 mb-2">Henüz not bulunmuyor</h3>
+                <p class="text-gray-500 mb-6">İlk notunuzu ekleyerek başlayın</p>
+                <button class="bg-cyber text-white px-6 py-3 rounded-lg" onclick="document.getElementById('add-new-note').click()">
+                    <i class="fas fa-plus mr-2"></i>
+                    Yeni Not Ekle
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit Note Modal -->
+    <div id="note-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-xl p-6 w-full max-w-2xl">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-semibold" id="modal-title">Yeni Not Ekle</h3>
+                    <button class="text-gray-400 hover:text-gray-600" id="close-modal">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Başlık</label>
+                        <input type="text" placeholder="Not başlığı" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                               id="note-title">
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Modül</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                                    id="note-module">
+                                <option value="">Modül Seçin</option>
+                                <option value="1">Bilgi Güvenliği Temelleri</option>
+                                <option value="2">Kriptoloji ve Şifreleme</option>
+                                <option value="3">Ağ Güvenliği</option>
+                                <option value="4">Web Güvenliği</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Etiketler</label>
+                            <input type="text" placeholder="etiket1, etiket2" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                                   id="note-tags">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">İçerik</label>
+                        <textarea placeholder="Not içeriği..." rows="8"
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent resize-none"
+                                  id="note-content"></textarea>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button class="px-4 py-2 text-gray-600 hover:text-gray-800" id="cancel-note">İptal</button>
+                    <button class="bg-cyber text-white px-6 py-2 rounded-lg" id="save-note">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        let allNotes = [];
+
+        // Notları yükle ve görüntüle
+        async function loadNotes() {
+            const notesContainer = document.getElementById('notes-container');
+            const emptyState = document.getElementById('empty-state');
+            const searchInput = document.getElementById('search-notes');
+            const moduleFilter = document.getElementById('filter-module');
+            
+            try {
+                console.log('📝 Notlar yükleniyor...');
+                
+                // Wait for DB to be ready
+                if (!window.DB) {
+                    console.warn('⚠️ DB henüz hazır değil, bekleniyor...');
+                    await new Promise(resolve => {
+                        const checkDB = () => {
+                            if (window.DB) {
+                                resolve();
+                            } else {
+                                setTimeout(checkDB, 100);
+                            }
+                        };
+                        checkDB();
+                    });
+                }
+
+                // Trigger migration if needed
+                if (window.firebaseProductionDB) {
+                    await window.firebaseProductionDB.migrateLocalStorageToFirebase();
+                }
+
+                const userEmail = localStorage.getItem('userEmail');
+                if (!userEmail) {
+                    console.warn('⚠️ Kullanıcı e-postası bulunamadı');
+                    allNotes = [];
+                    
+                    // Show empty state
+                    if (notesContainer) notesContainer.innerHTML = '';
+                    if (emptyState) emptyState.classList.remove('hidden');
+                    updateStats([]);
+                    return;
+                }
+                
+                // Firebase'den notları al
+                let notesData = [];
+                try {
+                    notesData = await DB.load('userNotes') || [];
+                    console.log('✅ Notes data yüklendi:', notesData.length);
+                } catch (error) {
+                    console.warn('⚠️ Notes data yüklenemedi:', error);
+                    notesData = [];
+                }
+                
+                // Ensure data is array
+                if (!Array.isArray(notesData)) {
+                    console.warn('⚠️ Notes data array değil, düzeltiliyor');
+                    notesData = [];
+                }
+                
+                // Filter user's notes
+                allNotes = notesData.filter(note => note.userEmail === userEmail);
+                
+                // Tarihe göre sırala (en yeni önce)
+                allNotes.sort((a, b) => new Date(b.timestamp || b.createdAt) - new Date(a.timestamp || a.createdAt));
+                
+                function renderNotes(notesToRender = allNotes) {
+                    if (notesToRender.length === 0) {
+                        notesContainer.innerHTML = '';
+                        if (emptyState) emptyState.classList.remove('hidden');
+                        return;
+                    }
+                    
+                    if (emptyState) emptyState.classList.add('hidden');
+                    notesContainer.innerHTML = notesToRender.map(note => `
+                        <div class="bg-white rounded-lg shadow hover:shadow-md transition-shadow">
+                            <div class="p-6">
+                                <div class="flex items-start justify-between mb-3">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="flex-shrink-0">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                                                Modül ${note.moduleId || 1}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-sm font-medium text-gray-900">${note.moduleName || getModuleName(note.moduleId || 1)}</h3>
+                                            <p class="text-xs text-gray-500">${note.title || `Video ${note.videoId || 1}`}</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-xs text-gray-400">${formatDate(note.timestamp || note.createdAt)}</span>
+                                        <button onclick="deleteNote('${note.id}')" class="text-gray-400 hover:text-red-500 transition-colors">
+                                            <i class="fas fa-trash text-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="prose prose-sm max-w-none">
+                                    <p class="text-gray-700 whitespace-pre-wrap">${note.content}</p>
+                                </div>
+                                <div class="mt-4 pt-4 border-t border-gray-100">
+                                    <a href="module-detail.html?module=${note.moduleId || 1}&video=${note.videoId || 1}" class="inline-flex items-center text-sm text-primary hover:text-blue-700">
+                                        <i class="fas fa-play mr-1"></i>
+                                        Videoyu İzle
+                                    </a>
+                                    ${note.videoTime ? `<span class="ml-4 text-xs text-gray-500">Zaman: ${Math.floor(note.videoTime / 60)}:${(note.videoTime % 60).toString().padStart(2, '0')}</span>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+                
+                // İlk yükleme
+                renderNotes();
+                updateStats(allNotes);
+                
+                // Arama fonksiyonu
+                function filterNotes() {
+                    const searchTerm = searchInput.value.toLowerCase();
+                    const selectedModule = moduleFilter.value;
+                    
+                    let filteredNotes = allNotes;
+                    
+                    if (searchTerm) {
+                        filteredNotes = filteredNotes.filter(note => 
+                            note.content.toLowerCase().includes(searchTerm) ||
+                            (note.moduleName || '').toLowerCase().includes(searchTerm) ||
+                            (note.title || '').toLowerCase().includes(searchTerm)
+                        );
+                    }
+                    
+                    if (selectedModule) {
+                        filteredNotes = filteredNotes.filter(note => 
+                            (note.moduleId || 1).toString() === selectedModule
+                        );
+                    }
+                    
+                    renderNotes(filteredNotes);
+                }
+                
+                // Event listeners
+                if (searchInput) searchInput.addEventListener('input', filterNotes);
+                if (moduleFilter) moduleFilter.addEventListener('change', filterNotes);
+                
+                console.log('✅ Notlar başarıyla yüklendi:', allNotes.length);
+                
+            } catch (error) {
+                console.error('❌ Notlar yüklenirken hata:', error);
+                showError('Notlar yüklenirken hata oluştu: ' + error.message);
+                notesContainer.innerHTML = `
+                    <div class="text-center py-12">
+                        <div class="mx-auto h-24 w-24 text-red-400 mb-4">
+                            <i class="fas fa-exclamation-triangle text-6xl"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Notlar yüklenemedi</h3>
+                        <p class="text-gray-500 mb-4">${error.message}</p>
+                        <button onclick="loadNotes()" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700">
+                            <i class="fas fa-redo mr-2"></i>
+                            Tekrar Dene
+                        </button>
+                    </div>
+                `;
+            }
+        }
+        
+        // İstatistikleri güncelle
+        function updateStats(notes) {
+            const totalNotes = notes.length;
+            const modulesWithNotes = new Set(notes.map(note => note.moduleId || 1)).size;
+            
+            let lastNoteDate = null;
+            if (notes.length > 0) {
+                // Notlar zaten tarihe göre sıralı olduğu için ilk not en yeni
+                lastNoteDate = new Date(notes[0].timestamp || notes[0].createdAt);
+            }
+            
+            const totalNotesEl = document.getElementById('total-notes');
+            const modulesWithNotesEl = document.getElementById('modules-with-notes');
+            const lastNoteDateEl = document.getElementById('last-note-date');
+            
+            if (totalNotesEl) totalNotesEl.textContent = totalNotes;
+            if (modulesWithNotesEl) modulesWithNotesEl.textContent = modulesWithNotes;
+            if (lastNoteDateEl) lastNoteDateEl.textContent = lastNoteDate ? 
+                formatDate(lastNoteDate.toISOString()) : '-';
+        }
+        
+        // Tarihi formatla
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) {
+                return 'Bugün ' + date.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+            } else if (diffDays === 1) {
+                return 'Dün ' + date.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+            } else if (diffDays < 7) {
+                return diffDays + ' gün önce';
+            } else {
+                return date.toLocaleDateString('tr-TR');
+            }
+        }
+        
+        // Modül adını getir
+        function getModuleName(moduleId) {
+            const moduleNames = {
+                1: 'Temel Kavramlar',
+                2: 'Risk Değerlendirme',
+                3: 'Kriz Yönetimi',
+                4: 'İletişim',
+                5: 'Liderlik',
+                6: 'Uygulama',
+                7: 'İyileşme',
+                8: 'Mastery'
+            };
+            return moduleNames[moduleId] || 'Bilinmeyen Modül';
+        }
+        
+        // Notu sil
+        async function deleteNote(noteId) {
+            if (confirm('Bu notu silmek istediğinizden emin misiniz?')) {
+                try {
+                    console.log('🗑️ Not siliniyor:', noteId);
+                    
+                    // Firebase'den notu sil
+                    const success = await DB.delete('userNotes', noteId);
+                    
+                    if (success) {
+                        // Sayfayı yenile
+                        await loadNotes();
+                        showNotification('Not başarıyla silindi', 'success');
+                        console.log('✅ Not başarıyla silindi');
+                    } else {
+                        throw new Error('Not silinemedi');
+                    }
+                    
+                } catch (error) {
+                    console.error('❌ Not silinirken hata:', error);
+                    showError('Not silinirken hata oluştu: ' + error.message);
+                }
+            }
+        }
+        
+        // Bildirim göster
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg text-white ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 'bg-blue-500'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        
+        // Hata göster
+        function showError(message) {
+            console.error('❌ Hata:', message);
+            
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 max-w-md';
+            toast.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-triangle mr-3"></i>
+                    <div class="flex-1">
+                        <p class="font-medium">Hata Oluştu</p>
+                        <p class="text-sm opacity-90">${message}</p>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-3 text-white hover:text-gray-200">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.remove();
+                }
+            }, 5000);
+        }
+        
+        // Sayfa yüklendiğinde notları yükle
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize user info
+            const isLoggedIn = await UserUtils.initializeUserInfo();
+            if (!isLoggedIn) return;
+            
+            // Load notes
+            await loadNotes();
+        });
+    </script>
+</body>
+</html> 

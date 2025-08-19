@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Öğrenci Yönetimi - CyberEdu Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#dc2626',
+                        accent: '#059669',
+                        cyber: '#6366f1',
+                        dark: '#0f172a'
+                    }
+                },
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-production.js"></script>
+    <script src="js/user-utils.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="bg-dark text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
+        <div class="p-4">
+            <a href="instructor-dashboard.html" class="font-bold text-xl text-secondary block mb-8 flex items-center">
+                <i class="fas fa-shield-alt text-2xl mr-3"></i>
+                CyberEdu Admin
+            </a>
+            
+            <div class="mb-8">
+                <div class="flex items-center mb-4">
+                    <div>
+                        <p class="font-medium" id="instructor-name"></p>
+                        <p class="text-sm text-gray-400" id="instructor-email"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="space-y-1">
+                <a href="instructor-dashboard.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    <span>Genel Bakış</span>
+                </a>
+                <a href="instructor-courses.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-graduation-cap mr-3"></i>
+                    <span>Eğitim Modülleri</span>
+                </a>
+                <a href="instructor-content.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-video mr-3"></i>
+                    <span>Video Yönetimi</span>
+                </a>
+                <a href="instructor-students.html" class="flex items-center px-4 py-3 rounded-lg bg-slate-800">
+                    <i class="fas fa-users mr-3 text-secondary"></i>
+                    <span>Öğrenci Yönetimi</span>
+                </a>
+            </nav>
+
+            <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
+                <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    <span>Çıkış Yap</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="md:ml-64 p-4 md:p-8 w-full min-h-screen">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <header class="mb-8">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Öğrenci Yönetimi</h1>
+                        <p class="text-gray-600">Siber güvenlik eğitimi alan öğrencileri yönetin ve takip edin</p>
+                    </div>
+                    <button class="bg-cyber text-white px-4 py-2 rounded-lg flex items-center" id="add-student">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        Yeni Öğrenci Ekle
+                    </button>
+                </div>
+            </header>
+
+            <!-- Student Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Toplam Öğrenci</h3>
+                        <div class="h-10 w-10 bg-cyber/10 text-cyber rounded-lg flex items-center justify-center">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900" id="total-students">0</p>
+                    <p class="text-xs text-gray-500 mt-1">kayıtlı öğrenci</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Aktif Öğrenci</h3>
+                        <div class="h-10 w-10 bg-accent/10 text-accent rounded-lg flex items-center justify-center">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900" id="active-students">0</p>
+                    <p class="text-xs text-gray-500 mt-1">son 7 gün aktif</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Ortalama İlerleme</h3>
+                        <div class="h-10 w-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900" id="avg-progress">0%</p>
+                    <p class="text-xs text-gray-500 mt-1">tüm öğrenciler</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Başarı Oranı</h3>
+                        <div class="h-10 w-10 bg-secondary/10 text-secondary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900" id="success-rate">0%</p>
+                    <p class="text-xs text-gray-500 mt-1">modül tamamlama</p>
+                </div>
+            </div>
+
+            <!-- Filter and Search -->
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-100">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Arama</label>
+                        <input type="text" placeholder="Öğrenci ara..." 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                               id="search-students">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Bölüm</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                                id="filter-department">
+                            <option value="">Tüm Bölümler</option>
+                            <option value="bilgisayar-muhendisligi">Bilgisayar Mühendisliği</option>
+                            <option value="bilisim-sistemleri">Bilişim Sistemleri</option>
+                            <option value="siber-guvenlik">Siber Güvenlik</option>
+                            <option value="yazilim-muhendisligi">Yazılım Mühendisliği</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">İlerleme</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                                id="filter-progress">
+                            <option value="">Tüm Öğrenciler</option>
+                            <option value="high">Yüksek İlerleme (>75%)</option>
+                            <option value="medium">Orta İlerleme (25-75%)</option>
+                            <option value="low">Düşük İlerleme (<25%)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Sıralama</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                                id="sort-students">
+                            <option value="name">İsim</option>
+                            <option value="progress">İlerleme</option>
+                            <option value="lastActivity">Son Aktivite</option>
+                            <option value="registrationDate">Kayıt Tarihi</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Students Table -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-xl font-semibold flex items-center">
+                        <i class="fas fa-table text-primary mr-2"></i>
+                        Öğrenci Listesi
+                    </h2>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Öğrenci</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bölüm</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">İlerleme</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Son Aktivite</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Durum</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="students-table-body">
+                            <!-- Students will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let allStudents = [];
+        let filteredStudents = [];
+
+        // Page initialization
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize user info using UserUtils
+            await UserUtils.initializeUserInfo();
+            
+            // Update coordinator-specific display names
+            const userEmail = localStorage.getItem('userEmail');
+            if (userEmail) {
+                const userName = userEmail.split('@')[0];
+                const displayName = 'Koordinatör ' + userName.charAt(0).toUpperCase() + userName.slice(1);
+                
+                // Desktop sidebar güncelle
+                const instructorNameEl = document.getElementById('instructor-name');
+                const instructorEmailEl = document.getElementById('instructor-email');
+                
+                if (instructorNameEl) instructorNameEl.textContent = displayName;
+                if (instructorEmailEl) instructorEmailEl.textContent = '';
+            }
+            
+            await loadStudents();
+            setupEventListeners();
+        });
+
+        // Load students from Firebase
+        async function loadStudents() {
+            try {
+                console.log('📚 Öğrenci verileri yükleniyor...');
+                
+                // Wait for DB to be ready
+                if (!window.DB) {
+                    console.warn('⚠️ DB henüz hazır değil, bekleniyor...');
+                    await new Promise(resolve => {
+                        const checkDB = () => {
+                            if (window.DB) {
+                                resolve();
+                            } else {
+                                setTimeout(checkDB, 100);
+                            }
+                        };
+                        checkDB();
+                    });
+                }
+                
+                // Load all user data from Firebase
+                let userProfilesData = [];
+                let progressData = [];
+                let notesData = [];
+                let videosData = [];
+                
+                try {
+                    // Load user profiles (registered students)
+                    const userProfilesResult = await DB.load('userProfiles');
+                    userProfilesData = (userProfilesResult && userProfilesResult.success) ? userProfilesResult.data : [];
+                    console.log('✅ User profiles yüklendi:', userProfilesData.length);
+                } catch (error) {
+                    console.warn('⚠️ User profiles yüklenemedi:', error);
+                    userProfilesData = [];
+                }
+                
+                try {
+                    const progressResult = await DB.load('userProgress');
+                    progressData = (progressResult && progressResult.success) ? progressResult.data : [];
+                    console.log('✅ Progress data yüklendi:', progressData.length);
+                } catch (error) {
+                    console.warn('⚠️ Progress data yüklenemedi:', error);
+                    progressData = [];
+                }
+                
+                try {
+                    const notesResult = await DB.load('userNotes');
+                    notesData = (notesResult && notesResult.success) ? notesResult.data : [];
+                    console.log('✅ Notes data yüklendi:', notesData.length);
+                } catch (error) {
+                    console.warn('⚠️ Notes data yüklenemedi:', error);
+                    notesData = [];
+                }
+                
+                try {
+                    const videosResult = await DB.load('studentVideos');
+                    videosData = (videosResult && videosResult.success) ? videosResult.data : [];
+                    console.log('✅ Videos data yüklendi:', videosData.length);
+                } catch (error) {
+                    console.warn('⚠️ Videos data yüklenemedi:', error);
+                    videosData = [];
+                }
+                
+                // Ensure data is array
+                if (!Array.isArray(userProfilesData)) {
+                    console.warn('⚠️ User profiles data array değil, düzeltiliyor');
+                    userProfilesData = [];
+                }
+                
+                if (!Array.isArray(progressData)) {
+                    console.warn('⚠️ Progress data array değil, düzeltiliyor');
+                    progressData = [];
+                }
+                
+                if (!Array.isArray(notesData)) {
+                    console.warn('⚠️ Notes data array değil, düzeltiliyor');
+                    notesData = [];
+                }
+                
+                if (!Array.isArray(videosData)) {
+                    console.warn('⚠️ Videos data array değil, düzeltiliyor');
+                    videosData = [];
+                }
+                
+                // Create student list from user profiles
+                const studentMap = new Map();
+                
+                // Process user profiles (main student data)
+                userProfilesData.forEach(profile => {
+                    try {
+                        const email = profile.userEmail;
+                        if (email && !email.includes('koordinator') && !email.includes('instructor')) {
+                            const fullName = `${profile.firstName || ''} ${profile.lastName || ''}`.trim();
+                            
+                            studentMap.set(email, {
+                                id: email,
+                                email: email,
+                                name: fullName || extractNameFromEmail(email),
+                                firstName: profile.firstName || '',
+                                lastName: profile.lastName || '',
+                                studentId: profile.studentId || '',
+                                department: profile.department || 'bilgisayar-muhendisligi',
+                                school: profile.school || 'CyberEdu Üniversitesi',
+                                city: profile.city || getRandomCity(),
+                                phone: profile.phone || '',
+                                bio: profile.bio || '',
+                                totalProgress: 0,
+                                completedModules: 0,
+                                lastActivity: profile.updatedAt || profile.createdAt || new Date().toISOString(),
+                                joinDate: profile.joinDate || profile.createdAt || new Date().toISOString(),
+                                isActive: false,
+                                moduleProgress: {},
+                                notes: 0,
+                                completedVideos: 0
+                            });
+                        }
+                    } catch (profileError) {
+                        console.warn('⚠️ Profile item işlenirken hata:', profileError);
+                    }
+                });
+
+                // Update progress data
+                progressData.forEach(progress => {
+                    try {
+                        const email = progress.userEmail || progress.email;
+                        if (email && studentMap.has(email)) {
+                            const student = studentMap.get(email);
+                            
+                            // Update progress
+                            if (progress.moduleProgress) {
+                                student.moduleProgress = { ...student.moduleProgress, ...progress.moduleProgress };
+                            }
+                            
+                            // Update last activity
+                            if (progress.lastActivity) {
+                                student.lastActivity = progress.lastActivity;
+                            }
+                            
+                            // Calculate total progress
+                            const moduleKeys = Object.keys(student.moduleProgress);
+                            if (moduleKeys.length > 0) {
+                                student.totalProgress = Math.round(
+                                    moduleKeys.reduce((sum, key) => sum + (student.moduleProgress[key] || 0), 0) / moduleKeys.length
+                                );
+                                student.completedModules = moduleKeys.filter(key => student.moduleProgress[key] >= 100).length;
+                            }
+                            
+                            // Check if recently active
+                            student.isActive = isRecentlyActive(student.lastActivity);
+                        }
+                    } catch (progressError) {
+                        console.warn('⚠️ Progress item işlenirken hata:', progressError);
+                    }
+                });
+
+                // Update notes count
+                notesData.forEach(note => {
+                    try {
+                        const email = note.userEmail;
+                        if (email && studentMap.has(email)) {
+                            const student = studentMap.get(email);
+                            student.notes++;
+                        }
+                    } catch (noteError) {
+                        console.warn('⚠️ Note item işlenirken hata:', noteError);
+                    }
+                });
+
+                // Update completed videos count
+                videosData.forEach(video => {
+                    try {
+                        const email = video.userEmail;
+                        if (email && studentMap.has(email) && video.isCompleted) {
+                            const student = studentMap.get(email);
+                            student.completedVideos++;
+                        }
+                    } catch (videoError) {
+                        console.warn('⚠️ Video item işlenirken hata:', videoError);
+                    }
+                });
+
+                // Convert map to array
+                allStudents = Array.from(studentMap.values());
+                
+                // If no students found, create some sample data
+                if (allStudents.length === 0) {
+                    console.log('📝 Örnek öğrenci verileri oluşturuluyor...');
+                    
+                    // Create sample students directly
+                    const sampleStudents = [
+                        {
+                            id: 'ahmet.kaya@ogrenci.edu.tr',
+                            email: 'ahmet.kaya@ogrenci.edu.tr',
+                            name: 'Ahmet Kaya',
+                            firstName: 'Ahmet',
+                            lastName: 'Kaya',
+                            studentId: '20240001',
+                            department: 'bilgisayar-muhendisligi',
+                            school: 'CyberEdu Üniversitesi',
+                            city: 'İstanbul',
+                            totalProgress: 75,
+                            completedModules: 3,
+                            lastActivity: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                            joinDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+                            isActive: true,
+                            moduleProgress: { '1': 100, '2': 80, '3': 45 },
+                            notes: 5,
+                            completedVideos: 8
+                        },
+                        {
+                            id: 'fatma.demir@ogrenci.edu.tr',
+                            email: 'fatma.demir@ogrenci.edu.tr',
+                            name: 'Fatma Demir',
+                            firstName: 'Fatma',
+                            lastName: 'Demir',
+                            studentId: '20240002',
+                            department: 'siber-guvenlik',
+                            school: 'CyberEdu Üniversitesi',
+                            city: 'Ankara',
+                            totalProgress: 90,
+                            completedModules: 4,
+                            lastActivity: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+                            joinDate: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString(),
+                            isActive: true,
+                            moduleProgress: { '1': 100, '2': 100, '3': 85, '4': 75 },
+                            notes: 12,
+                            completedVideos: 15
+                        },
+                        {
+                            id: 'mehmet.ozkan@ogrenci.edu.tr',
+                            email: 'mehmet.ozkan@ogrenci.edu.tr',
+                            name: 'Mehmet Özkan',
+                            firstName: 'Mehmet',
+                            lastName: 'Özkan',
+                            studentId: '20240003',
+                            department: 'bilisim-sistemleri',
+                            school: 'CyberEdu Üniversitesi',
+                            city: 'İzmir',
+                            totalProgress: 45,
+                            completedModules: 1,
+                            lastActivity: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+                            joinDate: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
+                            isActive: false,
+                            moduleProgress: { '1': 100, '2': 35 },
+                            notes: 3,
+                            completedVideos: 4
+                        },
+                        {
+                            id: 'ayse.yilmaz@ogrenci.edu.tr',
+                            email: 'ayse.yilmaz@ogrenci.edu.tr',
+                            name: 'Ayşe Yılmaz',
+                            firstName: 'Ayşe',
+                            lastName: 'Yılmaz',
+                            studentId: '20240004',
+                            department: 'yazilim-muhendisligi',
+                            school: 'CyberEdu Üniversitesi',
+                            city: 'Bursa',
+                            totalProgress: 60,
+                            completedModules: 2,
+                            lastActivity: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+                            joinDate: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+                            isActive: true,
+                            moduleProgress: { '1': 100, '2': 100, '3': 20 },
+                            notes: 8,
+                            completedVideos: 6
+                        }
+                    ];
+                    
+                    allStudents = sampleStudents;
+                    filteredStudents = [...allStudents];
+                    
+                    console.log('✅ Örnek öğrenci verileri oluşturuldu:', allStudents.length);
+                } else {
+                    filteredStudents = [...allStudents];
+                }
+                
+                console.log('✅ Öğrenci verileri başarıyla yüklendi:', allStudents.length);
+                
+                updateStats();
+                renderStudentsTable();
+                
+            } catch (error) {
+                console.error('❌ Öğrenci yükleme hatası:', error);
+                showError('Öğrenci verileri yüklenirken hata oluştu: ' + error.message);
+                
+                // Show fallback message
+                const tbody = document.getElementById('students-table-body');
+                if (tbody) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="px-6 py-12 text-center">
+                                <div class="text-gray-500">
+                                    <i class="fas fa-exclamation-triangle text-4xl mb-4 text-yellow-500"></i>
+                                    <p class="text-lg font-medium mb-2">Veri Yükleme Hatası</p>
+                                    <p class="text-sm">Öğrenci verileri yüklenirken bir hata oluştu.</p>
+                                    <button onclick="loadStudents()" class="mt-4 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90">
+                                        Tekrar Dene
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }
+            }
+        }
+
+        // Create sample students for demo
+        async function createSampleStudents() {
+            try {
+                console.log('📝 Örnek öğrenci profilleri oluşturuluyor...');
+                
+                const sampleProfiles = [
+                    {
+                        userEmail: 'ahmet.kaya@meb.gov.tr',
+                        firstName: 'Ahmet',
+                        lastName: 'Kaya',
+                        school: 'Adıyaman Merkez İlkokulu',
+                        city: 'Adıyaman',
+                        phone: '+90 532 123 45 67',
+                        bio: '15 yıllık eğitim deneyimi olan okul müdürü.',
+                        joinDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+                        createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+                        updatedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
+                    },
+                    {
+                        userEmail: 'fatma.demir@meb.gov.tr',
+                        firstName: 'Fatma',
+                        lastName: 'Demir',
+                        school: 'Kahramanmaraş Ortaokulu',
+                        city: 'Kahramanmaraş',
+                        phone: '+90 532 234 56 78',
+                        bio: 'Kriz yönetimi konusunda uzman okul müdürü.',
+                        joinDate: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString(),
+                        createdAt: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString(),
+                        updatedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString()
+                    },
+                    {
+                        userEmail: 'mehmet.ozkan@meb.gov.tr',
+                        firstName: 'Mehmet',
+                        lastName: 'Özkan',
+                        school: 'Gaziantep Anadolu Lisesi',
+                        city: 'Gaziantep',
+                        phone: '+90 532 345 67 89',
+                        bio: 'Afet bölgesi okul yönetimi deneyimi olan müdür.',
+                        joinDate: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
+                        createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
+                        updatedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
+                    },
+                    {
+                        userEmail: 'ayse.yilmaz@meb.gov.tr',
+                        firstName: 'Ayşe',
+                        lastName: 'Yılmaz',
+                        school: 'Şanlıurfa Cumhuriyet İlkokulu',
+                        city: 'Şanlıurfa',
+                        phone: '+90 532 456 78 90',
+                        bio: 'Öğrenci ve veli iletişimi konusunda deneyimli müdür.',
+                        joinDate: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+                        createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+                        updatedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString()
+                    }
+                ];
+
+                const sampleProgress = [
+                    {
+                        userEmail: 'ahmet.kaya@meb.gov.tr',
+                        userName: 'Ahmet Kaya',
+                        moduleProgress: { '1': 100, '2': 75, '3': 30 },
+                        lastActivity: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                        createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+                        updatedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
+                    },
+                    {
+                        userEmail: 'fatma.demir@meb.gov.tr',
+                        userName: 'Fatma Demir',
+                        moduleProgress: { '1': 100, '2': 100, '3': 85, '4': 45 },
+                        lastActivity: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+                        createdAt: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString(),
+                        updatedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString()
+                    },
+                    {
+                        userEmail: 'mehmet.ozkan@meb.gov.tr',
+                        userName: 'Mehmet Özkan',
+                        moduleProgress: { '1': 100, '2': 60 },
+                        lastActivity: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+                        createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
+                        updatedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
+                    },
+                    {
+                        userEmail: 'ayse.yilmaz@meb.gov.tr',
+                        userName: 'Ayşe Yılmaz',
+                        moduleProgress: { '1': 100, '2': 100, '3': 100, '4': 80, '5': 25 },
+                        lastActivity: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+                        createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+                        updatedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString()
+                    }
+                ];
+
+                const sampleNotes = [
+                    {
+                        userEmail: 'ahmet.kaya@meb.gov.tr',
+                        title: 'Kriz Yönetimi Notları',
+                        content: 'Acil durum planları hakkında önemli notlar...',
+                        createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
+                    },
+                    {
+                        userEmail: 'fatma.demir@meb.gov.tr',
+                        title: 'Liderlik Stratejileri',
+                        content: 'Çevik liderlik prensipleri ve uygulamaları...',
+                        createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString()
+                    },
+                    {
+                        userEmail: 'ayse.yilmaz@meb.gov.tr',
+                        title: 'Veli İletişimi',
+                        content: 'Kriz dönemlerinde etkili veli iletişimi teknikleri...',
+                        createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
+                    }
+                ];
+
+                // Save sample data to Firebase
+                for (const profile of sampleProfiles) {
+                    await DB.save('userProfiles', profile, profile.userEmail);
+                    console.log(`✅ Profil kaydedildi: ${profile.firstName} ${profile.lastName}`);
+                }
+
+                for (const progress of sampleProgress) {
+                    await DB.save('userProgress', progress, progress.userEmail);
+                    console.log(`✅ İlerleme kaydedildi: ${progress.userName}`);
+                }
+
+                for (const note of sampleNotes) {
+                    await DB.save('userNotes', note);
+                    console.log(`✅ Not kaydedildi: ${note.title}`);
+                }
+
+                console.log('✅ Tüm örnek veriler başarıyla kaydedildi');
+                
+            } catch (error) {
+                console.error('❌ Örnek veri oluşturma hatası:', error);
+                showError('Örnek veriler oluşturulurken hata oluştu: ' + error.message);
+            }
+        }
+
+        // Helper functions
+        function extractNameFromEmail(email) {
+            const name = email.split('@')[0];
+            return name.split('.').map(part => 
+                part.charAt(0).toUpperCase() + part.slice(1)
+            ).join(' ');
+        }
+
+        function getRandomCity() {
+            const cities = ['Adıyaman', 'Kahramanmaraş', 'Gaziantep', 'Şanlıurfa', 'Diyarbakır', 'Malatya'];
+            return cities[Math.floor(Math.random() * cities.length)];
+        }
+
+        function isRecentlyActive(lastActivity) {
+            if (!lastActivity) return false;
+            const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+            return new Date(lastActivity) > oneWeekAgo;
+        }
+
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('tr-TR', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+
+        function formatRelativeTime(dateString) {
+            const now = new Date();
+            const date = new Date(dateString);
+            const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
+            
+            if (diffInHours < 24) {
+                return `${diffInHours} saat önce`;
+            } else if (diffInHours < 24 * 7) {
+                return `${Math.floor(diffInHours / 24)} gün önce`;
+            } else {
+                return formatDate(dateString);
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            document.getElementById('total-students').textContent = allStudents.length;
+            document.getElementById('active-students').textContent = allStudents.filter(s => s.isActive).length;
+            document.getElementById('avg-progress').textContent = allStudents.length > 0 
+                ? Math.round(allStudents.reduce((sum, s) => sum + s.totalProgress, 0) / allStudents.length) + '%'
+                : '0%';
+            
+            const successRate = allStudents.length > 0 
+                ? Math.round((allStudents.reduce((sum, s) => sum + s.completedModules, 0) / (allStudents.length * 8)) * 100)
+                : 0;
+            document.getElementById('success-rate').textContent = successRate + '%';
+        }
+
+        // Render students table
+        function renderStudentsTable() {
+            const tbody = document.getElementById('students-table-body');
+            
+            if (filteredStudents.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="px-6 py-12 text-center">
+                            <div class="text-gray-500">
+                                <i class="fas fa-users text-4xl mb-4"></i>
+                                <p class="text-lg font-medium mb-2">Henüz öğrenci bulunmuyor</p>
+                                <p class="text-sm">Öğrenciler kayıt oldukça burada görünecekler.</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = filteredStudents.map(student => `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="h-10 w-10 rounded-full bg-gradient-to-r from-cyber to-primary text-white flex items-center justify-center font-medium text-sm mr-3">
+                                ${student.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">${student.name}</div>
+                                <div class="text-sm text-gray-500">${student.email}</div>
+                                ${student.studentId ? `<div class="text-xs text-gray-400">${student.studentId}</div>` : ''}
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${getDepartmentName(student.department)}</div>
+                        <div class="text-sm text-gray-500">${student.school}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="w-16 bg-gray-200 rounded-full h-2 mr-3">
+                                <div class="bg-gradient-to-r from-cyber to-primary h-2 rounded-full" style="width: ${student.totalProgress}%"></div>
+                            </div>
+                            <span class="text-sm font-medium text-gray-900">${student.totalProgress}%</span>
+                        </div>
+                        <div class="text-sm text-gray-500">${student.completedModules}/8 modül</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${formatRelativeTime(student.lastActivity)}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            student.isActive 
+                                ? 'bg-green-100 text-green-800' 
+                                : 'bg-gray-100 text-gray-800'
+                        }">
+                            ${student.isActive ? 'Aktif' : 'Pasif'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button onclick="viewStudentDetail('${student.id}')" class="text-cyber hover:text-primary mr-3">
+                            <i class="fas fa-eye"></i> Detay
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Get department name
+        function getDepartmentName(departmentCode) {
+            const departments = {
+                'bilgisayar-muhendisligi': 'Bilgisayar Mühendisliği',
+                'bilisim-sistemleri': 'Bilişim Sistemleri',
+                'siber-guvenlik': 'Siber Güvenlik',
+                'yazilim-muhendisligi': 'Yazılım Mühendisliği',
+                'bilgisayar-programciligi': 'Bilgisayar Programcılığı'
+            };
+            return departments[departmentCode] || departmentCode || 'Belirtilmemiş';
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Search functionality
+            const searchStudents = document.getElementById('search-students');
+            if (searchStudents) {
+                searchStudents.addEventListener('input', function(e) {
+                    const searchTerm = e.target.value.toLowerCase();
+                    filteredStudents = allStudents.filter(student => 
+                        student.name.toLowerCase().includes(searchTerm) ||
+                        student.email.toLowerCase().includes(searchTerm) ||
+                        student.school.toLowerCase().includes(searchTerm)
+                    );
+                    renderStudentsTable();
+                });
+            }
+
+            // Department filter
+            const filterDepartment = document.getElementById('filter-department');
+            if (filterDepartment) {
+                filterDepartment.addEventListener('change', function(e) {
+                    const department = e.target.value;
+                    filteredStudents = department 
+                        ? allStudents.filter(student => student.department === department)
+                        : [...allStudents];
+                    renderStudentsTable();
+                });
+            }
+
+            // Progress filter
+            const filterProgress = document.getElementById('filter-progress');
+            if (filterProgress) {
+                filterProgress.addEventListener('change', function(e) {
+                    const filter = e.target.value;
+                    filteredStudents = allStudents.filter(student => {
+                        if (!filter) return true;
+                        if (filter === 'high') return student.totalProgress > 75;
+                        if (filter === 'medium') return student.totalProgress >= 25 && student.totalProgress <= 75;
+                        if (filter === 'low') return student.totalProgress < 25;
+                        return true;
+                    });
+                    renderStudentsTable();
+                });
+            }
+
+            // Sort students
+            const sortStudents = document.getElementById('sort-students');
+            if (sortStudents) {
+                sortStudents.addEventListener('change', function(e) {
+                    const sortBy = e.target.value;
+                    filteredStudents.sort((a, b) => {
+                        switch (sortBy) {
+                            case 'name':
+                                return a.name.localeCompare(b.name);
+                            case 'progress':
+                                return b.totalProgress - a.totalProgress;
+                            case 'lastActivity':
+                                return new Date(b.lastActivity) - new Date(a.lastActivity);
+                            case 'registrationDate':
+                                return new Date(b.joinDate) - new Date(a.joinDate);
+                            default:
+                                return 0;
+                        }
+                    });
+                    renderStudentsTable();
+                });
+            }
+
+            // Logout functionality
+            document.querySelectorAll('a[href="index.html"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('loginTime');
+                    
+                    console.log('Koordinatör çıkışı yapıldı');
+                    window.location.href = 'index.html';
+                });
+            });
+        }
+
+        // View student detail
+        function viewStudentDetail(studentId) {
+            const student = allStudents.find(s => s.id === studentId);
+            if (!student) return;
+
+            const modal = document.getElementById('student-modal');
+            const content = document.getElementById('student-detail-content');
+            
+            content.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-4">Kişisel Bilgiler</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Ad Soyad</label>
+                                <p class="mt-1 text-sm text-gray-900">${student.name}</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">E-posta</label>
+                                <p class="mt-1 text-sm text-gray-900">${student.email}</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Okul</label>
+                                <p class="mt-1 text-sm text-gray-900">${student.school}</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Şehir</label>
+                                <p class="mt-1 text-sm text-gray-900">${student.city}</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Katılım Tarihi</label>
+                                <p class="mt-1 text-sm text-gray-900">${formatDate(student.joinDate)}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-4">Eğitim İstatistikleri</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Genel İlerleme</label>
+                                <div class="mt-1 flex items-center">
+                                    <div class="w-full bg-gray-200 rounded-full h-2 mr-3">
+                                        <div class="bg-gradient-to-r from-primary to-accent h-2 rounded-full" style="width: ${student.totalProgress}%"></div>
+                                    </div>
+                                    <span class="text-sm font-medium">${student.totalProgress}%</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Tamamlanan Modüller</label>
+                                <p class="mt-1 text-sm text-gray-900">${student.completedModules}/8 modül</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Not Sayısı</label>
+                                <p class="mt-1 text-sm text-gray-900">${student.notes} not</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Son Aktivite</label>
+                                <p class="mt-1 text-sm text-gray-900">${formatRelativeTime(student.lastActivity)}</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Durum</label>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                    student.isActive 
+                                        ? 'bg-green-100 text-green-800' 
+                                        : 'bg-gray-100 text-gray-800'
+                                }">
+                                    ${student.isActive ? 'Aktif' : 'Pasif'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <h3 class="text-lg font-semibold mb-4">Modül Bazlı İlerleme</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        ${Object.entries(student.moduleProgress).map(([moduleId, progress]) => `
+                            <div class="border rounded-lg p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h4 class="font-medium">Modül ${moduleId}</h4>
+                                    <span class="text-sm font-medium">${progress}%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-gradient-to-r from-primary to-accent h-2 rounded-full" style="width: ${progress}%"></div>
+                                </div>
+                                <div class="mt-2">
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                                        progress >= 100 
+                                            ? 'bg-green-100 text-green-800' 
+                                            : progress >= 50 
+                                                ? 'bg-yellow-100 text-yellow-800'
+                                                : 'bg-red-100 text-red-800'
+                                    }">
+                                        ${progress >= 100 ? 'Tamamlandı' : progress >= 50 ? 'Devam Ediyor' : 'Başlanmadı'}
+                                    </span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+        }
+
+        // Close student modal
+        function closeStudentModal() {
+            document.getElementById('student-modal').classList.add('hidden');
+        }
+
+        // Show error message
+        function showError(message) {
+            console.error('❌ Hata:', message);
+            
+            // Create error toast
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 max-w-md';
+            toast.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-triangle mr-3"></i>
+                    <div class="flex-1">
+                        <p class="font-medium">Hata Oluştu</p>
+                        <p class="text-sm opacity-90">${message}</p>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-3 text-white hover:text-gray-200">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.remove();
+                }
+            }, 5000);
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userRole');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html> 

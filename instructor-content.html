@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Yönetimi - CyberEdu Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#dc2626',
+                        accent: '#059669',
+                        cyber: '#6366f1',
+                        dark: '#0f172a'
+                    }
+                },
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="bg-dark text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
+        <div class="p-4">
+            <a href="instructor-dashboard.html" class="font-bold text-xl text-secondary block mb-8 flex items-center">
+                <i class="fas fa-shield-alt text-2xl mr-3"></i>
+                CyberEdu Admin
+            </a>
+            
+            <div class="mb-8">
+                <div class="flex items-center mb-4">
+                    <div>
+                        <p class="font-medium" id="instructor-name"></p>
+                        <p class="text-sm text-gray-400" id="instructor-email"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="space-y-1">
+                <a href="instructor-dashboard.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    <span>Genel Bakış</span>
+                </a>
+                <a href="instructor-courses.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-graduation-cap mr-3"></i>
+                    <span>Eğitim Modülleri</span>
+                </a>
+                <a href="instructor-content.html" class="flex items-center px-4 py-3 rounded-lg bg-slate-800">
+                    <i class="fas fa-video mr-3 text-secondary"></i>
+                    <span>Video Yönetimi</span>
+                </a>
+                <a href="instructor-students.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-users mr-3"></i>
+                    <span>Öğrenci Yönetimi</span>
+                </a>
+            </nav>
+
+            <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
+                <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    <span>Çıkış Yap</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="md:ml-64 p-4 md:p-8 w-full min-h-screen">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <header class="mb-8">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Video Yönetimi</h1>
+                        <p class="text-gray-600">Siber güvenlik eğitim videolarını yönetin ve AI ile sorular oluşturun</p>
+                    </div>
+                    <button class="bg-cyber text-white px-4 py-2 rounded-lg flex items-center" id="add-video-btn">
+                        <i class="fas fa-plus mr-2"></i>
+                        Yeni Video Ekle
+                    </button>
+                </div>
+            </header>
+
+            <!-- Video Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Toplam Video</h3>
+                        <div class="h-10 w-10 bg-cyber/10 text-cyber rounded-lg flex items-center justify-center">
+                            <i class="fas fa-video"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900" id="total-videos">0</p>
+                    <p class="text-xs text-gray-500 mt-1">yüklenen video</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Toplam Soru</h3>
+                        <div class="h-10 w-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900" id="total-questions">0</p>
+                    <p class="text-xs text-gray-500 mt-1">AI ile oluşturulan</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Aktif Modül</h3>
+                        <div class="h-10 w-10 bg-accent/10 text-accent rounded-lg flex items-center justify-center">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900" id="active-modules">8</p>
+                    <p class="text-xs text-gray-500 mt-1">siber güvenlik modülü</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">İzlenme</h3>
+                        <div class="h-10 w-10 bg-secondary/10 text-secondary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900" id="total-views">2,547</p>
+                    <p class="text-xs text-gray-500 mt-1">toplam görüntülenme</p>
+                </div>
+            </div>
+
+            <!-- Video Upload Section -->
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-100">
+                <h2 class="text-xl font-semibold mb-6 flex items-center">
+                    <i class="fas fa-cloud-upload-alt text-cyber mr-2"></i>
+                    Video Yükleme
+                </h2>
+                
+                <form id="videoForm" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Video Başlığı</label>
+                            <input type="text" id="videoTitle" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                                   placeholder="Kriptoloji Temelleri">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Modül</label>
+                            <select id="videoModule" required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent">
+                                <option value="">Modül Seçin</option>
+                                <option value="1">Bilgi Güvenliği Temelleri</option>
+                                <option value="2">Kriptoloji ve Şifreleme</option>
+                                <option value="3">Ağ Güvenliği</option>
+                                <option value="4">Web Güvenliği</option>
+                                <option value="5">Malware Analizi</option>
+                                <option value="6">Penetrasyon Testleri</option>
+                                <option value="7">Incident Response</option>
+                                <option value="8">Compliance ve Standartlar</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Video Açıklaması</label>
+                        <textarea id="videoDescription" rows="3" required
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                                  placeholder="Video içeriği hakkında detaylı açıklama..."></textarea>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">YouTube Video URL</label>
+                            <input type="url" id="youtubeUrl" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                                   placeholder="https://www.youtube.com/watch?v=...">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Video Süresi (dakika)</label>
+                            <input type="number" id="videoDuration" min="1" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                                   placeholder="45">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Zorluk Seviyesi</label>
+                        <select id="difficulty-level" required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent">
+                            <option value="">Seviye Seçin</option>
+                            <option value="beginner">Başlangıç</option>
+                            <option value="intermediate">Orta</option>
+                            <option value="advanced">İleri</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4">
+                        <button type="submit" class="bg-cyber text-white px-6 py-3 rounded-lg hover:bg-cyber/90">
+                            <i class="fas fa-upload mr-2"></i>
+                            Video Yükle
+                        </button>
+                        <!-- Removed AI and manual question buttons from here - they'll be available after video is uploaded -->
+                    </div>
+                </form>
+            </div>
+
+            <!-- Manual Questions Section -->
+            <div id="manual-questions-section" class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-100" style="display: none;">
+                <h2 class="text-xl font-semibold mb-6 flex items-center">
+                    <i class="fas fa-edit text-primary mr-2"></i>
+                    Manuel Soru Oluşturma
+                </h2>
+                
+                <div id="manual-questions-container" class="space-y-6">
+                    <!-- Manual questions will be added here -->
+                </div>
+                
+                <div class="flex items-center space-x-4 mt-6">
+                    <button type="button" onclick="addNewManualQuestion()" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90">
+                        <i class="fas fa-plus mr-2"></i>
+                        Yeni Soru Ekle
+                    </button>
+                    <button type="button" onclick="saveManualQuestions()" class="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent/90">
+                        <i class="fas fa-save mr-2"></i>
+                        Soruları Kaydet
+                    </button>
+                    <button type="button" onclick="cancelManualQuestions()" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">
+                        <i class="fas fa-times mr-2"></i>
+                        İptal
+                    </button>
+                </div>
+            </div>
+
+            <!-- Videos List -->
+            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-semibold flex items-center">
+                        <i class="fas fa-video text-primary mr-2"></i>
+                        Yüklenen Videolar
+                    </h2>
+                    <div class="flex items-center space-x-3">
+                        <select class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent text-sm" id="filterModule">
+                            <option value="">Tüm Modüller</option>
+                            <option value="1">Bilgi Güvenliği Temelleri</option>
+                            <option value="2">Kriptoloji ve Şifreleme</option>
+                            <option value="3">Ağ Güvenliği</option>
+                            <option value="4">Web Güvenliği</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="space-y-4" id="videos-container">
+                    <!-- Videos will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase Production DB -->
+    <script src="js/firebase-production.js"></script>
+    <script src="js/user-utils.js"></script>
+    <script src="js/gemini-api.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        let currentVideoId = null;
+        let questionCount = 0;
+        let editingVideoId = null;
+        let currentVideoQuestions = []; // New variable to hold manual questions for the current video
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('📄 Instructor Content sayfası yükleniyor...');
+            
+            // Initialize user info using UserUtils
+            await UserUtils.initializeUserInfo();
+            
+            // Update coordinator-specific display names
+            const userEmail = localStorage.getItem('userEmail');
+            if (userEmail) {
+                const userName = userEmail.split('@')[0];
+                const displayName = 'Koordinatör ' + userName.charAt(0).toUpperCase() + userName.slice(1);
+                
+                // Desktop sidebar güncelle
+                const instructorNameEl = document.getElementById('instructor-name');
+                const instructorEmailEl = document.getElementById('instructor-email');
+                
+                if (instructorNameEl) instructorNameEl.textContent = displayName;
+                if (instructorEmailEl) instructorEmailEl.textContent = '';
+            }
+            
+            // Wait for Firebase Production DB to initialize
+            await new Promise(resolve => {
+                const checkDB = () => {
+                    if (window.DB) {
+                        console.log('✅ Firebase Production DB hazır!');
+                        resolve();
+                    } else {
+                        console.log('⏳ Firebase Production DB bekleniyor...');
+                        setTimeout(checkDB, 200);
+                    }
+                };
+                checkDB();
+            });
+            
+            await loadVideos();
+            await loadModules(); // Load modules for dropdown
+            setupEventListeners();
+            setupMobileMenu();
+            
+            console.log('✅ Instructor Content sayfası hazır!');
+        });
+
+        function setupEventListeners() {
+            // Video form submission
+            const videoForm = document.getElementById('videoForm');
+            if (videoForm) {
+                videoForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    console.log('📝 Form submit edildi');
+                    addVideo();
+                });
+            }
+
+            // Filter videos
+            const filterModule = document.getElementById('filterModule');
+            if (filterModule) {
+                filterModule.addEventListener('change', function() {
+                    filterVideos();
+                });
+            }
+
+            // Logout functionality
+            document.querySelectorAll('a[href="index.html"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('loginTime');
+                    
+                    console.log('Koordinatör çıkışı yapıldı');
+                    window.location.href = 'index.html';
+                });
+            });
+        }
+
+        // Show manual question section
+        function showManualQuestionSection() {
+            const section = document.getElementById('manual-questions-section');
+            section.style.display = 'block';
+            
+            // Add first question if none exists
+            if (document.getElementById('manual-questions-container').children.length === 0) {
+                addNewManualQuestion();
+            }
+        }
+
+        // Add new manual question form
+        function addNewManualQuestion() {
+            const container = document.getElementById('manual-questions-container');
+            const questionCount = container.children.length + 1;
+            
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'border border-gray-200 rounded-lg p-6 bg-gray-50';
+            questionDiv.innerHTML = `
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-medium text-gray-900">Soru ${questionCount}</h3>
+                    <button type="button" onclick="removeManualQuestion(this)" class="text-red-600 hover:text-red-800 text-sm">
+                        <i class="fas fa-trash mr-1"></i> Sil
+                    </button>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Soru Metni</label>
+                        <textarea class="question-text w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" 
+                                  rows="3" placeholder="Sorunuzu buraya yazın..." required></textarea>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">A Seçeneği</label>
+                            <input type="text" class="option-a w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" 
+                                   placeholder="A seçeneği" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">B Seçeneği</label>
+                            <input type="text" class="option-b w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" 
+                                   placeholder="B seçeneği" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">C Seçeneği</label>
+                            <input type="text" class="option-c w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" 
+                                   placeholder="C seçeneği" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">D Seçeneği</label>
+                            <input type="text" class="option-d w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" 
+                                   placeholder="D seçeneği" required>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Doğru Cevap</label>
+                            <select class="correct-answer w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                                <option value="">Doğru cevabı seçin</option>
+                                <option value="0">A</option>
+                                <option value="1">B</option>
+                                <option value="2">C</option>
+                                <option value="3">D</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Zorluk Seviyesi</label>
+                            <select class="question-difficulty w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="easy">Kolay</option>
+                                <option value="medium" selected>Orta</option>
+                                <option value="hard">Zor</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Açıklama (İsteğe bağlı)</label>
+                        <textarea class="question-explanation w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" 
+                                  rows="2" placeholder="Doğru cevabın açıklaması..."></textarea>
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(questionDiv);
+        }
+
+        // Remove manual question
+        function removeManualQuestion(button) {
+            const questionDiv = button.closest('.border');
+            questionDiv.remove();
+            
+            // Update question numbers
+            const container = document.getElementById('manual-questions-container');
+            const questions = container.children;
+            for (let i = 0; i < questions.length; i++) {
+                const title = questions[i].querySelector('h3');
+                title.textContent = `Soru ${i + 1}`;
+            }
+        }
+
+        // Save manual questions
+        async function saveManualQuestions() {
+            try {
+                if (!currentVideoId) {
+                    alert('❌ Önce bir video seçin!');
+                    return;
+                }
+
+                const questions = [];
+                const questionDivs = document.querySelectorAll('#manual-questions-container .border');
+                
+                if (questionDivs.length === 0) {
+                    alert('❌ Hiç soru eklenmemiş!');
+                    return;
+                }
+
+                // Process each question
+                questionDivs.forEach((div, index) => {
+                    const questionText = div.querySelector('.question-text').value.trim();
+                    const optionA = div.querySelector('.option-a').value.trim();
+                    const optionB = div.querySelector('.option-b').value.trim();
+                    const optionC = div.querySelector('.option-c').value.trim();
+                    const optionD = div.querySelector('.option-d').value.trim();
+                    const correctAnswer = parseInt(div.querySelector('.correct-answer').value);
+                    const difficulty = div.querySelector('.question-difficulty').value;
+                    const explanation = div.querySelector('.question-explanation').value.trim();
+
+                    if (!questionText || !optionA || !optionB || !optionC || !optionD || isNaN(correctAnswer)) {
+                        alert(`❌ Soru ${index + 1}: Tüm alanları doldurun ve doğru cevabı seçin!`);
+                        return;
+                    }
+
+                    questions.push({
+                        question: questionText,
+                        options: [optionA, optionB, optionC, optionD],
+                        correct: correctAnswer,
+                        difficulty: difficulty,
+                        explanation: explanation,
+                        type: 'manual',
+                        createdAt: new Date().toISOString()
+                    });
+                });
+
+                if (questions.length === 0) {
+                    alert('❌ Geçerli soru bulunamadı!');
+                    return;
+                }
+
+                // Load existing video and add questions
+                const videoResult = await window.DB.load('coordinatorVideos', currentVideoId);
+                const video = (videoResult && videoResult.success) ? videoResult.data : null;
+                
+                if (!video) {
+                    alert('❌ Video bulunamadı!');
+                    return;
+                }
+
+                // Add questions to existing video
+                if (!video.questions) {
+                    video.questions = [];
+                }
+                
+                const oldQuestionCount = video.questions.length;
+                video.questions.push(...questions);
+                video.updatedAt = new Date().toISOString();
+
+                // Save updated video
+                const success = await window.DB.save('coordinatorVideos', video, currentVideoId);
+                
+                if (success && success.success) {
+                    console.log('✅ Sorular kaydedildi:', questions.length);
+                    
+                    // Sync to student dashboard
+                    await window.DB.syncCoordinatorVideos();
+                    
+                    alert(`✅ ${questions.length} soru "${video.title}" videosuna başarıyla eklendi!\n\nÖnceki soru sayısı: ${oldQuestionCount}\nYeni soru sayısı: ${video.questions.length}`);
+                    
+                    // Hide section and clear
+                    cancelManualQuestions();
+                    currentVideoId = null;
+                    
+                    // Reload videos to show updated count
+                    await loadVideos();
+                } else {
+                    throw new Error('Sorular kaydedilemedi');
+                }
+
+            } catch (error) {
+                console.error('❌ Manuel soru kaydetme hatası:', error);
+                alert('❌ Sorular kaydedilirken hata oluştu: ' + error.message);
+            }
+        }
+
+        // Cancel manual questions
+        function cancelManualQuestions() {
+            const section = document.getElementById('manual-questions-section');
+            if (section) {
+                section.style.display = 'none';
+                
+                // Reset section title
+                const sectionTitle = section.querySelector('h2');
+                if (sectionTitle) {
+                    sectionTitle.innerHTML = `
+                        <i class="fas fa-edit text-primary mr-2"></i>
+                        Manuel Soru Oluşturma
+                    `;
+                }
+            }
+            
+            // Clear all questions
+            const container = document.getElementById('manual-questions-container');
+            if (container) {
+                container.innerHTML = '';
+            }
+            
+            // Reset current video
+            currentVideoId = null;
+        }
+
+        function setupMobileMenu() {
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileSidebar = document.getElementById('mobile-sidebar-overlay');
+            const closeMobileMenu = document.getElementById('close-mobile-menu');
+            
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileSidebar.classList.toggle('hidden');
+                    document.body.classList.toggle('overflow-hidden');
+                });
+            }
+            
+            if (closeMobileMenu) {
+                closeMobileMenu.addEventListener('click', function() {
+                    mobileSidebar.classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden');
+                });
+            }
+        }
+
+        async function addVideo() {
+            console.log('🎬 Video ekleme başladı...');
+            
+            const title = document.getElementById('videoTitle').value;
+            const moduleId = document.getElementById('videoModule').value;
+            const youtubeUrl = document.getElementById('youtubeUrl').value;
+            const description = document.getElementById('videoDescription').value;
+            const duration = document.getElementById('videoDuration').value;
+            const difficulty = document.getElementById('difficulty-level').value;
+
+            console.log('📋 Form verileri:', { title, moduleId, youtubeUrl, description, duration, difficulty });
+
+            // Validate required fields
+            if (!title || !moduleId || !youtubeUrl) {
+                alert('❌ Lütfen tüm gerekli alanları doldurun!');
+                return;
+            }
+
+            // Validate YouTube URL
+            if (!isValidYouTubeUrl(youtubeUrl)) {
+                alert('❌ Geçerli bir YouTube URL\'si girin!');
+                return;
+            }
+
+            // Extract video ID from YouTube URL
+            const videoId = extractYouTubeVideoId(youtubeUrl);
+            if (!videoId) {
+                alert('❌ YouTube video ID\'si çıkarılamadı!');
+                return;
+            }
+
+            console.log('🎥 YouTube Video ID:', videoId);
+            
+            try {
+                if (editingVideoId) {
+                    console.log('✏️ Video güncelleniyor:', editingVideoId);
+                    
+                    // Update existing video
+                    const existingVideoResult = await window.DB.load('coordinatorVideos', editingVideoId);
+                    const existingVideo = (existingVideoResult && existingVideoResult.success) ? existingVideoResult.data : null;
+                    
+                    if (!existingVideo) {
+                        alert('❌ Güncellenecek video bulunamadı!');
+                        return;
+                    }
+                    
+                    const videoData = {
+                        ...existingVideo,
+                        title: title,
+                        moduleId: moduleId,
+                        youtubeUrl: youtubeUrl,
+                        youtubeVideoId: videoId,
+                        description: description,
+                        duration: duration,
+                        difficulty: difficulty,
+                        updatedAt: new Date().toISOString()
+                    };
+                    
+                    const success = await window.DB.save('coordinatorVideos', videoData, editingVideoId);
+                    if (success && success.success) {
+                        console.log('✅ Video güncellendi:', editingVideoId);
+                        await window.DB.syncCoordinatorVideos();
+                        alert(`✅ "${title}" videosu başarıyla güncellendi!`);
+                        resetVideoForm();
+                    } else {
+                        throw new Error('Video güncelleme başarısız');
+                    }
+                } else {
+                    console.log('➕ Yeni video ekleniyor...');
+                    
+                    // Create new video - without questions dependency
+                    const videoData = {
+                        title: title,
+                        moduleId: moduleId,
+                        youtubeUrl: youtubeUrl,
+                        youtubeVideoId: videoId,
+                        description: description,
+                        duration: duration,
+                        difficulty: difficulty,
+                        questions: [], // Empty questions array - will be added separately
+                        createdAt: new Date().toISOString()
+                    };
+
+                    const success = await window.DB.save('coordinatorVideos', videoData);
+                    if (success && success.success) {
+                        console.log('✅ Yeni video eklendi');
+                        
+                        // Sync to student dashboard immediately
+                        await window.DB.syncCoordinatorVideos();
+                        console.log('✅ Video senkronizasyonu tamamlandı');
+                        
+                        alert(`✅ "${title}" videosu başarıyla eklendi!\n\nVideo ID: ${success.id || 'Otomatik'}\nModül: ${moduleId}\n\n💡 İpucu: Video listesinden "Soru Ekle" butonunu kullanarak sorular ekleyebilirsiniz.`);
+                        
+                        // Clear form and reload
+                        resetVideoForm();
+                        await loadVideos();
+                    } else {
+                        throw new Error('Video ekleme başarısız');
+                    }
+                }
+                
+            } catch (error) {
+                console.error('❌ Video ekleme/güncelleme hatası:', error);
+                alert('❌ Video işleminde hata oluştu: ' + error.message);
+            }
+        }
+
+        function resetVideoForm() {
+            // Reset form
+            document.getElementById('videoForm').reset();
+            
+            // Reset editing state
+            editingVideoId = null;
+            currentVideoId = null;
+            
+            // Reset questions
+            currentVideoQuestions = [];
+            
+            // Hide manual question section
+            const section = document.getElementById('manual-questions-section');
+            if (section) {
+                section.style.display = 'none';
+            }
+            const container = document.getElementById('manual-questions-container');
+            if (container) {
+                container.innerHTML = '';
+            }
+            
+            // Reset form button
+            const submitButton = document.querySelector('#videoForm button[type="submit"]');
+            if (submitButton) {
+                submitButton.innerHTML = '<i class="fas fa-upload mr-2"></i>Video Yükle';
+                submitButton.className = 'bg-cyber text-white px-6 py-3 rounded-lg hover:bg-cyber/90';
+            }
+        }
+
+        function addQuestion(containerType) {
+            questionCount++;
+            
+            const containerId = containerType === 'new-video' ? 'new-video-questions-container' : 'existing-video-questions-container';
+            const questionsContainer = document.getElementById(containerId);
+            
+            if (!questionsContainer) {
+                alert('HATA: Questions container bulunamadı!');
+                return;
+            }
+            
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'border border-gray-200 rounded-lg p-4 mb-4';
+            questionDiv.innerHTML = `
+                <div class="flex justify-between items-center mb-3">
+                    <h4 class="font-medium text-gray-900">Soru ${questionCount}</h4>
+                    <button type="button" onclick="removeQuestion(this)" class="text-red-600 hover:text-red-800">
+                        ✕ Sil
+                    </button>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Soru Metni</label>
+                        <textarea class="w-full p-3 border border-gray-300 rounded-lg" rows="3" placeholder="Sorunuzu yazın..."></textarea>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">A Seçeneği</label>
+                            <input type="text" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="A seçeneği">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">B Seçeneği</label>
+                            <input type="text" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="B seçeneği">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">C Seçeneği</label>
+                            <input type="text" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="C seçeneği">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">D Seçeneği</label>
+                            <input type="text" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="D seçeneği">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Doğru Cevap</label>
+                        <select class="w-full p-3 border border-gray-300 rounded-lg">
+                            <option value="0">A</option>
+                            <option value="1">B</option>
+                            <option value="2">C</option>
+                            <option value="3">D</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+            
+            questionsContainer.appendChild(questionDiv);
+            console.log(`✅ Soru ${questionCount} formu eklendi`);
+        }
+
+        function removeQuestion(button) {
+            button.closest('.border').remove();
+        }
+
+        async function saveQuestions(containerType) {
+            if (!currentVideoId) {
+                alert('HATA: Önce bir video seçmelisiniz!');
+                return;
+            }
+
+            const questions = [];
+            const containerId = containerType === 'new-video' ? 'new-video-questions-container' : 'existing-video-questions-container';
+            const questionDivs = document.querySelectorAll(`#${containerId} .border`);
+            
+            if (questionDivs.length === 0) {
+                alert('HATA: Hiç soru eklenmemiş! Önce "Yeni Soru Ekle" butonuna tıklayın.');
+                return;
+            }
+
+            // Process each question
+            questionDivs.forEach((div, index) => {
+                const textarea = div.querySelector('textarea');
+                const textInputs = div.querySelectorAll('input[type="text"]');
+                const selectElement = div.querySelector('select');
+
+                if (!textarea || textInputs.length < 4 || !selectElement) {
+                    return;
+                }
+
+                const questionText = textarea.value ? textarea.value.trim() : '';
+                const optionA = textInputs[0] && textInputs[0].value ? textInputs[0].value.trim() : '';
+                const optionB = textInputs[1] && textInputs[1].value ? textInputs[1].value.trim() : '';
+                const optionC = textInputs[2] && textInputs[2].value ? textInputs[2].value.trim() : '';
+                const optionD = textInputs[3] && textInputs[3].value ? textInputs[3].value.trim() : '';
+                const correctAnswer = selectElement.value ? parseInt(selectElement.value) : NaN;
+
+                if (!questionText || !optionA || !optionB || !optionC || !optionD || isNaN(correctAnswer)) {
+                    alert(`Soru ${index + 1}: Tüm alanları doldurun ve doğru cevabı seçin!`);
+                    return;
+                }
+
+                questions.push({
+                    question: questionText,
+                    options: [optionA, optionB, optionC, optionD],
+                    correct: correctAnswer
+                });
+            });
+
+            if (questions.length === 0) {
+                alert('Hiç geçerli soru bulunamadı! Lütfen tüm alanları doldurun.');
+                return;
+            }
+
+            try {
+                // Save questions to video
+                const videoResult = await window.DB.load('coordinatorVideos', currentVideoId);
+                const video = (videoResult && videoResult.success) ? videoResult.data : null;
+                
+                if (!video) {
+                    alert('HATA: Video bulunamadı! ID: ' + currentVideoId);
+                    console.error('Video bulunamadı:', currentVideoId);
+                    return;
+                }
+
+                // Add questions to video
+                if (!video.questions) {
+                    video.questions = [];
+                }
+                
+                const oldQuestionCount = video.questions.length;
+                video.questions.push(...questions);
+                const newQuestionCount = video.questions.length;
+
+                // Save updated video
+                const success = await window.DB.save('coordinatorVideos', video, currentVideoId);
+                
+                if (success && success.success) {
+                    console.log('✅ Sorular kaydedildi:', questions.length);
+                    console.log('📊 Toplam soru sayısı:', newQuestionCount);
+                    
+                    // Sync to student dashboard
+                    await window.DB.syncCoordinatorVideos();
+                    
+                    alert(`✅ ${questions.length} soru başarıyla eklendi!\n\nToplam soru sayısı: ${newQuestionCount}`);
+                    
+                    // Hide forms and clear
+                    if (containerType === 'new-video') {
+                        document.getElementById('questions-section').style.display = 'none';
+                        document.getElementById('new-video-questions-container').innerHTML = '';
+                    } else {
+                        document.getElementById('question-form').style.display = 'none';
+                        document.getElementById('video-form').style.display = 'block';
+                        document.getElementById('existing-video-questions-container').innerHTML = '';
+                    }
+                    
+                    questionCount = 0;
+                    currentVideoId = null;
+                    
+                    // Reload videos to show updated count
+                    await loadVideos();
+                } else {
+                    throw new Error('Soru kaydetme başarısız');
+                }
+                
+            } catch (error) {
+                console.error('❌ Soru kaydetme hatası:', error);
+                alert('❌ Sorular kaydedilirken hata oluştu: ' + error.message);
+            }
+        }
+
+        async function loadVideos() {
+            try {
+                console.log('📚 Videolar yükleniyor...');
+                const videosResult = await window.DB.load('coordinatorVideos');
+                const videos = (videosResult && videosResult.success) ? videosResult.data : [];
+                const videosList = document.getElementById('videos-container');
+                
+                console.log('📹 Bulunan video sayısı:', videos.length);
+                
+                if (videos.length === 0) {
+                    videosList.innerHTML = '<p class="text-gray-500 text-center py-8">Henüz video eklenmemiş. Yukarıdaki formu kullanarak ilk videonuzu ekleyin.</p>';
+                    return;
+                }
+
+                videosList.innerHTML = videos.map(video => `
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-3 mb-2">
+                                    <h4 class="font-medium text-gray-900">${video.title}</h4>
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Modül ${video.moduleId}</span>
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">${video.questions ? video.questions.length : 0} Soru</span>
+                                    <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded-full">🔥 Firebase</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-2">${video.description || 'Açıklama yok'}</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500">
+                                    <span><i class="fas fa-clock mr-1"></i>${video.duration} dk</span>
+                                    <span><i class="fas fa-signal mr-1"></i>${video.difficulty}</span>
+                                    <span><i class="fas fa-calendar mr-1"></i>${video.createdAt ? new Date(video.createdAt).toLocaleDateString('tr-TR') : 'Tarih yok'}</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <a href="${video.youtubeUrl}" target="_blank" class="bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700">
+                                    <i class="fab fa-youtube mr-1"></i>YouTube
+                                </a>
+                                <button onclick="generateAIQuestionsForVideo('${video.id}', '${video.title.replace(/'/g, '\\\'')}')" class="bg-accent text-white px-3 py-1 rounded text-xs hover:bg-accent/90">
+                                    <i class="fas fa-robot mr-1"></i>AI Soru
+                                </button>
+                                <button onclick="addManualQuestionsToVideo('${video.id}', '${video.title.replace(/'/g, '\\\'')}')" class="bg-primary text-white px-3 py-1 rounded text-xs hover:bg-primary/90">
+                                    <i class="fas fa-plus mr-1"></i>Manuel Soru
+                                </button>
+                                <button onclick="editVideo('${video.id}')" class="bg-secondary text-white px-3 py-1 rounded text-xs hover:bg-secondary/90">
+                                    <i class="fas fa-edit mr-1"></i>Düzenle
+                                </button>
+                                <button onclick="deleteVideo('${video.id}')" class="bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700">
+                                    <i class="fas fa-trash mr-1"></i>Sil
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Update stats
+                await updateStats();
+                console.log('✅ Videolar başarıyla yüklendi');
+                
+            } catch (error) {
+                console.error('❌ Video yükleme hatası:', error);
+                document.getElementById('videos-list').innerHTML = '<p class="text-red-500 text-center py-8">Videolar yüklenirken hata oluştu.</p>';
+            }
+        }
+
+        async function loadModules() {
+            try {
+                console.log('📚 Modüller yükleniyor...');
+                const modulesResult = await window.DB.loadModules();
+                const modules = (modulesResult && modulesResult.success) ? modulesResult.data : [];
+                const moduleSelect = document.getElementById('module-select');
+                
+                if (moduleSelect) {
+                    moduleSelect.innerHTML = '<option value="">Modül Seçin</option>'; // Clear default options
+                    modules.forEach(module => {
+                        const option = document.createElement('option');
+                        option.value = module.id;
+                        option.textContent = `${module.title || module.name}`;
+                        moduleSelect.appendChild(option);
+                    });
+                    console.log('✅ Modüller başarıyla yüklendi:', modules.length);
+                } else {
+                    console.error('HATA: Modül seçimi için element bulunamadı!');
+                }
+            } catch (error) {
+                console.error('❌ Modül yükleme hatası:', error);
+            }
+        }
+
+        // Generate AI questions - simplified fallback only
+        async function generateAIQuestions(containerType) {
+            try {
+                let videoTitle = document.getElementById('videoTitle').value;
+                let videoDescription = document.getElementById('videoDescription').value;
+                let moduleId = document.getElementById('videoModule').value;
+                
+                // Determine question topic
+                let questionTopic = videoDescription || videoTitle || 'Siber güvenlik konuları';
+                
+                if (moduleId) {
+                    const moduleNames = {
+                        '1': 'Bilgi Güvenliği Temelleri',
+                        '2': 'Kriptoloji ve Şifreleme',
+                        '3': 'Ağ Güvenliği',
+                        '4': 'Web Güvenliği',
+                        '5': 'Malware Analizi',
+                        '6': 'Penetrasyon Testleri',
+                        '7': 'Incident Response',
+                        '8': 'Compliance ve Standartlar'
+                    };
+                    questionTopic = moduleNames[moduleId] || questionTopic;
+                }
+                
+                console.log('🎯 Soru konusu:', questionTopic);
+                
+                // Show loading
+                const button = document.getElementById('generateAIQuestions');
+                if (!button) {
+                    console.error('❌ AI buton bulunamadı');
+                    return;
+                }
+                
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sorular Oluşturuluyor...';
+                button.disabled = true;
+                
+                // Generate questions using enhanced fallback
+                const questions = generateCyberSecurityQuestions(questionTopic, moduleId);
+                
+                // Add type and timestamp to AI questions
+                const aiQuestions = questions.map(q => ({
+                    ...q,
+                    type: 'ai',
+                    generated_at: new Date().toISOString(),
+                    topic: questionTopic
+                }));
+                
+                // Add to current video questions
+                if (!currentVideoQuestions) {
+                    currentVideoQuestions = [];
+                }
+                
+                currentVideoQuestions.push(...aiQuestions);
+                
+                // Show success message
+                if (aiQuestions.length > 0) {
+                    alert(`✅ ${aiQuestions.length} AI soru başarıyla oluşturuldu!\n\nKonu: ${questionTopic}\n\nToplam soru sayısı: ${currentVideoQuestions.length}\n\nSorular:\n${aiQuestions.map((q, i) => `${i + 1}. ${q.question.substring(0, 60)}...`).join('\n')}`);
+                } else {
+                    alert('❌ Sorular oluşturulamadı.');
+                }
+                
+                // Restore button
+                button.innerHTML = originalText;
+                button.disabled = false;
+                
+                console.log('✅ AI sorular eklendi:', aiQuestions);
+                
+            } catch (error) {
+                console.error('❌ Soru oluşturma hatası:', error);
+                alert('❌ Sorular oluşturulurken hata oluştu: ' + error.message);
+                
+                // Restore button
+                const button = document.getElementById('generateAIQuestions');
+                if (button) {
+                    button.innerHTML = '<i class="fas fa-robot mr-2"></i>AI ile Soru Oluştur';
+                    button.disabled = false;
+                }
+            }
+        }
+        
+        // Generate cyber security questions based on module
+        function generateCyberSecurityQuestions(topic, moduleId) {
+            const questionSets = {
+                '1': [ // Bilgi Güvenliği Temelleri
+                    {
+                        question: "CIA üçlüsünde 'C' harfi neyi temsil eder?",
+                        options: ['Confidentiality (Gizlilik)', 'Consistency (Tutarlılık)', 'Compliance (Uyumluluk)', 'Control (Kontrol)'],
+                        correct: 0,
+                        explanation: 'CIA üçlüsü Confidentiality, Integrity ve Availability\'den oluşur.'
+                    },
+                    {
+                        question: "Bilgi güvenliği politikalarının temel amacı nedir?",
+                        options: ['Maliyeti düşürmek', 'Verimliliği artırmak', 'Bilgi varlıklarını korumak', 'Teknoloji kullanımını artırmak'],
+                        correct: 2,
+                        explanation: 'Bilgi güvenliği politikaları organizasyonun bilgi varlıklarını korumayı amaçlar.'
+                    },
+                    {
+                        question: "Risk değerlendirmesinde hangi formül kullanılır?",
+                        options: ['Risk = Tehdit + Zafiyet', 'Risk = Tehdit × Zafiyet × Etki', 'Risk = Zafiyet - Tehdit', 'Risk = Etki ÷ Zafiyet'],
+                        correct: 1,
+                        explanation: 'Risk, tehdit, zafiyet ve etkinin çarpımı ile hesaplanır.'
+                    }
+                ],
+                '2': [ // Kriptoloji ve Şifreleme
+                    {
+                        question: "AES şifreleme algoritması hangi tür şifrelemedir?",
+                        options: ['Asimetrik', 'Simetrik', 'Hash', 'Hibrit'],
+                        correct: 1,
+                        explanation: 'AES (Advanced Encryption Standard) simetrik bir şifreleme algoritmasıdır.'
+                    },
+                    {
+                        question: "RSA algoritmasının temel prensibi nedir?",
+                        options: ['Simetrik anahtar', 'Asal sayı çarpanlarına ayırma', 'Hash fonksiyonu', 'Blok şifreleme'],
+                        correct: 1,
+                        explanation: 'RSA, büyük asal sayıların çarpanlarına ayırma zorluğuna dayanır.'
+                    },
+                    {
+                        question: "Dijital imza hangi amaçla kullanılır?",
+                        options: ['Şifreleme', 'Kimlik doğrulama ve bütünlük', 'Sıkıştırma', 'Hız artırma'],
+                        correct: 1,
+                        explanation: 'Dijital imza, kimlik doğrulama ve veri bütünlüğü sağlamak için kullanılır.'
+                    }
+                ],
+                '3': [ // Ağ Güvenliği
+                    {
+                        question: "Firewall'un temel işlevi nedir?",
+                        options: ['Virüs tarama', 'Ağ trafiğini filtreleme', 'Veri yedekleme', 'Performans artırma'],
+                        correct: 1,
+                        explanation: 'Firewall, ağ trafiğini güvenlik kurallarına göre filtreler.'
+                    },
+                    {
+                        question: "IDS ve IPS arasındaki temel fark nedir?",
+                        options: ['IDS sadece izler, IPS müdahale eder', 'IPS sadece izler, IDS müdahale eder', 'Aynı işlevi görürler', 'Farklı protokoller kullanırlar'],
+                        correct: 0,
+                        explanation: 'IDS (Intrusion Detection System) sadece izler, IPS (Intrusion Prevention System) aktif müdahale eder.'
+                    },
+                    {
+                        question: "DDoS saldırısının temel amacı nedir?",
+                        options: ['Veri çalmak', 'Sistemi kullanılamaz hale getirmek', 'Şifre kırmak', 'Ağa sızmak'],
+                        correct: 1,
+                        explanation: 'DDoS saldırıları sistemleri aşırı yükleyerek kullanılamaz hale getirmeyi amaçlar.'
+                    }
+                ],
+                '4': [ // Web Güvenliği
+                    {
+                        question: "SQL Injection saldırısı hangi katmanda gerçekleşir?",
+                        options: ['Sunum katmanı', 'Uygulama katmanı', 'Veri katmanı', 'Ağ katmanı'],
+                        correct: 2,
+                        explanation: 'SQL Injection saldırıları veri katmanında veritabanına yönelik gerçekleşir.'
+                    },
+                    {
+                        question: "XSS saldırısının önlenmesi için hangi yöntem kullanılır?",
+                        options: ['Input validation', 'Output encoding', 'Her ikisi', 'Hiçbiri'],
+                        correct: 2,
+                        explanation: 'XSS saldırılarını önlemek için hem input validation hem de output encoding gereklidir.'
+                    },
+                    {
+                        question: "HTTPS protokolü hangi güvenlik özelliğini sağlar?",
+                        options: ['Sadece şifreleme', 'Sadece kimlik doğrulama', 'Şifreleme ve kimlik doğrulama', 'Sadece bütünlük'],
+                        correct: 2,
+                        explanation: 'HTTPS hem şifreleme hem de kimlik doğrulama sağlar.'
+                    }
+                ]
+            };
+            
+            // Get questions for the module or use general questions
+            let moduleQuestions = questionSets[moduleId] || questionSets['1'];
+            
+            // Add topic-specific variations
+            const generalQuestions = [
+                {
+                    question: `${topic} alanında en kritik güvenlik önlemi nedir?`,
+                    options: ['Güçlü şifreler', 'Düzenli güncellemeler', 'Kullanıcı eğitimi', 'Tümü gerekli'],
+                    correct: 3,
+                    explanation: 'Etkili güvenlik için tüm önlemler birlikte uygulanmalıdır.'
+                },
+                {
+                    question: `${topic} konusunda güncel kalmanın en iyi yolu nedir?`,
+                    options: ['Sadece kitap okumak', 'Konferanslar ve eğitimler', 'İnternet araştırması', 'Deneyim kazanmak'],
+                    correct: 1,
+                    explanation: 'Konferanslar ve sürekli eğitim güncel kalmak için en etkili yöntemdir.'
+                }
+            ];
+            
+            // Combine module questions with general questions
+            return [...moduleQuestions, ...generalQuestions].slice(0, 3);
+        }
+
+        // Add questions to existing video - simplified
+        async function addQuestionsToVideo(videoId, videoTitle) {
+            console.log('🎬 Soru ekleme başladı');
+            console.log(`🆔 Video ID: ${videoId}`);
+            console.log(`📺 Video: ${videoTitle}`);
+            
+            // Set current video for questions
+            currentVideoId = videoId;
+            console.log(`✅ currentVideoId ayarlandı: ${currentVideoId}`);
+            
+            // Show manual question section
+            const manualQuestionsSection = document.getElementById('manual-questions-section');
+            if (manualQuestionsSection) {
+                manualQuestionsSection.style.display = 'block';
+            }
+            // Add first question if none exists
+            if (document.getElementById('manual-questions-container').children.length === 0) {
+                addNewManualQuestion();
+            }
+        }
+
+        async function updateStats() {
+            try {
+                const stats = await window.DB.getStats();
+                console.log('📊 İstatistikler:', stats);
+                
+                document.getElementById('total-videos').textContent = stats.coordinatorVideos || 0;
+                
+                // Calculate total questions
+                const videosResult = await window.DB.load('coordinatorVideos');
+                const videos = (videosResult && videosResult.success) ? videosResult.data : [];
+                const totalQuestions = videos.reduce((sum, video) => {
+                    return sum + (video.questions ? video.questions.length : 0);
+                }, 0);
+                
+                document.getElementById('total-questions').textContent = totalQuestions;
+                
+            } catch (error) {
+                console.error('❌ İstatistik güncelleme hatası:', error);
+            }
+        }
+
+        // Edit video function - fixed
+        async function editVideo(videoId) {
+            try {
+                const video = await window.DB.load('coordinatorVideos', videoId);
+                if (!video) {
+                    alert('Video bulunamadı!');
+                    return;
+                }
+                
+                // Fill form with existing data
+                document.getElementById('videoTitle').value = video.title;
+                document.getElementById('videoModule').value = video.moduleId;
+                document.getElementById('youtubeUrl').value = video.youtubeUrl;
+                document.getElementById('videoDescription').value = video.description || '';
+                document.getElementById('videoDuration').value = video.duration;
+                
+                const difficultySelect = document.getElementById('difficulty-level');
+                if (difficultySelect) {
+                    difficultySelect.value = video.difficulty || 'intermediate';
+                }
+                
+                // Set editing mode
+                editingVideoId = videoId;
+                
+                // Update form button
+                const submitButton = document.querySelector('#videoForm button[type="submit"]');
+                if (submitButton) {
+                    submitButton.innerHTML = '<i class="fas fa-save mr-2"></i>Değişiklikleri Kaydet';
+                    submitButton.className = 'bg-secondary text-white px-6 py-3 rounded-lg hover:bg-secondary/90';
+                }
+                
+                alert(`"${video.title}" videosu düzenleme moduna alındı.`);
+                
+            } catch (error) {
+                console.error('❌ Video düzenleme hatası:', error);
+                alert('❌ Video düzenleme moduna geçerken hata oluştu: ' + error.message);
+            }
+        }
+
+        // Delete video function
+        async function deleteVideo(videoId) {
+            try {
+                const video = await window.DB.load('coordinatorVideos', videoId);
+                if (!video) {
+                    alert('Video bulunamadı!');
+                    return;
+                }
+                
+                const confirmDelete = confirm(`"${video.title}" videosunu silmek istediğinizden emin misiniz?\n\nBu işlem geri alınamaz ve video tüm modüllerden kaldırılacaktır.`);
+                
+                if (confirmDelete) {
+                    const success = await window.DB.delete('coordinatorVideos', videoId);
+                    
+                    if (success) {
+                        console.log('✅ Video silindi:', videoId);
+                        
+                        // Sync to remove from student dashboard
+                        await window.DB.syncCoordinatorVideos();
+                        
+                        alert(`"${video.title}" videosu başarıyla silindi.`);
+                        
+                        // Reload videos list
+                        await loadVideos();
+                    } else {
+                        throw new Error('Video silme başarısız');
+                    }
+                }
+                
+            } catch (error) {
+                console.error('❌ Video silme hatası:', error);
+                alert('❌ Video silinirken hata oluştu: ' + error.message);
+            }
+        }
+
+        // Filter videos by module
+        async function filterVideos() {
+            try {
+                const selectedModule = document.getElementById('filterModule').value;
+                const videosResult = await window.DB.load('coordinatorVideos');
+                const videos = (videosResult && videosResult.success) ? videosResult.data : [];
+                
+                let filteredVideos = videos;
+                if (selectedModule && selectedModule !== 'all') {
+                    filteredVideos = videos.filter(video => video.moduleId === selectedModule);
+                }
+                
+                const videosList = document.getElementById('videos-container');
+                
+                if (filteredVideos.length === 0) {
+                    videosList.innerHTML = '<p class="text-gray-500 text-center py-8">Bu modülde video bulunamadı.</p>';
+                    return;
+                }
+                
+                videosList.innerHTML = filteredVideos.map(video => `
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-3 mb-2">
+                                    <h4 class="font-medium text-gray-900">${video.title}</h4>
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Modül ${video.moduleId}</span>
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">${video.questions ? video.questions.length : 0} Soru</span>
+                                    <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded-full">🔥 Firebase</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-2">${video.description || 'Açıklama yok'}</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500">
+                                    <span><i class="fas fa-clock mr-1"></i>${video.duration} dk</span>
+                                    <span><i class="fas fa-signal mr-1"></i>${video.difficulty}</span>
+                                    <span><i class="fas fa-calendar mr-1"></i>${video.createdAt ? new Date(video.createdAt).toLocaleDateString('tr-TR') : 'Tarih yok'}</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <a href="${video.youtubeUrl}" target="_blank" class="bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700">
+                                    <i class="fab fa-youtube mr-1"></i>YouTube
+                                </a>
+                                <button onclick="generateAIQuestionsForVideo('${video.id}', '${video.title.replace(/'/g, '\\\'')}')" class="bg-accent text-white px-3 py-1 rounded text-xs hover:bg-accent/90">
+                                    <i class="fas fa-robot mr-1"></i>AI Soru
+                                </button>
+                                <button onclick="addManualQuestionsToVideo('${video.id}', '${video.title.replace(/'/g, '\\\'')}')" class="bg-primary text-white px-3 py-1 rounded text-xs hover:bg-primary/90">
+                                    <i class="fas fa-plus mr-1"></i>Manuel Soru
+                                </button>
+                                <button onclick="editVideo('${video.id}')" class="bg-secondary text-white px-3 py-1 rounded text-xs hover:bg-secondary/90">
+                                    <i class="fas fa-edit mr-1"></i>Düzenle
+                                </button>
+                                <button onclick="deleteVideo('${video.id}')" class="bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700">
+                                    <i class="fas fa-trash mr-1"></i>Sil
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('❌ Video filtreleme hatası:', error);
+            }
+        }
+
+        // Cancel questions function - simplified
+        function cancelQuestions() {
+            // Reset state
+            currentVideoId = null;
+            questionCount = 0;
+            
+            console.log('✅ Soru ekleme iptal edildi');
+        }
+
+        // Show video form function - simplified
+        function showVideoForm() {
+            // Reset editing state
+            editingVideoId = null;
+            currentVideoId = null;
+            
+            // Reset form
+            document.getElementById('videoForm').reset();
+            
+            // Reset form button
+            const submitButton = document.querySelector('#videoForm button[type="submit"]');
+            if (submitButton) {
+                submitButton.innerHTML = '<i class="fas fa-upload mr-2"></i>Video Yükle';
+                submitButton.className = 'bg-cyber text-white px-6 py-3 rounded-lg hover:bg-cyber/90';
+            }
+        }
+
+        // Utility functions
+        function isValidYouTubeUrl(url) {
+            const regex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
+            return regex.test(url);
+        }
+
+        function extractYouTubeVideoId(url) {
+            const regex = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/;
+            const match = url.match(regex);
+            return match ? match[1] : null;
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userRole');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Manual sync function
+        async function manualSyncVideos() {
+            try {
+                await window.DB.syncCoordinatorVideos();
+                alert('Videolar başarıyla senkronize edildi!');
+                await loadVideos(); // Reload to show updated count
+                await updateStats();
+            } catch (error) {
+                console.error('❌ Video senkronizasyonu hatası:', error);
+                alert('Videolar senkronize edilirken hata oluştu: ' + error.message);
+            }
+        }
+
+        // Test video creation function
+        async function createTestVideo() {
+            try {
+                const title = 'Test Video ' + Math.floor(Math.random() * 100);
+                const moduleId = '1'; // Example module
+                const youtubeUrl = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'; // Example YouTube URL
+                const description = 'Bu bir test videosudur. Koordinatör tarafından eklendi.';
+                const duration = '5';
+                const difficulty = 'beginner';
+ 
+                const videoId = extractYouTubeVideoId(youtubeUrl);
+                if (!videoId) {
+                    alert('Geçerli bir YouTube URL\'si girin.');
+                    return;
+                }
+ 
+                const videoData = {
+                    title: title,
+                    moduleId: moduleId,
+                    youtubeUrl: youtubeUrl,
+                    youtubeVideoId: videoId,
+                    description: description,
+                    duration: duration,
+                    difficulty: difficulty,
+                    questions: [
+                        {
+                            question: "Bu test videosu hangi amaçla oluşturuldu?",
+                            options: ["Test için", "Eğlence için", "Sıkıntıdan", "Bilinmiyor"],
+                            correct: 0,
+                            explanation: "Bu video senkronizasyon testleri için oluşturulmuştur."
+                        }
+                    ]
+                };
+ 
+                console.log('📹 Test video oluşturuluyor:', videoData);
+ 
+                const success = await window.DB.save('coordinatorVideos', videoData);
+                if (success && success.success) {
+                    console.log('✅ Test video eklendi:', success.id);
+                    
+                    // Immediately sync
+                    const syncResult = await window.DB.syncCoordinatorVideos();
+                    console.log('🔄 Senkronizasyon sonucu:', syncResult);
+                    
+                    alert(`✅ Test video başarıyla eklendi ve senkronize edildi!\nVideo ID: ${success.id}\nModül: ${moduleId}`);
+                    await loadVideos(); // Reload to show the new video
+                    await updateStats();
+                } else {
+                    throw new Error('Test video ekleme başarısız');
+                }
+            } catch (error) {
+                console.error('❌ Test video oluşturma hatası:', error);
+                alert('❌ Test video oluşturulurken hata oluştu: ' + error.message);
+            }
+        }
+
+        // Debug function to check Firebase data
+        async function debugFirebaseData() {
+            try {
+                const videosResult = await window.DB.load('coordinatorVideos');
+                const modulesResult = await window.DB.loadModules();
+                const statsResult = await window.DB.getStats();
+
+                console.log('📚 Firebase Coordinator Videos:');
+                console.log(videosResult);
+                console.log('📚 Firebase Modules:');
+                console.log(modulesResult);
+                console.log('📊 Firebase Stats:');
+                console.log(statsResult);
+
+                alert('Firebase verileri konsola yazdırıldı.');
+            } catch (error) {
+                console.error('❌ Firebase veri yazdırma hatası:', error);
+                alert('Firebase veri yazdırılırken hata oluştu: ' + error.message);
+            }
+        }
+
+        // Generate AI questions for specific video
+        async function generateAIQuestionsForVideo(videoId, videoTitle) {
+            try {
+                console.log('🤖 AI sorular üretiliyor video için:', videoId, videoTitle);
+                
+                // Load video data
+                const videoResult = await window.DB.load('coordinatorVideos', videoId);
+                const video = (videoResult && videoResult.success) ? videoResult.data : null;
+                
+                if (!video) {
+                    alert('❌ Video bulunamadı!');
+                    return;
+                }
+                
+                // Set current video
+                currentVideoId = videoId;
+                
+                // Determine question topic
+                let questionTopic = video.description || video.title || 'Siber güvenlik konuları';
+                
+                if (video.moduleId) {
+                    const moduleNames = {
+                        '1': 'Bilgi Güvenliği Temelleri',
+                        '2': 'Kriptoloji ve Şifreleme',
+                        '3': 'Ağ Güvenliği',
+                        '4': 'Web Güvenliği',
+                        '5': 'Malware Analizi',
+                        '6': 'Penetrasyon Testleri',
+                        '7': 'Incident Response',
+                        '8': 'Compliance ve Standartlar'
+                    };
+                    questionTopic = moduleNames[video.moduleId] || questionTopic;
+                }
+                
+                console.log('🎯 Soru konusu:', questionTopic);
+                
+                // Generate questions using enhanced fallback
+                const questions = generateCyberSecurityQuestions(questionTopic, video.moduleId);
+                
+                // Add type and timestamp to AI questions
+                const aiQuestions = questions.map(q => ({
+                    ...q,
+                    type: 'ai',
+                    generated_at: new Date().toISOString(),
+                    topic: questionTopic
+                }));
+                
+                if (aiQuestions.length === 0) {
+                    alert('❌ AI sorular üretilemedi.');
+                    return;
+                }
+                
+                // Add questions to video
+                if (!video.questions) {
+                    video.questions = [];
+                }
+                
+                const oldQuestionCount = video.questions.length;
+                video.questions.push(...aiQuestions);
+                video.updatedAt = new Date().toISOString();
+                
+                // Save updated video
+                const success = await window.DB.save('coordinatorVideos', video, videoId);
+                
+                if (success && success.success) {
+                    console.log('✅ AI sorular eklendi:', aiQuestions.length);
+                    
+                    // Sync to student dashboard
+                    await window.DB.syncCoordinatorVideos();
+                    
+                    alert(`✅ ${aiQuestions.length} AI soru "${videoTitle}" videosuna başarıyla eklendi!\n\nKonu: ${questionTopic}\n\nÖnceki soru sayısı: ${oldQuestionCount}\nYeni soru sayısı: ${video.questions.length}\n\nSorular:\n${aiQuestions.map((q, i) => `${i + 1}. ${q.question.substring(0, 60)}...`).join('\n')}`);
+                    
+                    // Reload videos to show updated count
+                    await loadVideos();
+                } else {
+                    throw new Error('AI sorular kaydedilemedi');
+                }
+                
+                currentVideoId = null;
+                
+            } catch (error) {
+                console.error('❌ AI soru üretim hatası:', error);
+                alert('❌ AI sorular üretilirken hata oluştu: ' + error.message);
+            }
+        }
+
+        // Add manual questions to specific video
+        function addManualQuestionsToVideo(videoId, videoTitle) {
+            console.log('📝 Manuel soru ekleme başladı video için:', videoId, videoTitle);
+            
+            // Set current video for questions
+            currentVideoId = videoId;
+            console.log(`✅ currentVideoId ayarlandı: ${currentVideoId}`);
+            
+            // Show manual question section
+            const manualQuestionsSection = document.getElementById('manual-questions-section');
+            if (manualQuestionsSection) {
+                manualQuestionsSection.style.display = 'block';
+                
+                // Update section title to show video name
+                const sectionTitle = manualQuestionsSection.querySelector('h2');
+                if (sectionTitle) {
+                    sectionTitle.innerHTML = `
+                        <i class="fas fa-edit text-primary mr-2"></i>
+                        "${videoTitle}" için Manuel Soru Oluşturma
+                    `;
+                }
+            }
+            
+            // Add first question if none exists
+            if (document.getElementById('manual-questions-container').children.length === 0) {
+                addNewManualQuestion();
+            }
+            
+            // Scroll to the section
+            manualQuestionsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
+

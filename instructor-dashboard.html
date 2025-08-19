@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koordinatör Paneli - CyberEdu Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#dc2626',
+                        accent: '#059669',
+                        cyber: '#6366f1',
+                        dark: '#0f172a'
+                    }
+                },
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="bg-dark text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
+        <div class="p-4">
+            <a href="instructor-dashboard.html" class="font-bold text-xl text-secondary block mb-8 flex items-center">
+                <i class="fas fa-shield-alt text-2xl mr-3"></i>
+                CyberEdu Admin
+            </a>
+            
+            <div class="mb-8">
+                <div class="flex items-center mb-4">
+                    <div>
+                        <p class="font-medium" id="instructor-name"></p>
+                        <p class="text-sm text-gray-400" id="instructor-email"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="space-y-1">
+                <a href="instructor-dashboard.html" class="flex items-center px-4 py-3 rounded-lg bg-slate-800">
+                    <i class="fas fa-tachometer-alt mr-3 text-secondary"></i>
+                    <span>Genel Bakış</span>
+                </a>
+                <a href="instructor-courses.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-graduation-cap mr-3"></i>
+                    <span>Eğitim Modülleri</span>
+                </a>
+                <a href="instructor-content.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-video mr-3"></i>
+                    <span>Video Yönetimi</span>
+                </a>
+                <a href="instructor-students.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-users mr-3"></i>
+                    <span>Öğrenci Yönetimi</span>
+                </a>
+            </nav>
+
+            <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
+                <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    <span>Çıkış Yap</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="md:ml-64 p-4 md:p-8 w-full min-h-screen">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <header class="mb-8">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Koordinatör Paneli</h1>
+                        <p class="text-gray-600">Bilgi Sistemleri ve Güvenlik Eğitimi Yönetimi</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-lg font-semibold text-gray-900" id="header-instructor-name"></p>
+                        <p class="text-sm text-gray-500">Sistem Yöneticisi</p>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Toplam Öğrenci</h3>
+                        <div class="h-10 w-10 bg-cyber/10 text-cyber rounded-lg flex items-center justify-center">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900" id="total-students">0</p>
+                    <p class="text-xs text-gray-500 mt-1">kayıtlı öğrenci</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Aktif Modüller</h3>
+                        <div class="h-10 w-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900" id="active-modules">0</p>
+                    <p class="text-xs text-gray-500 mt-1">eğitim modülü</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Yüklenen Videolar</h3>
+                        <div class="h-10 w-10 bg-accent/10 text-accent rounded-lg flex items-center justify-center">
+                            <i class="fas fa-video"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900" id="total-videos">0</p>
+                    <p class="text-xs text-gray-500 mt-1">eğitim videosu</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Sistem Durumu</h3>
+                        <div class="h-10 w-10 bg-accent/10 text-accent rounded-lg flex items-center justify-center">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-accent">Aktif</p>
+                    <p class="text-xs text-gray-500 mt-1">tüm sistemler çalışıyor</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Main Content -->
+                <div class="lg:col-span-2">
+                    <!-- Recent Activity -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                        <h2 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-clock text-primary mr-2"></i>
+                            Son Aktiviteler
+                        </h2>
+                        
+                        <div class="space-y-4" id="recent-activities">
+                            <!-- Recent activities will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Student Progress Overview -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h2 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-chart-bar text-accent mr-2"></i>
+                            Öğrenci İlerleme Durumu
+                        </h2>
+                        
+                        <div class="space-y-4" id="student-progress-overview">
+                            <!-- Student progress will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sidebar -->
+                <div class="lg:col-span-1">
+                    <!-- Quick Actions -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center">
+                            <i class="fas fa-bolt text-secondary mr-2"></i>
+                            Hızlı İşlemler
+                        </h3>
+                        
+                        <div class="space-y-3">
+                            <a href="instructor-content.html" class="flex items-center p-3 bg-cyber/5 rounded-lg border border-cyber/20 hover:bg-cyber/10 transition-colors">
+                                <i class="fas fa-plus text-cyber mr-3"></i>
+                                <span class="font-medium">Yeni Video Ekle</span>
+                            </a>
+                            <a href="instructor-courses.html" class="flex items-center p-3 bg-primary/5 rounded-lg border border-primary/20 hover:bg-primary/10 transition-colors">
+                                <i class="fas fa-cog text-primary mr-3"></i>
+                                <span class="font-medium">Modül Ayarları</span>
+                            </a>
+                            <a href="instructor-students.html" class="flex items-center p-3 bg-accent/5 rounded-lg border border-accent/20 hover:bg-accent/10 transition-colors">
+                                <i class="fas fa-chart-line text-accent mr-3"></i>
+                                <span class="font-medium">Öğrenci Raporları</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- System Status -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center">
+                            <i class="fas fa-server text-primary mr-2"></i>
+                            Sistem Durumu
+                        </h3>
+                        
+                        <div class="space-y-3" id="system-status">
+                            <div class="flex items-center justify-between p-3 bg-accent/5 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-database text-accent"></i>
+                                    <span class="text-sm font-medium">Firebase</span>
+                                </div>
+                                <span class="text-xs px-2 py-1 bg-accent text-white rounded-full">Aktif</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-cyber/5 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-robot text-cyber"></i>
+                                    <span class="text-sm font-medium">Gemini AI</span>
+                                </div>
+                                <span class="text-xs px-2 py-1 bg-cyber text-white rounded-full">Aktif</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-primary/5 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-shield-alt text-primary"></i>
+                                    <span class="text-sm font-medium">Güvenlik</span>
+                                </div>
+                                <span class="text-xs px-2 py-1 bg-primary text-white rounded-full">Güvenli</span>
+                            </div>
+                        </div>
+                            </div>
+
+                    <!-- Security Alert -->
+                    <div class="bg-gradient-to-br from-secondary/10 to-primary/10 rounded-xl p-6 border border-secondary/20">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center text-secondary">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            Güvenlik Uyarısı
+                        </h3>
+                        
+                        <div class="bg-white/50 rounded-lg p-4">
+                            <p class="text-sm text-gray-700 leading-relaxed">
+                                Koordinatör hesabınızla sisteme erişim sağladınız. 
+                                Lütfen güvenlik protokollerini takip edin.
+                            </p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase Production DB -->
+    <script src="js/firebase-production.js"></script>
+    <script src="js/user-utils.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize user info using UserUtils
+            await UserUtils.initializeUserInfo();
+            
+            // Update coordinator-specific display names
+            const userEmail = localStorage.getItem('userEmail');
+            if (userEmail) {
+                const userName = userEmail.split('@')[0];
+                const displayName = 'Dr. ' + userName.charAt(0).toUpperCase() + userName.slice(1);
+                
+                const instructorNameEl = document.getElementById('instructor-name');
+                const headerInstructorNameEl = document.getElementById('header-instructor-name');
+                
+                if (instructorNameEl) instructorNameEl.textContent = displayName;
+                if (headerInstructorNameEl) headerInstructorNameEl.textContent = displayName;
+            }
+            
+            // Load dashboard data
+            await loadCoordinatorDashboardData();
+            await loadRecentActivities();
+            await loadStudentProgressOverview();
+        });
+        
+        // Load real coordinator dashboard data
+        async function loadCoordinatorDashboardData() {
+            try {
+                console.log('📊 Koordinatör dashboard verileri yükleniyor...');
+                
+                // Wait for Firebase to be ready
+                await new Promise(resolve => {
+                    const checkDB = () => {
+                        if (window.DB) {
+                            resolve();
+                        } else {
+                            setTimeout(checkDB, 100);
+                        }
+                    };
+                    checkDB();
+                });
+                
+                // Load students
+                const studentsResult = await window.DB.load('userProfiles');
+                const students = (studentsResult && studentsResult.success) ? studentsResult.data : [];
+                const studentCount = students.filter(s => s.role === 'student').length;
+                
+                // Load modules
+                const modulesResult = await window.DB.loadModules();
+                const modules = (modulesResult && modulesResult.success) ? modulesResult.data : [];
+                const activeModulesCount = modules.filter(m => m.status === 'active' || !m.status).length;
+                
+                // Load videos
+                const videosResult = await window.DB.load('coordinatorVideos');
+                const videos = (videosResult && videosResult.success) ? videosResult.data : [];
+                const videoCount = videos.length;
+                
+                // Update UI
+                document.getElementById('total-students').textContent = studentCount;
+                document.getElementById('active-modules').textContent = activeModulesCount;
+                document.getElementById('total-videos').textContent = videoCount;
+                
+                console.log('✅ Koordinatör dashboard verileri yüklendi');
+                
+            } catch (error) {
+                console.error('❌ Koordinatör dashboard veri yükleme hatası:', error);
+            }
+        }
+        
+        // Load recent activities
+        async function loadRecentActivities() {
+            try {
+                const recentActivitiesContainer = document.getElementById('recent-activities');
+                
+                // Get real data from Firebase
+                const studentsResult = await window.DB.load('userProfiles');
+                const students = (studentsResult && studentsResult.success) ? studentsResult.data : [];
+                
+                const progressResult = await window.DB.load('userProgress');
+                const progressData = (progressResult && progressResult.success) ? progressResult.data : [];
+                
+                const videosResult = await window.DB.load('coordinatorVideos');
+                const videos = (videosResult && videosResult.success) ? videosResult.data : [];
+                
+                // Create activities based on real data
+                let activities = [];
+                
+                // Recent registrations
+                const recentStudents = students
+                    .filter(s => s.role === 'student' && s.registrationDate)
+                    .sort((a, b) => new Date(b.registrationDate) - new Date(a.registrationDate))
+                    .slice(0, 3);
+                
+                recentStudents.forEach(student => {
+                    activities.push({
+                        type: 'registration',
+                        message: `${student.fullName || student.firstName} sisteme kaydoldu`,
+                        time: formatRelativeTime(student.registrationDate),
+                        icon: 'fa-user-plus',
+                        color: 'accent'
+                    });
+                });
+                
+                // Recent video uploads
+                const recentVideos = videos
+                    .filter(v => v.createdAt)
+                    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                    .slice(0, 2);
+                
+                recentVideos.forEach(video => {
+                    activities.push({
+                        type: 'video',
+                        message: `"${video.title}" videosu yüklendi`,
+                        time: formatRelativeTime(video.createdAt),
+                        icon: 'fa-video',
+                        color: 'cyber'
+                    });
+                });
+                
+                // Recent progress updates
+                const recentProgress = progressData
+                    .filter(p => p.lastUpdated)
+                    .sort((a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated))
+                    .slice(0, 2);
+                
+                recentProgress.forEach(progress => {
+                    const student = students.find(s => s.userEmail === progress.userEmail);
+                    if (student) {
+                        activities.push({
+                            type: 'progress',
+                            message: `${student.fullName || student.firstName} modül ${progress.moduleId}'i tamamladı`,
+                            time: formatRelativeTime(progress.lastUpdated),
+                            icon: 'fa-check-circle',
+                            color: 'primary'
+                        });
+                    }
+                });
+                
+                // Sort by time and limit
+                activities.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                activities = activities.slice(0, 6);
+                
+                if (activities.length === 0) {
+                    activities = [
+                        {
+                            type: 'system',
+                            message: 'Koordinatör paneline hoş geldiniz',
+                            time: 'Şimdi',
+                            icon: 'fa-info-circle',
+                            color: 'cyber'
+                        }
+                    ];
+                }
+                
+                recentActivitiesContainer.innerHTML = activities.map(activity => `
+                    <div class="flex items-center space-x-4 p-4 bg-${activity.color}/5 rounded-lg border border-${activity.color}/20">
+                        <div class="w-10 h-10 bg-${activity.color}/10 text-${activity.color} rounded-lg flex items-center justify-center">
+                            <i class="fas ${activity.icon}"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-medium text-gray-900 text-sm">${activity.message}</p>
+                            <p class="text-xs text-gray-500">${activity.time}</p>
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('❌ Recent activities yükleme hatası:', error);
+            }
+        }
+        
+        // Load student progress overview
+        async function loadStudentProgressOverview() {
+            try {
+                const studentProgressContainer = document.getElementById('student-progress-overview');
+                
+                // Get students and their progress
+                const studentsResult = await window.DB.load('userProfiles');
+                const students = (studentsResult && studentsResult.success) ? studentsResult.data : [];
+                
+                const progressResult = await window.DB.load('userProgress');
+                const progressData = (progressResult && progressResult.success) ? progressResult.data : [];
+                
+                const studentProfiles = students.filter(s => s.role === 'student').slice(0, 5);
+                
+                if (studentProfiles.length === 0) {
+                    studentProgressContainer.innerHTML = `
+                        <div class="text-center py-8">
+                            <i class="fas fa-users text-gray-400 text-3xl mb-3"></i>
+                            <p class="text-gray-600">Henüz kayıtlı öğrenci bulunmuyor</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                studentProgressContainer.innerHTML = studentProfiles.map(student => {
+                    const studentProgress = progressData.filter(p => p.userEmail === student.userEmail);
+                    const completedModules = studentProgress.filter(p => p.completionRate >= 100).length;
+                    const avgScore = studentProgress.reduce((sum, p) => sum + (p.examScore || 0), 0) / Math.max(studentProgress.length, 1);
+                    const progressPercent = Math.round((completedModules / 8) * 100);
+                    
+                    return `
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 bg-gradient-to-br from-cyber to-primary rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-user text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">${student.fullName || student.firstName}</h4>
+                                    <p class="text-sm text-gray-600">${getDepartmentName(student.department)}</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="flex items-center space-x-2 mb-1">
+                                    <div class="w-16 h-2 bg-gray-200 rounded-full">
+                                        <div class="h-2 bg-gradient-to-r from-cyber to-primary rounded-full" style="width: ${progressPercent}%"></div>
+                                    </div>
+                                    <span class="text-xs text-gray-500">${progressPercent}%</span>
+                                </div>
+                                <p class="text-xs text-gray-500">${completedModules}/8 modül • ${Math.round(avgScore) || 0} puan</p>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+            } catch (error) {
+                console.error('❌ Student progress overview yükleme hatası:', error);
+            }
+        }
+        
+        // Helper functions
+        function getDepartmentName(departmentCode) {
+            const departments = {
+                'bilgisayar-muhendisligi': 'Bilgisayar Mühendisliği',
+                'bilisim-sistemleri': 'Bilişim Sistemleri',
+                'siber-guvenlik': 'Siber Güvenlik',
+                'yazilim-muhendisligi': 'Yazılım Mühendisliği',
+                'bilgisayar-programciligi': 'Bilgisayar Programcılığı'
+            };
+            return departments[departmentCode] || 'Bilgi Teknolojileri';
+        }
+        
+        function formatRelativeTime(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+            const diffMinutes = Math.floor(diffTime / (1000 * 60));
+            
+            if (diffMinutes < 60) {
+                return `${diffMinutes} dakika önce`;
+            } else if (diffHours < 24) {
+                return `${diffHours} saat önce`;
+            } else if (diffDays === 1) {
+                return 'Dün';
+            } else if (diffDays < 7) {
+                return `${diffDays} gün önce`;
+            } else {
+                return date.toLocaleDateString('tr-TR');
+            }
+        }
+    </script>
+</body>
+</html> 

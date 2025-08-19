@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Öğrenci Paneli - CyberEdu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#dc2626',
+                        accent: '#059669',
+                        cyber: '#6366f1',
+                        dark: '#0f172a'
+                    }
+                },
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="bg-dark text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
+        <div class="p-4">
+            <a href="student-dashboard.html" class="font-bold text-xl text-cyber block mb-8 flex items-center">
+                <i class="fas fa-shield-alt text-2xl mr-3"></i>
+                CyberEdu
+            </a>
+            
+            <div class="mb-8">
+                <div class="flex items-center mb-4">
+                    <div>
+                        <p class="font-medium" id="user-name"></p>
+                        <p class="text-sm text-gray-400" id="user-email"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="space-y-1">
+                <a href="student-dashboard.html" class="flex items-center px-4 py-3 rounded-lg bg-slate-800">
+                    <i class="fas fa-tachometer-alt mr-3 text-cyber"></i>
+                    <span>Genel Bakış</span>
+                </a>
+                <a href="courses.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-graduation-cap mr-3"></i>
+                    <span>Eğitim Modülleri</span>
+                </a>
+                <a href="progress.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-chart-line mr-3"></i>
+                    <span>İlerlemem</span>
+                </a>
+                <a href="my-notes.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-sticky-note mr-3"></i>
+                    <span>Notlarım</span>
+                </a>
+                <a href="downloads.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-download mr-3"></i>
+                    <span>Kaynaklar</span>
+                </a>
+                <a href="account.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-user-cog mr-3"></i>
+                    <span>Profil Ayarları</span>
+                </a>
+            </nav>
+
+            <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
+                <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    <span>Çıkış Yap</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="md:ml-64 p-4 md:p-8 w-full min-h-screen">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <header class="mb-8">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Genel Bakış</h1>
+                        <p class="text-gray-600">Bilgi Sistemleri ve Güvenlik Eğitimi İlerlemeniz</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-lg font-semibold text-gray-900" id="header-user-name"></p>
+                        <p class="text-sm text-gray-500" id="user-department"></p>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Tamamlanan Modüller</h3>
+                        <div class="h-10 w-10 bg-accent/10 text-accent rounded-lg flex items-center justify-center">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900" id="completed-modules">0</p>
+                    <p class="text-xs text-gray-500 mt-1">/ <span id="total-modules">8</span> modül</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">İzlenen Videolar</h3>
+                        <div class="h-10 w-10 bg-cyber/10 text-cyber rounded-lg flex items-center justify-center">
+                            <i class="fas fa-play-circle"></i>
+            </div>
+        </div>
+                    <p class="text-2xl font-bold text-gray-900" id="watched-videos">0</p>
+                    <p class="text-xs text-gray-500 mt-1">/ <span id="total-videos">24</span> video</p>
+    </div>
+
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Sınav Başarısı</h3>
+                        <div class="h-10 w-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900" id="exam-average">0</p>
+                    <p class="text-xs text-gray-500 mt-1">ortalama puan</p>
+            </div>
+            
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Güvenlik Seviyesi</h3>
+                        <div class="h-10 w-10 bg-secondary/10 text-secondary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-shield-alt"></i>
+        </div>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900" id="security-level">Başlangıç</p>
+                    <p class="text-xs text-gray-500 mt-1" id="security-description">Temel seviye</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Progress Overview -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                        <h2 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-chart-line text-primary mr-2"></i>
+                            İlerleme Durumu
+                        </h2>
+                        
+                        <div class="mb-6">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-medium text-gray-600">Genel İlerleme</span>
+                                <span class="text-sm font-bold text-primary" id="overall-progress">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3">
+                                <div class="bg-gradient-to-r from-primary to-cyber h-3 rounded-full transition-all duration-500" style="width: 0%" id="progress-bar"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Module Progress -->
+                        <div class="space-y-4" id="module-progress-list">
+                            <!-- Module progress will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Continue Watching -->
+                    <div class="bg-white rounded-xl shadow-sm p-6" id="continue-watching-section">
+                        <h2 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-play text-cyber mr-2"></i>
+                            Kaldığın Yerden Devam Et
+                        </h2>
+                        
+                        <div class="flex items-center p-4 bg-gradient-to-r from-cyber/10 to-primary/10 rounded-lg border border-cyber/20" id="continue-watching-content">
+                            <!-- Continue watching content will be loaded here -->
+                                </div>
+                                </div>
+                            </div>
+
+                <!-- Sidebar -->
+                <div class="lg:col-span-1">
+                    <!-- Current Tasks -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center">
+                            <i class="fas fa-tasks text-accent mr-2"></i>
+                            Aktif Görevler
+                        </h3>
+                        
+                        <div class="space-y-3" id="active-tasks">
+                            <!-- Active tasks will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Recent Achievements -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center">
+                            <i class="fas fa-award text-yellow-500 mr-2"></i>
+                            Son Başarılar
+                        </h3>
+                        
+                        <div class="space-y-3" id="recent-achievements">
+                            <!-- Recent achievements will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Security Tips -->
+                    <div class="bg-gradient-to-br from-secondary/10 to-primary/10 rounded-xl p-6 border border-secondary/20">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center text-secondary">
+                            <i class="fas fa-lightbulb mr-2"></i>
+                            Günün Güvenlik İpucu
+                        </h3>
+                        
+                        <div class="bg-white/50 rounded-lg p-4" id="security-tip">
+                            <!-- Security tip will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+            
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase Production DB -->
+    <script src="js/firebase-production.js"></script>
+    <script src="js/user-utils.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize user info using UserUtils
+            await UserUtils.initializeUserInfo();
+            
+            // Load Firebase data
+            await loadDashboardData();
+            await loadContinueWatching(); 
+            await loadProgressOverview(); 
+            await loadActiveTasks();
+            await loadRecentAchievements();
+            await loadSecurityTip();
+        });
+        
+        // Load real dashboard data from Firebase
+        async function loadDashboardData() {
+            try {
+                const userEmail = localStorage.getItem('userEmail');
+                if (!userEmail) return;
+                
+                console.log('📊 Dashboard verileri yükleniyor...');
+                
+                // Wait for Firebase to be ready
+                await new Promise(resolve => {
+                    const checkDB = () => {
+                        if (window.DB) {
+                            resolve();
+                        } else {
+                            setTimeout(checkDB, 100);
+                        }
+                    };
+                    checkDB();
+                });
+                
+                // Load user profile
+                const profileResult = await window.DB.load('userProfiles');
+                const profiles = (profileResult && profileResult.success) ? profileResult.data : [];
+                const userProfile = profiles.find(p => p.userEmail === userEmail);
+                
+                if (userProfile) {
+                    document.getElementById('user-department').textContent = getDepartmentName(userProfile.department);
+                }
+                
+                // Load modules
+                const modulesResult = await window.DB.loadModules();
+                const modules = (modulesResult && modulesResult.success) ? modulesResult.data : [];
+                
+                // Load user progress
+                const progressResult = await window.DB.load('userProgress');
+                const progressData = (progressResult && progressResult.success) ? progressResult.data : [];
+                const userProgressData = progressData.filter(p => p.userEmail === userEmail);
+                
+                // Load coordinator videos
+                const videosResult = await window.DB.load('coordinatorVideos');
+                const videos = (videosResult && videosResult.success) ? videosResult.data : [];
+                
+                // Calculate real statistics
+                const completedModules = userProgressData.filter(p => p.completionRate >= 100).length;
+                const totalModules = modules.length || 8;
+                const watchedVideos = userProgressData.reduce((sum, p) => sum + (p.watchedVideos || 0), 0);
+                const totalVideos = videos.length || 24;
+                const examAverage = userProgressData.reduce((sum, p) => sum + (p.examScore || 0), 0) / Math.max(userProgressData.length, 1);
+                
+                // Update UI
+                document.getElementById('completed-modules').textContent = completedModules;
+                document.getElementById('total-modules').textContent = totalModules;
+                document.getElementById('watched-videos').textContent = watchedVideos;
+                document.getElementById('total-videos').textContent = totalVideos;
+                document.getElementById('exam-average').textContent = Math.round(examAverage) || 0;
+                
+                // Update security level based on progress
+                updateSecurityLevel(completedModules, totalModules, examAverage);
+                
+                console.log('✅ Dashboard verileri yüklendi');
+                
+            } catch (error) {
+                console.error('❌ Dashboard veri yükleme hatası:', error);
+            }
+        }
+        
+        // Load continue watching video
+        async function loadContinueWatching() {
+            try {
+                const userEmail = localStorage.getItem('userEmail');
+                if (!userEmail) return;
+                
+                console.log('📺 Devam edilen video yükleniyor...');
+                
+                // Get user progress data
+                const progressResult = await window.DB.load('userProgress');
+                const progressData = (progressResult && progressResult.success) ? progressResult.data : [];
+                const userProgress = progressData.find(p => p.userEmail === userEmail);
+                
+                // Get coordinator videos
+                const videosResult = await window.DB.load('coordinatorVideos');
+                const videos = (videosResult && videosResult.success) ? videosResult.data : [];
+                
+                let continueVideo = null;
+                
+                if (userProgress && userProgress.lastWatchedVideo) {
+                    // Find the last watched video
+                    continueVideo = videos.find(v => v.id === userProgress.lastWatchedVideo);
+                } else if (videos.length > 0) {
+                    // Use first available video
+                    continueVideo = videos[0];
+                }
+                
+                const continueWatchingContent = document.getElementById('continue-watching-content');
+                
+                if (continueVideo) {
+                    continueWatchingContent.innerHTML = `
+                        <div class="flex items-center space-x-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-cyber to-primary rounded-lg flex items-center justify-center">
+                                <i class="fas fa-play text-white text-xl"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900">${continueVideo.title}</h4>
+                                <p class="text-sm text-gray-600">Modül ${continueVideo.moduleId}</p>
+                                <p class="text-xs text-gray-500 mt-1">${continueVideo.duration} dakika</p>
+                            </div>
+                            <a href="module-detail.html?module=${continueVideo.moduleId}&video=${continueVideo.id}" 
+                               class="bg-cyber text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                                <i class="fas fa-play mr-1"></i>
+                                Devam Et
+                            </a>
+                                    </div>
+                    `;
+                } else {
+                    continueWatchingContent.innerHTML = `
+                        <div class="text-center py-8">
+                            <i class="fas fa-video text-gray-400 text-3xl mb-3"></i>
+                            <p class="text-gray-600">Henüz video izlemeye başlamadınız</p>
+                            <a href="courses.html" class="inline-block mt-3 bg-cyber text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                                Eğitime Başla
+                            </a>
+                        </div>
+                    `;
+                }
+                
+            } catch (error) {
+                console.error('❌ Continue watching yükleme hatası:', error);
+            }
+        }
+        
+        // Load progress overview
+        async function loadProgressOverview() {
+            try {
+                const userEmail = localStorage.getItem('userEmail');
+                if (!userEmail) return;
+                
+                console.log('📊 İlerleme özeti yükleniyor...');
+                
+                // Get modules and user progress
+                const modulesResult = await window.DB.loadModules();
+                const modules = (modulesResult && modulesResult.success) ? modulesResult.data : [];
+                
+                const progressResult = await window.DB.load('userProgress');
+                const progressData = (progressResult && progressResult.success) ? progressResult.data : [];
+                const userProgressData = progressData.filter(p => p.userEmail === userEmail);
+                
+                // Calculate overall progress
+                const totalModules = modules.length || 8;
+                const completedModules = userProgressData.filter(p => p.completionRate >= 100).length;
+                const totalProgress = Math.round((completedModules / totalModules) * 100);
+                
+                // Update progress overview UI
+                updateProgressOverviewUI(totalProgress, completedModules, totalModules);
+                
+                // Load module progress list
+                loadModuleProgressList(modules, userProgressData);
+                
+            } catch (error) {
+                console.error('❌ Progress overview yükleme hatası:', error);
+            }
+        }
+        
+        // Update progress overview UI
+        function updateProgressOverviewUI(totalProgress, completedModules, totalModules) {
+            // Update progress bar
+            const progressBar = document.getElementById('progress-bar');
+            if (progressBar) {
+                progressBar.style.width = `${totalProgress}%`;
+            }
+            
+            // Update overall progress text
+            const overallProgress = document.getElementById('overall-progress');
+            if (overallProgress) {
+                overallProgress.textContent = `${totalProgress}%`;
+            }
+            
+            // Update security level based on progress
+            updateSecurityLevel(completedModules, totalModules, totalProgress);
+        }
+        
+        // Load module progress list
+        function loadModuleProgressList(modules, userProgressData) {
+            const moduleProgressList = document.getElementById('module-progress-list');
+            if (!moduleProgressList) return;
+            
+            const cyberModules = [
+                { id: 1, title: "Bilgi Güvenliği Temelleri", description: "Temel güvenlik kavramları ve prensipler" },
+                { id: 2, title: "Kriptoloji ve Şifreleme", description: "Şifreleme algoritmaları ve uygulamaları" },
+                { id: 3, title: "Ağ Güvenliği", description: "Ağ protokolleri ve güvenlik mekanizmaları" },
+                { id: 4, title: "Web Güvenliği", description: "Web uygulamaları ve güvenlik açıkları" },
+                { id: 5, title: "Malware Analizi", description: "Zararlı yazılım tespiti ve analizi" },
+                { id: 6, title: "Penetrasyon Testleri", description: "Güvenlik testleri ve değerlendirme" },
+                { id: 7, title: "Incident Response", description: "Güvenlik olaylarına müdahale" },
+                { id: 8, title: "Compliance ve Standartlar", description: "Güvenlik standartları ve uyumluluk" }
+            ];
+            
+            moduleProgressList.innerHTML = '';
+            
+            cyberModules.forEach(module => {
+                const userProgress = userProgressData.find(p => p.moduleId === module.id) || { completionRate: 0 };
+                const progressPercent = userProgress.completionRate || 0;
+                
+                const moduleDiv = document.createElement('div');
+                moduleDiv.className = 'flex items-center justify-between p-4 bg-gray-50 rounded-lg';
+                moduleDiv.innerHTML = `
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 bg-gradient-to-br from-cyber to-primary rounded-lg flex items-center justify-center">
+                            <i class="fas ${getModuleIcon(module.id)} text-white"></i>
+                                </div>
+                                <div>
+                            <h4 class="font-medium text-gray-900">${module.title}</h4>
+                            <p class="text-sm text-gray-600">${module.description}</p>
+                            </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="w-16 h-2 bg-gray-200 rounded-full">
+                            <div class="h-2 bg-gradient-to-r from-cyber to-primary rounded-full" style="width: ${progressPercent}%"></div>
+                                </div>
+                        <p class="text-xs text-gray-500 mt-1">${Math.round(progressPercent)}%</p>
+                    </div>
+                `;
+                moduleProgressList.appendChild(moduleDiv);
+            });
+        }
+        
+        // Load active tasks
+        async function loadActiveTasks() {
+            try {
+                const userEmail = localStorage.getItem('userEmail');
+                if (!userEmail) return;
+                
+                // Get user progress to determine tasks
+                const progressResult = await window.DB.load('userProgress');
+                const progressData = (progressResult && progressResult.success) ? progressResult.data : [];
+                const userProgressData = progressData.filter(p => p.userEmail === userEmail);
+                
+                const completedModules = userProgressData.filter(p => p.completionRate >= 100).length;
+                const activeTasksContainer = document.getElementById('active-tasks');
+                
+                let tasks = [];
+                
+                if (completedModules === 0) {
+                    tasks = [
+                        { name: 'İlk Modülü Başlat', status: 'Bekliyor', color: 'cyber', icon: 'fa-play' },
+                        { name: 'Profil Bilgilerini Tamamla', status: 'Bekliyor', color: 'accent', icon: 'fa-user' }
+                    ];
+                } else if (completedModules < 3) {
+                    tasks = [
+                        { name: 'Kriptoloji Modülünü Tamamla', status: 'Devam Ediyor', color: 'primary', icon: 'fa-key' },
+                        { name: 'İlk Sınavı Geç', status: 'Hazır', color: 'secondary', icon: 'fa-clipboard-check' }
+                    ];
+                } else if (completedModules < 6) {
+                    tasks = [
+                        { name: 'Penetrasyon Testi Pratiği', status: 'Yeni', color: 'secondary', icon: 'fa-bug' },
+                        { name: 'Güvenlik Projesi', status: 'Devam Ediyor', color: 'accent', icon: 'fa-project-diagram' }
+                    ];
+                } else {
+                    tasks = [
+                        { name: 'Final Projesi', status: 'Hazır', color: 'primary', icon: 'fa-trophy' },
+                        { name: 'Sertifika Sınavı', status: 'Bekliyor', color: 'cyber', icon: 'fa-certificate' }
+                    ];
+                }
+                
+                activeTasksContainer.innerHTML = tasks.map(task => `
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-${task.color}/10 text-${task.color} rounded-lg flex items-center justify-center">
+                                <i class="fas ${task.icon}"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900 text-sm">${task.name}</p>
+                                <p class="text-xs text-gray-500">${task.status}</p>
+                            </div>
+                        </div>
+                        <span class="text-xs px-2 py-1 bg-${task.color}/10 text-${task.color} rounded-full">${task.status}</span>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('❌ Active tasks yükleme hatası:', error);
+            }
+        }
+        
+        // Load recent achievements
+        async function loadRecentAchievements() {
+            try {
+                const userEmail = localStorage.getItem('userEmail');
+                if (!userEmail) return;
+                
+                // Get user progress to determine achievements
+                const progressResult = await window.DB.load('userProgress');
+                const progressData = (progressResult && progressResult.success) ? progressResult.data : [];
+                const userProgressData = progressData.filter(p => p.userEmail === userEmail);
+                
+                const recentAchievementsContainer = document.getElementById('recent-achievements');
+                const completedModules = userProgressData.filter(p => p.completionRate >= 100).length;
+                
+                let achievements = [];
+                
+                if (completedModules >= 1) {
+                    achievements.push({
+                        title: 'İlk Adım',
+                        description: 'İlk modülü tamamladınız',
+                        icon: 'fa-star',
+                        color: 'accent',
+                        date: 'Bugün'
+                    });
+                }
+                
+                if (completedModules >= 3) {
+                    achievements.push({
+                        title: 'Güvenlik Uzmanı',
+                        description: 'Temel güvenlik modüllerini tamamladınız',
+                        icon: 'fa-shield-alt',
+                        color: 'primary',
+                        date: '2 gün önce'
+                    });
+                }
+                
+                if (completedModules >= 5) {
+                    achievements.push({
+                        title: 'Kriptoloji Ustası',
+                        description: 'Şifreleme konularında uzmanlaştınız',
+                        icon: 'fa-key',
+                        color: 'cyber',
+                        date: '1 hafta önce'
+                    });
+                }
+                
+                if (achievements.length === 0) {
+                    achievements = [
+                        {
+                            title: 'Hoş Geldiniz!',
+                            description: 'Eğitime başladığınız için tebrikler',
+                            icon: 'fa-graduation-cap',
+                            color: 'cyber',
+                            date: 'Yeni'
+                        }
+                    ];
+                }
+                
+                recentAchievementsContainer.innerHTML = achievements.map(achievement => `
+                    <div class="flex items-center space-x-3 p-3 bg-${achievement.color}/5 rounded-lg border border-${achievement.color}/20">
+                        <div class="w-8 h-8 bg-${achievement.color}/10 text-${achievement.color} rounded-lg flex items-center justify-center">
+                            <i class="fas ${achievement.icon}"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-medium text-gray-900 text-sm">${achievement.title}</p>
+                            <p class="text-xs text-gray-600">${achievement.description}</p>
+                        </div>
+                        <span class="text-xs text-gray-500">${achievement.date}</span>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('❌ Recent achievements yükleme hatası:', error);
+            }
+        }
+        
+        // Load security tip
+        function loadSecurityTip() {
+            const securityTips = [
+                "Güçlü şifreler her zaman büyük harf, küçük harf, rakam ve özel karakter içermelidir.",
+                "İki faktörlü kimlik doğrulama (2FA) hesap güvenliğinizi %99 artırır.",
+                "Şüpheli e-postaların eklerini asla açmayın ve linklerine tıklamayın.",
+                "Yazılımlarınızı ve işletim sisteminizi düzenli olarak güncelleyin.",
+                "Genel Wi-Fi ağlarında hassas işlemler yapmaktan kaçının.",
+                "Düzenli veri yedekleme alarak fidye yazılımlarına karşı korunun.",
+                "Sosyal mühendislik saldırılarına karşı dikkatli olun.",
+                "VPN kullanarak internet trafiğinizi şifreleyin."
+            ];
+            
+            const randomTip = securityTips[Math.floor(Math.random() * securityTips.length)];
+            const securityTipContainer = document.getElementById('security-tip');
+            
+            securityTipContainer.innerHTML = `
+                <div class="flex items-start space-x-3">
+                    <i class="fas fa-shield-alt text-secondary text-lg mt-1"></i>
+                    <p class="text-sm text-gray-700 leading-relaxed">${randomTip}</p>
+                </div>
+            `;
+        }
+        
+        // Update security level
+        function updateSecurityLevel(completedModules, totalModules, examAverage) {
+            const progressPercent = (completedModules / totalModules) * 100;
+            let level = 'Başlangıç';
+            let description = 'Temel seviye';
+            
+            if (progressPercent >= 90 && examAverage >= 85) {
+                level = 'Siber Güvenlik Uzmanı';
+                description = 'Uzman seviye';
+            } else if (progressPercent >= 70 && examAverage >= 75) {
+                level = 'Güvenlik Analisti';
+                description = 'İleri seviye';
+            } else if (progressPercent >= 50 && examAverage >= 65) {
+                level = 'Güvenlik Teknisyeni';
+                description = 'Orta seviye';
+            } else if (progressPercent >= 25) {
+                level = 'Güvenlik Öğrencisi';
+                description = 'Gelişen seviye';
+            }
+            
+            document.getElementById('security-level').textContent = level;
+            document.getElementById('security-description').textContent = description;
+        }
+        
+        // Helper functions
+        function getDepartmentName(departmentCode) {
+            const departments = {
+                'bilgisayar-muhendisligi': 'Bilgisayar Mühendisliği',
+                'bilisim-sistemleri': 'Bilişim Sistemleri',
+                'siber-guvenlik': 'Siber Güvenlik',
+                'yazilim-muhendisligi': 'Yazılım Mühendisliği',
+                'bilgisayar-programciligi': 'Bilgisayar Programcılığı'
+            };
+            return departments[departmentCode] || 'Bilgi Teknolojileri';
+        }
+        
+        function getModuleIcon(moduleId) {
+            const icons = {
+                1: 'fa-shield-alt',
+                2: 'fa-key',
+                3: 'fa-network-wired',
+                4: 'fa-globe',
+                5: 'fa-bug',
+                6: 'fa-search',
+                7: 'fa-exclamation-triangle',
+                8: 'fa-certificate'
+            };
+            return icons[moduleId] || 'fa-book';
+        }
+    </script>
+</body>
+</html> 

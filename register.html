@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ol - CyberEdu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#dc2626',
+                        accent: '#059669',
+                        cyber: '#6366f1',
+                        dark: '#0f172a',
+                        'dark-lighter': '#1e293b',
+                        'cyber-dark': '#4c1d95',
+                        'cyber-light': '#8b5cf6'
+                    },
+                    animation: {
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px #6366f1, 0 0 10px #6366f1, 0 0 15px #6366f1' },
+                            '100%': { boxShadow: '0 0 10px #6366f1, 0 0 20px #6366f1, 0 0 30px #6366f1' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        }
+                    }
+                },
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                    mono: ['JetBrains Mono', 'monospace'],
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #0f172a 50%, #1e293b 75%, #0f172a 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .cyber-grid {
+            background-image: 
+                linear-gradient(rgba(99, 102, 241, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        .cyber-input {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .cyber-input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            background: rgba(30, 41, 59, 0.95);
+        }
+        
+        .cyber-input::placeholder {
+            color: rgba(148, 163, 184, 0.7);
+        }
+        
+        .cyber-button {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
+            border: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cyber-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+        }
+        
+        .cyber-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+        
+        .cyber-button:hover::before {
+            left: 100%;
+        }
+        
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .floating-icon {
+            position: absolute;
+            color: rgba(99, 102, 241, 0.08);
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        .floating-icon:nth-child(1) { top: 10%; left: 8%; animation-delay: 0s; font-size: 2rem; }
+        .floating-icon:nth-child(2) { top: 20%; right: 12%; animation-delay: 1.5s; font-size: 1.5rem; }
+        .floating-icon:nth-child(3) { bottom: 30%; left: 15%; animation-delay: 3s; font-size: 1.8rem; }
+        .floating-icon:nth-child(4) { bottom: 15%; right: 10%; animation-delay: 4.5s; font-size: 1.3rem; }
+        .floating-icon:nth-child(5) { top: 50%; left: 5%; animation-delay: 6s; font-size: 1.6rem; }
+        .floating-icon:nth-child(6) { top: 65%; right: 6%; animation-delay: 7.5s; font-size: 1.4rem; }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .border-gradient {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4);
+            padding: 2px;
+            border-radius: 16px;
+        }
+        
+        .border-gradient-inner {
+            background: rgba(15, 23, 42, 0.95);
+            border-radius: 14px;
+        }
+        
+        .register-container {
+            position: relative;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="cyber-grid">
+    <!-- Floating Background Elements -->
+    <div class="floating-elements">
+        <i class="floating-icon fas fa-user-plus"></i>
+        <i class="floating-icon fas fa-graduation-cap"></i>
+        <i class="floating-icon fas fa-shield-alt"></i>
+        <i class="floating-icon fas fa-laptop-code"></i>
+        <i class="floating-icon fas fa-certificate"></i>
+        <i class="floating-icon fas fa-lock"></i>
+        </div>
+
+    <!-- Main Content -->
+    <div class="min-h-screen py-12 px-4">
+        <div class="max-w-lg mx-auto register-container">
+            <!-- Logo and Title -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-cyber to-cyber-light mb-6 animate-glow">
+                    <i class="fas fa-user-plus text-4xl text-white"></i>
+                </div>
+                <h1 class="text-5xl font-bold text-gradient mb-3">CyberEdu</h1>
+                <p class="text-gray-300 text-xl font-semibold">Kayıt Ol</p>
+                <p class="text-gray-400 text-sm mt-2">Siber güvenlik uzmanı olma yolculuğunuza başlayın</p>
+            </div>
+            
+            <!-- Register Form -->
+            <div class="border-gradient mb-8">
+                <div class="border-gradient-inner p-8">
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-bold text-white mb-2 flex items-center">
+                            <i class="fas fa-user-graduate mr-3 text-cyber"></i>
+                            Öğrenci Kaydı
+                        </h2>
+                        <p class="text-gray-400 text-sm">Bilgilerinizi girerek hesabınızı oluşturun</p>
+                    </div>
+
+                    <form id="registerForm" class="space-y-6">
+                        <!-- Name Fields -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="firstName" class="block text-sm font-medium text-gray-300 mb-2">
+                                    <i class="fas fa-user mr-2 text-cyber"></i>
+                                    Ad
+                                </label>
+                                <input type="text" id="firstName" name="firstName" required
+                                       class="cyber-input w-full px-4 py-3 rounded-lg focus:outline-none"
+                                       placeholder="Adınız">
+                            </div>
+            <div>
+                                <label for="lastName" class="block text-sm font-medium text-gray-300 mb-2">
+                                    <i class="fas fa-user mr-2 text-cyber"></i>
+                                    Soyad
+                                </label>
+                                <input type="text" id="lastName" name="lastName" required
+                                       class="cyber-input w-full px-4 py-3 rounded-lg focus:outline-none"
+                                       placeholder="Soyadınız">
+                            </div>
+            </div>
+            
+                        <!-- Email -->
+            <div>
+                            <label for="email" class="block text-sm font-medium text-gray-300 mb-2">
+                                <i class="fas fa-envelope mr-2 text-cyber"></i>
+                                E-posta Adresi
+                            </label>
+                <input type="email" id="email" name="email" required 
+                                   class="cyber-input w-full px-4 py-3 rounded-lg focus:outline-none"
+                                   placeholder="ornek@ogrenci.edu.tr">
+                        </div>
+
+                        <!-- Student ID and Department -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="studentId" class="block text-sm font-medium text-gray-300 mb-2">
+                                    <i class="fas fa-id-card mr-2 text-cyber"></i>
+                                    Öğrenci No
+                                </label>
+                                <input type="text" id="studentId" name="studentId" required
+                                       class="cyber-input w-full px-4 py-3 rounded-lg focus:outline-none"
+                                       placeholder="20240001">
+                            </div>
+                            <div>
+                                <label for="department" class="block text-sm font-medium text-gray-300 mb-2">
+                                    <i class="fas fa-graduation-cap mr-2 text-cyber"></i>
+                                    Bölüm
+                                </label>
+                                <select id="department" name="department" required
+                                        class="cyber-input w-full px-4 py-3 rounded-lg focus:outline-none">
+                                    <option value="">Bölüm Seçin</option>
+                                    <option value="bilgisayar-muhendisligi">Bilgisayar Mühendisliği</option>
+                                    <option value="bilisim-sistemleri">Bilişim Sistemleri</option>
+                                    <option value="siber-guvenlik">Siber Güvenlik</option>
+                                    <option value="yazilim-muhendisligi">Yazılım Mühendisliği</option>
+                                    <option value="bilgisayar-programciligi">Bilgisayar Programcılığı</option>
+                                </select>
+                            </div>
+            </div>
+            
+                        <!-- Password Fields -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                                <label for="password" class="block text-sm font-medium text-gray-300 mb-2">
+                                    <i class="fas fa-lock mr-2 text-cyber"></i>
+                                    Şifre
+                                </label>
+                                <div class="relative">
+                <input type="password" id="password" name="password" required 
+                                           class="cyber-input w-full px-4 py-3 rounded-lg focus:outline-none pr-12"
+                                           placeholder="••••••••">
+                                    <button type="button" id="togglePassword" 
+                                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-cyber">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="confirmPassword" class="block text-sm font-medium text-gray-300 mb-2">
+                                    <i class="fas fa-lock mr-2 text-cyber"></i>
+                                    Şifre Tekrar
+                                </label>
+                                <div class="relative">
+                                    <input type="password" id="confirmPassword" name="confirmPassword" required
+                                           class="cyber-input w-full px-4 py-3 rounded-lg focus:outline-none pr-12"
+                                           placeholder="••••••••">
+                                    <button type="button" id="toggleConfirmPassword" 
+                                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-cyber">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Terms and Privacy -->
+                        <div class="space-y-3">
+                            <label class="flex items-start">
+                                <input type="checkbox" id="termsAccepted" required
+                                       class="w-4 h-4 text-cyber bg-dark-lighter border-gray-600 rounded focus:ring-cyber focus:ring-2 mt-1">
+                                <span class="ml-3 text-sm text-gray-300">
+                                    <a href="#" class="text-cyber hover:text-cyber-light">Kullanım Şartları</a> ve 
+                                    <a href="#" class="text-cyber hover:text-cyber-light">Gizlilik Politikası</a>'nı okudum ve kabul ediyorum
+                                </span>
+                            </label>
+                            <label class="flex items-start">
+                                <input type="checkbox" id="emailConsent"
+                                       class="w-4 h-4 text-cyber bg-dark-lighter border-gray-600 rounded focus:ring-cyber focus:ring-2 mt-1">
+                                <span class="ml-3 text-sm text-gray-300">
+                                    Eğitim güncellemeleri ve duyurular için e-posta almak istiyorum
+                                </span>
+                            </label>
+                        </div>
+
+                        <!-- Register Button -->
+                        <button type="submit" id="registerBtn" 
+                                class="cyber-button w-full py-4 px-4 rounded-lg text-white font-semibold text-lg">
+                            <i class="fas fa-user-plus mr-2"></i>
+                            Hesap Oluştur
+                        </button>
+                    </form>
+
+                    <!-- Divider -->
+                    <div class="my-6 flex items-center">
+                        <div class="flex-1 border-t border-gray-600"></div>
+                        <span class="px-4 text-gray-400 text-sm">zaten hesabınız var mı?</span>
+                        <div class="flex-1 border-t border-gray-600"></div>
+                    </div>
+
+                    <!-- Login Link -->
+                    <div class="text-center">
+                        <a href="index.html" 
+                           class="inline-flex items-center px-6 py-3 border border-primary text-primary hover:bg-primary hover:text-white rounded-lg transition-all duration-300">
+                            <i class="fas fa-sign-in-alt mr-2"></i>
+                            Giriş Yap
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Security Notice -->
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center px-4 py-3 bg-dark-lighter/50 rounded-lg border border-gray-600">
+                    <i class="fas fa-shield-check text-accent mr-2"></i>
+                    <span class="text-gray-300 text-sm">Verileriniz güvenli şekilde şifrelenmektedir</span>
+                </div>
+            </div>
+
+            <!-- Coordinator Login Link -->
+            <div class="text-center">
+                <a href="instructor-login.html" 
+                   class="inline-flex items-center text-gray-400 hover:text-white transition-colors">
+                    <i class="fas fa-user-tie mr-2"></i>
+                    <span class="text-sm">Koordinatör Girişi</span>
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+
+            <!-- Footer -->
+            <div class="text-center mt-8 pb-8">
+                <p class="text-gray-500 text-xs">
+                    © 2024 CyberEdu Platform • Güvenli Eğitim Sistemi
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50" style="display: none;">
+        <div class="text-center">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-cyber to-cyber-light mb-4 animate-pulse">
+                <i class="fas fa-user-plus text-3xl text-white"></i>
+            </div>
+            <h3 class="text-2xl font-semibold text-white mb-2">Hesap Oluşturuluyor...</h3>
+            <p class="text-gray-300 text-sm" id="loadingMessage">Bilgiler kaydediliyor</p>
+            <div class="mt-4">
+                <div class="w-48 h-2 bg-gray-700 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-cyber to-cyber-light rounded-full animate-pulse"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase Production DB -->
+    <script src="js/firebase-production.js"></script>
+    <script src="js/user-utils.js"></script>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const studentId = document.getElementById('studentId').value;
+            const department = document.getElementById('department').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Validation
+            if (password !== confirmPassword) {
+                alert('Şifreler eşleşmiyor!');
+                return;
+            }
+            
+            if (password.length < 8) {
+                alert('Şifre en az 8 karakter olmalıdır!');
+                return;
+            }
+            
+            // Show loading
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Hesap oluşturuluyor...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Wait for Firebase to be ready
+                await new Promise(resolve => {
+                    const checkDB = () => {
+                        if (window.DB) {
+                            resolve();
+                        } else {
+                            setTimeout(checkDB, 100);
+                        }
+                    };
+                    checkDB();
+                });
+                
+                // Create user profile
+                const userProfile = {
+                    firstName: firstName,
+                    lastName: lastName,
+                    fullName: `${firstName} ${lastName}`,
+                    userEmail: email,
+                    studentId: studentId,
+                    department: department,
+                    role: 'student',
+                    registrationDate: new Date().toISOString(),
+                    lastLogin: new Date().toISOString(),
+                    profileCompleted: true
+                };
+                
+                // Save to Firebase
+                const success = await window.DB.save('userProfiles', userProfile, email);
+                    
+                if (success && success.success) {
+                    // Store user info
+                    localStorage.setItem('userEmail', email);
+                    localStorage.setItem('userRole', 'student');
+                    
+                    alert('✅ Hesabınız başarıyla oluşturuldu! Giriş yapılıyor...');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'student-dashboard.html';
+                    }, 1000);
+                    } else {
+                    throw new Error('Hesap oluşturulamadı');
+                }
+                
+            } catch (error) {
+                console.error('Kayıt hatası:', error);
+                alert('❌ Hesap oluşturulurken hata oluştu: ' + error.message);
+                
+                // Restore button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                    }
+        });
+    </script>
+</body>
+</html> 

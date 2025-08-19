@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İlerlemem - CyberEdu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#dc2626',
+                        accent: '#059669',
+                        cyber: '#6366f1',
+                        dark: '#0f172a'
+                    }
+                },
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-production.js"></script>
+    <script src="js/user-utils.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="bg-dark text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
+        <div class="p-4">
+            <a href="student-dashboard.html" class="font-bold text-xl text-cyber block mb-8 flex items-center">
+                <i class="fas fa-shield-alt text-2xl mr-3"></i>
+                CyberEdu
+            </a>
+            
+            <div class="mb-8">
+                <div class="flex items-center mb-4">
+                    <div>
+                        <p class="font-medium" id="user-name"></p>
+                        <p class="text-sm text-gray-400" id="user-email"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="space-y-1">
+                <a href="student-dashboard.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    <span>Genel Bakış</span>
+                </a>
+                <a href="courses.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-graduation-cap mr-3"></i>
+                    <span>Eğitim Modülleri</span>
+                </a>
+                <a href="progress.html" class="flex items-center px-4 py-3 rounded-lg bg-slate-800">
+                    <i class="fas fa-chart-line mr-3 text-cyber"></i>
+                    <span>İlerlemem</span>
+                </a>
+                <a href="my-notes.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-sticky-note mr-3"></i>
+                    <span>Notlarım</span>
+                </a>
+                <a href="downloads.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-download mr-3"></i>
+                    <span>Kaynaklar</span>
+                </a>
+                <a href="account.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-user-cog mr-3"></i>
+                    <span>Profil Ayarları</span>
+                </a>
+            </nav>
+
+            <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
+                <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    <span>Çıkış Yap</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile menu -->
+    <div class="md:hidden fixed top-0 left-0 right-0 z-20 bg-slate-900 text-white p-4 flex justify-between items-center">
+        <a href="student-dashboard.html" class="font-bold text-xl text-primary">Çevik Liderlik</a>
+        <button class="text-white" id="mobile-menu-button">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Main content -->
+    <main class="md:ml-64 p-4 md:p-8 w-full min-h-screen">
+        <div class="max-w-6xl mx-auto">
+            <!-- Header -->
+            <header class="mb-8">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2 flex items-center">
+                            <i class="fas fa-chart-line text-cyber mr-3"></i>
+                            İlerlemem
+                        </h1>
+                        <p class="text-gray-600">Siber güvenlik eğitimi ilerlemenizi takip edin</p>
+                    </div>
+                    <div class="bg-white rounded-lg px-4 py-2 shadow-sm border border-gray-100">
+                        <span class="text-sm text-gray-600">Güvenlik Seviyesi:</span>
+                        <span class="font-bold text-cyber ml-1" id="security-level">Başlangıç</span>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Overall Progress -->
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold flex items-center">
+                        <i class="fas fa-trophy text-cyber mr-2"></i>
+                        Genel İlerleme
+                    </h2>
+                    <span class="text-lg font-bold text-cyber" id="overall-progress">25%</span>
+                </div>
+                
+                <div class="w-full bg-gray-200 rounded-full h-4 mb-4">
+                    <div class="bg-gradient-to-r from-cyber to-primary h-4 rounded-full transition-all duration-500" style="width: 25%" id="progress-bar"></div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-accent" id="completed-modules">2</div>
+                        <div class="text-sm text-gray-600">Tamamlanan</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-cyber" id="current-modules">1</div>
+                        <div class="text-sm text-gray-600">Devam Eden</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-gray-400" id="locked-modules">5</div>
+                        <div class="text-sm text-gray-600">Kilitli</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-primary" id="avg-score">85</div>
+                        <div class="text-sm text-gray-600">Ortalama Puan</div>
+                    </div>
+                        </div>
+                    </div>
+                    
+            <!-- Module Progress -->
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-100">
+                <h2 class="text-xl font-semibold mb-6 flex items-center">
+                    <i class="fas fa-graduation-cap text-primary mr-2"></i>
+                    Modül İlerlemesi
+                </h2>
+                
+                <div class="space-y-6" id="module-progress-container">
+                    <!-- Module progress items will be loaded here -->
+                </div>
+            </div>
+            
+            <!-- Statistics -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Learning Stats -->
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center">
+                        <i class="fas fa-brain text-cyber mr-2"></i>
+                        Öğrenme İstatistikleri
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">İzlenen Video</span>
+                            <span class="font-semibold" id="watched-videos">12/24</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Çözülen Soru</span>
+                            <span class="font-semibold" id="solved-questions">45/80</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Alınan Not</span>
+                            <span class="font-semibold" id="total-notes">18</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Toplam Süre</span>
+                            <span class="font-semibold" id="study-time">24 saat</span>
+                    </div>
+                </div>
+            </div>
+            
+                <!-- Achievement -->
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center">
+                        <i class="fas fa-medal text-accent mr-2"></i>
+                        Başarılar
+                    </h3>
+                    
+                    <div class="space-y-3" id="achievements-container">
+                        <!-- Achievements will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    
+    <script>
+        let userProgress = {};
+        let userNotes = [];
+        let completedVideos = [];
+
+        // Page initialization
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize user info first
+            if (window.UserUtils) {
+                await UserUtils.initializeUserInfo();
+            }
+            
+            await loadUserProgress();
+            setupEventListeners();
+        });
+
+        // Load user progress - simplified version
+        async function loadUserProgress() {
+            try {
+                console.log('📈 İlerleme verileri yükleniyor...');
+                
+                const userEmail = localStorage.getItem('userEmail');
+                if (!userEmail) {
+                    console.warn('⚠️ Kullanıcı e-postası bulunamadı');
+                    // Set default progress for demo
+                    setDefaultProgress();
+                    return;
+                }
+                
+                // Try to load from localStorage first (for demo)
+                const storedProgress = localStorage.getItem(`userProgress_${userEmail}`);
+                if (storedProgress) {
+                    try {
+                        userProgress = JSON.parse(storedProgress);
+                        console.log('✅ LocalStorage\'dan ilerleme yüklendi');
+                    } catch (parseError) {
+                        console.warn('⚠️ LocalStorage verisi bozuk, varsayılan değerler yükleniyor');
+                        setDefaultProgress();
+                    }
+                } else {
+                    // Set default progress for new users
+                    setDefaultProgress();
+                    saveProgressToLocalStorage();
+                }
+
+                updateProgressDisplay();
+                console.log('✅ İlerleme verileri başarıyla yüklendi');
+
+            } catch (error) {
+                console.error('❌ İlerleme verisi yükleme hatası:', error);
+                setDefaultProgress();
+                updateProgressDisplay();
+            }
+        }
+
+        // Set default progress for demo
+        function setDefaultProgress() {
+            userProgress = {
+                1: 100, // Modül 1 tamamlandı
+                2: 60,  // Modül 2 devam ediyor
+                3: 100, // Modül 3 tamamlandı
+                4: 25,  // Modül 4 başladı
+                5: 0,   // Modül 5 başlanmadı
+                6: 0,   // Modül 6 başlanmadı
+                7: 0,   // Modül 7 başlanmadı
+                8: 0    // Modül 8 başlanmadı
+            };
+            
+            // Set some demo notes and completed videos
+            userNotes = [
+                { id: 1, title: 'Afet Yönetimi Notları', moduleId: 1 },
+                { id: 2, title: 'Kriz Liderliği', moduleId: 2 }
+            ];
+            
+            completedVideos = [
+                { id: 1, moduleId: 1, title: 'Giriş Videosu' },
+                { id: 2, moduleId: 1, title: 'Temel Kavramlar' },
+                { id: 3, moduleId: 3, title: 'Hazırlık Süreçleri' }
+            ];
+        }
+
+        // Save progress to localStorage
+        function saveProgressToLocalStorage() {
+            try {
+                const userEmail = localStorage.getItem('userEmail');
+                if (userEmail) {
+                    localStorage.setItem(`userProgress_${userEmail}`, JSON.stringify(userProgress));
+                    console.log('✅ İlerleme localStorage\'a kaydedildi');
+                }
+            } catch (error) {
+                console.warn('⚠️ LocalStorage\'a kaydetme hatası:', error);
+            }
+        }
+
+        // Update progress display
+        function updateProgressDisplay() {
+            const moduleKeys = Object.keys(userProgress);
+            const totalModules = 8;
+            
+            // Calculate overall progress
+            let totalProgress = 0;
+            let completedModules = 0;
+            
+            if (moduleKeys.length > 0) {
+                totalProgress = Math.round(
+                    moduleKeys.reduce((sum, key) => sum + (userProgress[key] || 0), 0) / totalModules
+                );
+                completedModules = moduleKeys.filter(key => userProgress[key] >= 100).length;
+            }
+
+            // Update UI elements safely
+            const overallProgressEl = document.getElementById('overall-progress');
+            const progressBarEl = document.getElementById('progress-bar');
+            const completedModulesEl = document.getElementById('completed-modules');
+            const currentModulesEl = document.getElementById('current-modules');
+            const lockedModulesEl = document.getElementById('locked-modules');
+            const avgScoreEl = document.getElementById('avg-score');
+            
+            if (overallProgressEl) {
+                overallProgressEl.textContent = totalProgress + '%';
+            }
+            
+            if (progressBarEl) {
+                progressBarEl.style.width = totalProgress + '%';
+            }
+            
+            if (completedModulesEl) {
+                completedModulesEl.textContent = completedModules;
+            }
+            
+            if (currentModulesEl) {
+                currentModulesEl.textContent = totalModules - completedModules;
+            }
+            
+            if (lockedModulesEl) {
+                lockedModulesEl.textContent = totalModules - completedModules; // Assuming locked modules are those not completed
+            }
+            
+            // Calculate average score (simulated)
+            const averageScore = Math.min(100, Math.max(60, totalProgress + Math.floor(Math.random() * 20) - 10));
+            if (avgScoreEl) {
+                avgScoreEl.textContent = averageScore;
+            }
+
+            // Update header user name
+            const headerUserNameEl = document.getElementById('user-name');
+            const headerUserEmailEl = document.getElementById('user-email');
+            if (headerUserNameEl && headerUserEmailEl) {
+                const userEmail = localStorage.getItem('userEmail');
+                if (userEmail) {
+                    const userName = extractNameFromEmail(userEmail);
+                    headerUserNameEl.textContent = userName;
+                    headerUserEmailEl.textContent = userEmail;
+                }
+            }
+        }
+
+        // Update module progress and save
+        async function updateModuleProgress(moduleId, progress) {
+            try {
+                if (!userProgress) {
+                    userProgress = {};
+                }
+                
+                userProgress[moduleId] = Math.max(0, Math.min(100, progress));
+                
+                // Save to localStorage
+                saveProgressToLocalStorage();
+                
+                // Update display
+                updateProgressDisplay();
+                
+                console.log(`✅ Modül ${moduleId} ilerlemesi güncellendi: ${progress}%`);
+                return true;
+                
+            } catch (error) {
+                console.error('❌ Modül ilerleme güncelleme hatası:', error);
+                return false;
+            }
+        }
+
+        // Complete module
+        async function completeModule(moduleId) {
+            try {
+                console.log(`🎯 Modül ${moduleId} tamamlanıyor...`);
+                
+                const success = await updateModuleProgress(moduleId, 100);
+                
+                if (success) {
+                    showSuccess(`Modül ${moduleId} başarıyla tamamlandı!`);
+                    console.log(`✅ Modül ${moduleId} tamamlandı`);
+                }
+                
+                return success;
+                
+            } catch (error) {
+                console.error('❌ Modül tamamlama hatası:', error);
+                return false;
+            }
+        }
+
+        // Helper functions
+        function extractNameFromEmail(email) {
+            const name = email.split('@')[0];
+            return name.split('.').map(part => 
+                part.charAt(0).toUpperCase() + part.slice(1)
+            ).join(' ');
+        }
+
+        function goToModule(moduleId) {
+            window.location.href = `module-detail.html?module=${moduleId}`;
+        }
+
+        function showError(message) {
+            console.error('❌ Hata:', message);
+        }
+
+        function showSuccess(message) {
+            console.log('✅ Başarılı:', message);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Mobile menu functionality
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', function() {
+                    // Simple mobile menu toggle
+                    console.log('Mobile menu clicked');
+                });
+            }
+
+            // Logout functionality
+            document.querySelectorAll('a[href="index.html"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('loginTime');
+                    
+                    window.location.href = 'index.html';
+                });
+            });
+        }
+    </script>
+</body>
+</html> 

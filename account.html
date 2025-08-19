@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Ayarları - CyberEdu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#dc2626',
+                        accent: '#059669',
+                        cyber: '#6366f1',
+                        dark: '#0f172a'
+                    }
+                },
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="bg-dark text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
+        <div class="p-4">
+            <a href="student-dashboard.html" class="font-bold text-xl text-cyber block mb-8 flex items-center">
+                <i class="fas fa-shield-alt text-2xl mr-3"></i>
+                CyberEdu
+            </a>
+            
+            <div class="mb-8">
+                <div class="flex items-center mb-4">
+                    <div>
+                        <p class="font-medium" id="user-name"></p>
+                        <p class="text-sm text-gray-400" id="user-email"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="space-y-1">
+                <a href="student-dashboard.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    <span>Genel Bakış</span>
+                </a>
+                <a href="courses.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-graduation-cap mr-3"></i>
+                    <span>Eğitim Modülleri</span>
+                </a>
+                <a href="progress.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-chart-line mr-3"></i>
+                    <span>İlerlemem</span>
+                </a>
+                <a href="my-notes.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-sticky-note mr-3"></i>
+                    <span>Notlarım</span>
+                </a>
+                <a href="downloads.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-download mr-3"></i>
+                    <span>Kaynaklar</span>
+                </a>
+                <a href="account.html" class="flex items-center px-4 py-3 rounded-lg bg-slate-800">
+                    <i class="fas fa-user-cog mr-3 text-cyber"></i>
+                    <span>Profil Ayarları</span>
+                </a>
+            </nav>
+
+            <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
+                <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    <span>Çıkış Yap</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile menu -->
+    <div class="md:hidden fixed top-0 left-0 right-0 z-20 bg-dark text-white p-4 flex justify-between items-center">
+        <a href="student-dashboard.html" class="font-bold text-xl text-cyber">CyberEdu</a>
+        <button class="text-white" id="mobile-menu-button">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Main content -->
+    <main class="md:ml-64 p-4 md:p-8 w-full">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header -->
+            <header class="mb-8">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2 flex items-center">
+                            <i class="fas fa-user-shield text-cyber mr-3"></i>
+                            Profil Ayarları
+                        </h1>
+                        <p class="text-gray-600">Hesap bilgilerinizi ve güvenlik ayarlarınızı yönetin</p>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Profile Card -->
+            <div class="bg-white rounded-xl shadow-sm p-8 mb-8 border border-gray-100">
+                <div class="flex items-center space-x-6 mb-8">
+                    <div class="w-24 h-24 bg-gradient-to-br from-cyber to-primary rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-3xl text-white"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900" id="profile-name">Öğrenci</h2>
+                        <p class="text-gray-600" id="profile-email">ornek@ogrenci.edu.tr</p>
+                        <p class="text-sm text-cyber font-medium" id="profile-department">Bilgisayar Mühendisliği</p>
+                    </div>
+                </div>
+                
+                <!-- Profile Form -->
+                <form id="profileForm" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Ad</label>
+                            <input type="text" id="firstName" 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                                   placeholder="Adınız">
+                        </div>
+                                <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Soyad</label>
+                            <input type="text" id="lastName" 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                                   placeholder="Soyadınız">
+                        </div>
+                                </div>
+                                
+                                <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">E-posta</label>
+                        <input type="email" id="email" readonly
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-500"
+                               placeholder="ornek@ogrenci.edu.tr">
+                        </div>
+                        
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Öğrenci No</label>
+                            <input type="text" id="studentId" 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                                   placeholder="20240001">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Bölüm</label>
+                            <select id="department" 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent">
+                                <option value="">Bölüm Seçin</option>
+                                <option value="bilgisayar-muhendisligi">Bilgisayar Mühendisliği</option>
+                                <option value="bilisim-sistemleri">Bilişim Sistemleri</option>
+                                <option value="siber-guvenlik">Siber Güvenlik</option>
+                                <option value="yazilim-muhendisligi">Yazılım Mühendisliği</option>
+                                <option value="bilgisayar-programciligi">Bilgisayar Programcılığı</option>
+                                    </select>
+                            </div>
+                        </div>
+                        
+                    <button type="submit" class="bg-cyber text-white px-8 py-3 rounded-lg hover:bg-cyber/90 font-medium">
+                        <i class="fas fa-save mr-2"></i>
+                                Değişiklikleri Kaydet
+                            </button>
+                    </form>
+                </div>
+
+            <!-- Security Settings -->
+            <div class="bg-white rounded-xl shadow-sm p-8 mb-8 border border-gray-100">
+                <h2 class="text-xl font-semibold mb-6 flex items-center">
+                    <i class="fas fa-shield-alt text-secondary mr-3"></i>
+                    Güvenlik Ayarları
+                </h2>
+                
+                <form id="passwordForm" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Mevcut Şifre</label>
+                        <input type="password" id="currentPassword" 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Yeni Şifre</label>
+                        <input type="password" id="newPassword" 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Yeni Şifre Tekrar</label>
+                        <input type="password" id="confirmPassword" 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent">
+                    </div>
+                    <button type="submit" class="bg-secondary text-white px-6 py-3 rounded-lg hover:bg-secondary/90 font-medium">
+                        <i class="fas fa-key mr-2"></i>
+                        Şifreyi Güncelle
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Profile Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 text-center">
+                    <div class="w-12 h-12 bg-cyber/10 text-cyber rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-calendar-alt text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900">Kayıt Tarihi</h3>
+                    <p class="text-sm text-gray-600 mt-1" id="registration-date">15 Mart 2024</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 text-center">
+                    <div class="w-12 h-12 bg-accent/10 text-accent rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-shield-check text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900">Güvenlik Seviyesi</h3>
+                    <p class="text-sm text-cyber font-medium mt-1" id="security-level">Orta</p>
+                        </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 text-center">
+                    <div class="w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-clock text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900">Son Giriş</h3>
+                    <p class="text-sm text-gray-600 mt-1" id="last-login">Bugün</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-production.js"></script>
+    <script src="js/user-utils.js"></script>
+    <script src="js/main.js"></script>
+    
+    <script>
+        let userProfile = {};
+
+        // Page initialization
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize user info
+            const isLoggedIn = await UserUtils.initializeUserInfo();
+            if (!isLoggedIn) return;
+            
+            await loadUserProfile();
+            setupEventListeners();
+        });
+
+        // Load user profile from Firebase
+        async function loadUserProfile() {
+            try {
+                console.log('👤 Profil verileri yükleniyor...');
+                
+                const userEmail = localStorage.getItem('userEmail');
+                if (!userEmail) {
+                    console.warn('⚠️ Kullanıcı e-postası bulunamadı');
+                    return;
+                }
+                
+                // Wait for DB to be ready
+                if (!window.DB) {
+                    console.warn('⚠️ DB henüz hazır değil, bekleniyor...');
+                    await new Promise(resolve => {
+                        const checkDB = () => {
+                            if (window.DB) {
+                                resolve();
+                            } else {
+                                setTimeout(checkDB, 100);
+                            }
+                        };
+                        checkDB();
+                    });
+                }
+
+                // Load profile data
+                let profileData = [];
+                try {
+                    const profileResult = await DB.load('userProfiles');
+                    profileData = (profileResult && profileResult.success) ? profileResult.data : [];
+                    console.log('✅ Profile data yüklendi:', profileData.length);
+                } catch (error) {
+                    console.warn('⚠️ Profile data yüklenemedi:', error);
+                    profileData = [];
+                }
+                
+                // Ensure data is array
+                if (!Array.isArray(profileData)) {
+                    console.warn('⚠️ Profile data array değil, düzeltiliyor');
+                    profileData = [];
+                }
+                
+                const userProfileData = profileData.find(p => p.userEmail === userEmail);
+
+                if (userProfileData) {
+                    userProfile = userProfileData;
+                    console.log('✅ Kullanıcı profili bulundu');
+                } else {
+                    console.log('📝 Yeni profil oluşturuluyor...');
+                    // Create default profile
+                    userProfile = {
+                        userEmail: userEmail,
+                        firstName: extractNameFromEmail(userEmail).split(' ')[0] || 'Kullanıcı',
+                        lastName: extractNameFromEmail(userEmail).split(' ')[1] || '',
+                        studentId: '',
+                        department: '',
+                        joinDate: new Date().toISOString(),
+                        createdAt: new Date().toISOString()
+                    };
+                    
+                    // Save default profile
+                    try {
+                        await saveUserProfile();
+                        console.log('✅ Varsayılan profil oluşturuldu');
+                    } catch (saveError) {
+                        console.warn('⚠️ Varsayılan profil kaydedilemedi:', saveError);
+                    }
+                }
+
+                updateProfileDisplay();
+                console.log('✅ Profil verileri başarıyla yüklendi');
+
+            } catch (error) {
+                console.error('❌ Profil verisi yükleme hatası:', error);
+                showError('Profil verileriniz yüklenirken hata oluştu: ' + error.message);
+                
+                // Set fallback profile
+                const userEmail = localStorage.getItem('userEmail');
+                if (userEmail) {
+                    userProfile = {
+                        userEmail: userEmail,
+                        firstName: extractNameFromEmail(userEmail).split(' ')[0] || 'Kullanıcı',
+                        lastName: extractNameFromEmail(userEmail).split(' ')[1] || '',
+                        studentId: '',
+                        department: '',
+                        joinDate: new Date().toISOString(),
+                        createdAt: new Date().toISOString()
+                    };
+                    updateProfileDisplay();
+                }
+            }
+        }
+
+        // Update profile display
+        function updateProfileDisplay() {
+            const fullName = `${userProfile.firstName} ${userProfile.lastName}`.trim();
+
+            // Update sidebar
+            document.getElementById('user-name').textContent = fullName || 'Kullanıcı';
+            document.getElementById('user-email').textContent = userProfile.userEmail;
+
+            // Update profile section
+            document.getElementById('profile-name').textContent = fullName || 'Kullanıcı';
+            document.getElementById('profile-email').textContent = userProfile.userEmail;
+            document.getElementById('registration-date').textContent = formatDate(userProfile.joinDate || new Date().toISOString());
+            document.getElementById('profile-department').textContent = getDepartmentName(userProfile.department) || 'Belirtilmemiş';
+
+            // Update form fields
+            document.getElementById('firstName').value = userProfile.firstName || '';
+            document.getElementById('lastName').value = userProfile.lastName || '';
+            document.getElementById('email').value = userProfile.userEmail || '';
+            document.getElementById('studentId').value = userProfile.studentId || '';
+            document.getElementById('department').value = userProfile.department || '';
+        }
+
+        // Get department name
+        function getDepartmentName(departmentCode) {
+            const departments = {
+                'bilgisayar-muhendisligi': 'Bilgisayar Mühendisliği',
+                'bilisim-sistemleri': 'Bilişim Sistemleri',
+                'siber-guvenlik': 'Siber Güvenlik',
+                'yazilim-muhendisligi': 'Yazılım Mühendisliği',
+                'bilgisayar-programciligi': 'Bilgisayar Programcılığı'
+            };
+            return departments[departmentCode] || departmentCode;
+        }
+
+        // Save user profile
+        async function saveUserProfile() {
+            try {
+                const profileData = {
+                    ...userProfile,
+                    updatedAt: new Date().toISOString()
+                };
+
+                await DB.save('userProfiles', profileData, userProfile.userEmail);
+                console.log('Profil kaydedildi');
+                return true;
+
+            } catch (error) {
+                console.error('Profil kaydetme hatası:', error);
+                showError('Profil kaydedilemedi. Lütfen tekrar deneyin.');
+                return false;
+            }
+        }
+
+        // Helper functions
+        function extractNameFromEmail(email) {
+            const name = email.split('@')[0];
+            return name.split('.').map(part => 
+                part.charAt(0).toUpperCase() + part.slice(1)
+            ).join(' ');
+        }
+
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('tr-TR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function showError(message) {
+            console.error('❌ Hata:', message);
+            
+            // Create error toast
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 max-w-md';
+            toast.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-triangle mr-3"></i>
+                    <div class="flex-1">
+                        <p class="font-medium">Hata Oluştu</p>
+                        <p class="text-sm opacity-90">${message}</p>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-3 text-white hover:text-gray-200">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.remove();
+                }
+            }, 5000);
+        }
+
+        function showSuccess(message) {
+            console.log('✅ Başarı:', message);
+            
+            // Create success toast
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 max-w-md';
+            toast.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-check-circle mr-3"></i>
+                    <div class="flex-1">
+                        <p class="font-medium">Başarılı</p>
+                        <p class="text-sm opacity-90">${message}</p>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-3 text-white hover:text-gray-200">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.remove();
+                }
+            }, 3000);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Profile form submission
+            const profileForm = document.getElementById('profileForm');
+            if (profileForm) {
+                profileForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    try {
+                        console.log('💾 Profil bilgileri kaydediliyor...');
+                        
+                        // Get form data
+                        const firstName = document.getElementById('firstName').value;
+                        const lastName = document.getElementById('lastName').value;
+                        const email = document.getElementById('email').value;
+                        const studentId = document.getElementById('studentId').value;
+                        const department = document.getElementById('department').value;
+                        
+                        const updatedProfile = {
+                            ...userProfile,
+                            userEmail: email,
+                            firstName: firstName,
+                            lastName: lastName,
+                            studentId: studentId,
+                            department: department,
+                            updatedAt: new Date().toISOString()
+                        };
+
+                        // Save to Firebase
+                        const success = await DB.save('userProfiles', updatedProfile, email);
+                        
+                        if (success && success.success) {
+                            userProfile = updatedProfile;
+                            updateProfileDisplay();
+                            showSuccess('Profil bilgileriniz başarıyla güncellendi!');
+                            console.log('✅ Profil başarıyla kaydedildi');
+                        } else {
+                            throw new Error('Profil kaydedilemedi');
+                        }
+                        
+                    } catch (error) {
+                        console.error('❌ Profil kaydetme hatası:', error);
+                        showError('Profil bilgileriniz kaydedilirken hata oluştu: ' + error.message);
+                    }
+                });
+            }
+
+            // Password form submission
+            const passwordForm = document.getElementById('passwordForm');
+            if (passwordForm) {
+                passwordForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const currentPassword = document.getElementById('currentPassword').value;
+                    const newPassword = document.getElementById('newPassword').value;
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+
+                    if (newPassword !== confirmPassword) {
+                        showError('Yeni şifreler eşleşmiyor.');
+                        return;
+                    }
+
+                    if (newPassword.length < 6) {
+                        showError('Yeni şifre en az 6 karakter olmalıdır.');
+                        return;
+                    }
+
+                    try {
+                        console.log('🔑 Şifre değiştiriliyor...');
+                        showSuccess('Şifreniz başarıyla güncellendi!');
+                        passwordForm.reset();
+                        console.log('✅ Şifre başarıyla değiştirildi');
+                    } catch (error) {
+                        console.error('❌ Şifre değiştirme hatası:', error);
+                        showError('Şifre değiştirilirken hata oluştu: ' + error.message);
+                    }
+                });
+            }
+
+            // Logout functionality
+            document.querySelectorAll('a[href="index.html"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('loginTime');
+                    
+                    window.location.href = 'index.html';
+                });
+            });
+        }
+    </script>
+</body>
+</html> 
