@@ -3,305 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Koordinatör Girişi - CyberEdu Admin</title>
+    <title>Koordinatör Girişi - Kriptarium Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#1e40af',
-                        secondary: '#dc2626',
-                        accent: '#059669',
-                        cyber: '#6366f1',
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#06b6d4',
                         dark: '#0f172a',
-                        'dark-lighter': '#1e293b',
-                        'cyber-dark': '#4c1d95',
-                        'cyber-light': '#8b5cf6'
-                    },
-                    animation: {
-                        'glow': 'glow 2s ease-in-out infinite alternate',
-                        'glow-red': 'glow-red 2s ease-in-out infinite alternate',
-                        'float': 'float 3s ease-in-out infinite',
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    },
-                    keyframes: {
-                        glow: {
-                            '0%': { boxShadow: '0 0 5px #6366f1, 0 0 10px #6366f1, 0 0 15px #6366f1' },
-                            '100%': { boxShadow: '0 0 10px #6366f1, 0 0 20px #6366f1, 0 0 30px #6366f1' }
-                        },
-                        'glow-red': {
-                            '0%': { boxShadow: '0 0 5px #dc2626, 0 0 10px #dc2626, 0 0 15px #dc2626' },
-                            '100%': { boxShadow: '0 0 10px #dc2626, 0 0 20px #dc2626, 0 0 30px #dc2626' }
-                        },
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-10px)' }
-                        }
+                        'dark-light': '#1e293b',
+                        'dark-lighter': '#334155'
                     }
-                },
-                fontFamily: {
-                    sans: ['Inter', 'sans-serif'],
-                    mono: ['JetBrains Mono', 'monospace'],
                 }
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #0f172a 50%, #1e293b 75%, #0f172a 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        .cyber-grid {
-            background-image: 
-                linear-gradient(rgba(220, 38, 38, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(220, 38, 38, 0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
-        }
-        
-        .cyber-input {
-            background: rgba(30, 41, 59, 0.8);
-            border: 1px solid rgba(220, 38, 38, 0.3);
-            color: white;
-            transition: all 0.3s ease;
-        }
-        
-        .cyber-input:focus {
-            border-color: #dc2626;
-            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
-            background: rgba(30, 41, 59, 0.95);
-        }
-        
-        .cyber-input::placeholder {
-            color: rgba(148, 163, 184, 0.7);
-        }
-        
-        .cyber-button {
-            background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #f87171 100%);
-            border: none;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .cyber-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 20px 40px rgba(220, 38, 38, 0.4);
-        }
-        
-        .cyber-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.6s;
-        }
-        
-        .cyber-button:hover::before {
-            left: 100%;
-        }
-        
-        .floating-elements {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            pointer-events: none;
-            z-index: 1;
-        }
-        
-        .floating-icon {
-            position: absolute;
-            color: rgba(220, 38, 38, 0.08);
-            animation: float 8s ease-in-out infinite;
-        }
-        
-        .floating-icon:nth-child(1) { top: 15%; left: 10%; animation-delay: 0s; font-size: 2rem; }
-        .floating-icon:nth-child(2) { top: 25%; right: 15%; animation-delay: 1.5s; font-size: 1.5rem; }
-        .floating-icon:nth-child(3) { bottom: 35%; left: 20%; animation-delay: 3s; font-size: 1.8rem; }
-        .floating-icon:nth-child(4) { bottom: 20%; right: 12%; animation-delay: 4.5s; font-size: 1.3rem; }
-        .floating-icon:nth-child(5) { top: 60%; left: 8%; animation-delay: 6s; font-size: 1.6rem; }
-        .floating-icon:nth-child(6) { top: 70%; right: 8%; animation-delay: 7.5s; font-size: 1.4rem; }
-        
-        .text-gradient-red {
-            background: linear-gradient(135deg, #dc2626, #ef4444, #f87171);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .border-gradient-red {
-            background: linear-gradient(135deg, #dc2626, #ef4444, #f87171);
-            padding: 2px;
-            border-radius: 16px;
-        }
-        
-        .border-gradient-inner {
-            background: rgba(15, 23, 42, 0.95);
-            border-radius: 14px;
-        }
-        
-        .admin-container {
-            position: relative;
-            z-index: 10;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="cyber-grid">
-    <!-- Floating Background Elements -->
-    <div class="floating-elements">
-        <i class="floating-icon fas fa-shield-alt"></i>
-        <i class="floating-icon fas fa-user-tie"></i>
-        <i class="floating-icon fas fa-cogs"></i>
-        <i class="floating-icon fas fa-chart-line"></i>
-        <i class="floating-icon fas fa-database"></i>
-        <i class="floating-icon fas fa-lock"></i>
-        </div>
-
-    <!-- Main Content -->
-    <div class="min-h-screen flex items-center justify-center p-4 py-12">
-        <div class="w-full max-w-md admin-container">
-            <!-- Logo and Title -->
-            <div class="text-center mb-8">
-                <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-secondary to-red-600 mb-6 animate-glow-red">
-                    <i class="fas fa-user-tie text-4xl text-white"></i>
-                </div>
-                <h1 class="text-5xl font-bold text-gradient-red mb-3">CyberEdu</h1>
-                <p class="text-gray-300 text-xl font-semibold">Admin Panel</p>
-                <p class="text-gray-400 text-sm mt-2">Siber Güvenlik Eğitim Yönetim Sistemi</p>
-            </div>
-            
-            <!-- Login Form -->
-            <div class="border-gradient-red mb-8">
-                <div class="border-gradient-inner p-8">
-                    <div class="mb-6">
-                        <h2 class="text-2xl font-bold text-white mb-2 flex items-center">
-                            <i class="fas fa-user-shield mr-3 text-secondary"></i>
-                            Koordinatör Girişi
-                        </h2>
-                        <p class="text-gray-400 text-sm">Yönetim paneline güvenli erişim</p>
-                    </div>
-
-                    <form id="loginForm" class="space-y-6">
-                        <!-- Email Input -->
-            <div>
-                            <label for="email" class="block text-sm font-medium text-gray-300 mb-2">
-                                <i class="fas fa-envelope mr-2 text-secondary"></i>
-                                E-posta Adresi
-                            </label>
-                <input type="email" id="email" name="email" required 
-                                   class="cyber-input w-full px-4 py-3 rounded-lg focus:outline-none"
-                                   placeholder="koordinator@cyberedu.edu.tr">
-            </div>
-            
-                        <!-- Password Input -->
-            <div>
-                            <label for="password" class="block text-sm font-medium text-gray-300 mb-2">
-                                <i class="fas fa-key mr-2 text-secondary"></i>
-                                Yönetici Şifresi
-                            </label>
-                            <div class="relative">
-                <input type="password" id="password" name="password" required 
-                                       class="cyber-input w-full px-4 py-3 rounded-lg focus:outline-none pr-12"
-                                       placeholder="••••••••••••">
-                                <button type="button" id="togglePassword" 
-                                        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-secondary">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Remember Me -->
-                        <div class="flex items-center justify-between">
-                            <label class="flex items-center">
-                                <input type="checkbox" id="rememberMe" 
-                                       class="w-4 h-4 text-secondary bg-dark-lighter border-gray-600 rounded focus:ring-secondary focus:ring-2">
-                                <span class="ml-2 text-sm text-gray-300">Oturumu açık tut</span>
-                            </label>
-                            <a href="#" class="text-sm text-secondary hover:text-red-400 transition-colors">
-                                Şifremi unuttum
-                            </a>
-                        </div>
-
-                        <!-- Login Button -->
-                        <button type="submit" id="loginBtn" 
-                                class="cyber-button w-full py-4 px-4 rounded-lg text-white font-semibold text-lg">
-                            <i class="fas fa-sign-in-alt mr-2"></i>
-                            Admin Girişi
-                        </button>
-                    </form>
-
-                    <!-- Security Warning -->
-                    <div class="mt-6 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
-                        <div class="flex items-start">
-                            <i class="fas fa-exclamation-triangle text-red-400 mt-1 mr-3"></i>
-                            <div>
-                                <h3 class="text-red-300 font-semibold text-sm mb-1">Güvenlik Uyarısı</h3>
-                                <p class="text-red-200 text-xs">
-                                    Bu panel sadece yetkili koordinatörler içindir. 
-                                    Tüm aktiviteler kayıt altına alınmaktadır.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Security Notice -->
-            <div class="text-center mb-6">
-                <div class="inline-flex items-center px-4 py-3 bg-dark-lighter/50 rounded-lg border border-gray-600">
-                    <i class="fas fa-shield-check text-accent mr-2"></i>
-                    <span class="text-gray-300 text-sm">Multi-factor authentication korumalı</span>
-                </div>
-            </div>
-
-            <!-- Student Login Link -->
-            <div class="text-center">
-                <a href="index.html" 
-                   class="inline-flex items-center text-gray-400 hover:text-white transition-colors">
-                    <i class="fas fa-user-graduate mr-2"></i>
-                    <span class="text-sm">Öğrenci Girişi</span>
-                    <i class="fas fa-arrow-right ml-2"></i>
-                </a>
-            </div>
-
-            <!-- Footer -->
-            <div class="text-center mt-8 pb-8">
-                <p class="text-gray-500 text-xs">
-                    © 2024 CyberEdu Admin • Güvenli Yönetim Sistemi
-                </p>
-            </div>
-        </div>
+<body class="bg-gradient-to-br from-dark via-dark-light to-dark-lighter min-h-screen overflow-y-auto">
+    <!-- Floating Shapes Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-primary/20 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-secondary/20 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-accent/10 rounded-full blur-3xl"></div>
     </div>
 
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50" style="display: none;">
-        <div class="text-center">
-            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-secondary to-red-600 mb-4 animate-pulse">
-                <i class="fas fa-user-tie text-3xl text-white"></i>
-            </div>
-            <h3 class="text-2xl font-semibold text-white mb-2">Admin Girişi Yapılıyor...</h3>
-            <p class="text-gray-300 text-sm" id="loadingMessage">Yetki doğrulanıyor</p>
-            <div class="mt-4">
-                <div class="w-48 h-2 bg-gray-700 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-secondary to-red-600 rounded-full animate-pulse"></div>
+    <div class="relative z-10 flex items-center justify-center min-h-screen py-12 px-4">
+        <div class="max-w-md w-full space-y-8">
+            <!-- Logo and Title -->
+            <div class="text-center">
+                <div class="flex justify-center mb-6">
+                    <div class="w-20 h-20 bg-gradient-to-r from-primary via-secondary to-accent rounded-2xl flex items-center justify-center shadow-2xl">
+                        <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
                 </div>
+                <h1 class="text-4xl font-bold text-white mb-2">Kriptarium</h1>
+                <p class="text-lg text-gray-300 mb-1">Bilgi Sistemleri ve Güvenliği</p>
+                <p class="text-sm text-gray-400">Koordinatör Yönetim Paneli</p>
+            </div>
+
+            <!-- Login Form -->
+            <div class="backdrop-blur-xl bg-white/10 p-8 rounded-2xl shadow-2xl border border-white/20">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-semibold text-white mb-2">Koordinatör Girişi</h2>
+                    <p class="text-gray-300 text-sm">Yönetim paneline erişim için giriş yapın</p>
+                </div>
+
+                <form id="login-form" class="space-y-6">
+                    <div id="error-message" class="hidden bg-red-500/20 border border-red-500/30 text-red-300 px-4 py-3 rounded-xl backdrop-blur-sm" role="alert">
+                        <span class="block sm:inline error-text"></span>
+                    </div>
+                    
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-300 mb-3 text-center">E-posta Adresi</label>
+                        <input type="email" id="email" name="email" required 
+                            class="w-full px-4 py-4 bg-white/10 border border-white/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-white placeholder-gray-400 backdrop-blur-sm text-center"
+                            placeholder="koordinator@kriptarium.com">
+                    </div>
+                    
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-300 mb-3 text-center">Şifre</label>
+                        <input type="password" id="password" name="password" required 
+                            class="w-full px-4 py-4 bg-white/10 border border-white/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-white placeholder-gray-400 backdrop-blur-sm text-center"
+                            placeholder="••••••••">
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input id="remember-me" name="remember-me" type="checkbox" 
+                                class="h-4 w-4 text-primary focus:ring-primary border-gray-400 rounded bg-white/10">
+                            <label for="remember-me" class="ml-2 block text-sm text-gray-300">
+                                Beni hatırla
+                            </label>
+                        </div>
+                        <a href="#" class="text-sm text-primary hover:text-primary/80 transition-colors">
+                            Şifremi unuttum?
+                        </a>
+                    </div>
+
+                    <button type="submit" 
+                        class="w-full flex justify-center py-4 px-6 border border-transparent rounded-xl shadow-lg text-white bg-gradient-to-r from-primary via-secondary to-accent hover:from-primary/90 hover:via-secondary/90 hover:to-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary font-medium transition-all duration-300 transform hover:scale-105">
+                        Yönetim Paneline Gir
+                    </button>
+                </form>
+
+                <div class="mt-8 text-center space-y-4">
+                    <p class="text-sm text-gray-300">
+                        Öğrenci misiniz? 
+                        <a href="index.html" class="text-primary hover:text-primary/80 font-medium transition-colors">Öğrenci girişi yapın</a>
+                    </p>
+                    <div class="border-t border-white/20 pt-4">
+                        <p class="text-sm text-gray-400 mb-3">Hesabınız yok mu?</p>
+                        <a href="register.html" class="inline-flex items-center justify-center w-full py-3 px-4 border border-secondary text-secondary bg-secondary/10 hover:bg-secondary/20 rounded-xl font-medium transition-all duration-300 backdrop-blur-sm">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                            </svg>
+                            Öğrenci Kaydı
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support Info -->
+            <div class="text-center text-sm text-gray-400">
+                <p>Teknik destek için: <a href="mailto:destek@kriptarium.com" class="text-primary hover:text-primary/80 transition-colors">destek@kriptarium.com</a></p>
             </div>
         </div>
     </div>
@@ -313,30 +123,74 @@
     <!-- Firebase Production DB -->
     <script src="js/firebase-production.js"></script>
     <script src="js/user-utils.js"></script>
-    <script src="js/main.js"></script>
-
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        // Basit giriş sistemi
+        document.getElementById('login-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+            var errorElement = document.getElementById('error-message');
+            var errorText = document.querySelector('.error-text');
             
-            if (email && password) {
-                // Store user info
-                localStorage.setItem('userEmail', email);
-                localStorage.setItem('userRole', 'coordinator');
-                
-                // Show loading effect
-                const submitBtn = e.target.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Giriş yapılıyor...';
-                submitBtn.disabled = true;
+            // E-posta ve şifre kontrolü (basit validasyon)
+            if (!email || !password) {
+                errorElement.classList.remove('hidden');
+                errorText.textContent = 'E-posta ve şifre alanları zorunludur.';
+                return;
+            }
+            
+            if (!email.includes('@')) {
+                errorElement.classList.remove('hidden');
+                errorText.textContent = 'Geçerli bir e-posta adresi giriniz.';
+                return;
+            }
+            
+            if (password.length < 4) {
+                errorElement.classList.remove('hidden');
+                errorText.textContent = 'Şifre en az 4 karakter olmalıdır.';
+                return;
+            }
+            
+            // Hata mesajını gizle
+            errorElement.classList.add('hidden');
+            
+            // Başarılı giriş simülasyonu
+            console.log('Koordinatör girişi başarılı:', email);
+            
+            // Kullanıcı bilgilerini localStorage'a kaydet
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('loginTime', new Date().toISOString());
+            localStorage.setItem('userRole', 'coordinator');
                     
-                // Simulate login process
-                setTimeout(() => {
-                                window.location.href = 'instructor-dashboard.html';
-                }, 1000);
+            // Loading göstergesi
+            var submitButton = document.querySelector('button[type="submit"]');
+            var originalText = submitButton.textContent;
+            submitButton.textContent = 'Giriş yapılıyor...';
+            submitButton.disabled = true;
+            
+            // Koordinatör olarak yönlendir
+            setTimeout(function() {
+                console.log('Koordinatör paneline yönlendiriliyor...');
+                window.location.href = 'instructor-dashboard.html';
+            }, 1000);
+        });
+        
+        // Sayfa yüklendiğinde oturum kontrolü
+        document.addEventListener('DOMContentLoaded', function() {
+            var isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (isLoggedIn === 'true') {
+                var userEmail = localStorage.getItem('userEmail');
+                var userRole = localStorage.getItem('userRole');
+                console.log('Zaten giriş yapılmış:', userEmail, 'Rol:', userRole);
+                
+                // Eğer zaten giriş yapılmışsa uygun sayfaya yönlendir
+                if (userRole === 'coordinator') {
+                    window.location.href = 'instructor-dashboard.html';
+                } else {
+                    window.location.href = 'student-dashboard.html';
+                }
             }
         });
     </script>

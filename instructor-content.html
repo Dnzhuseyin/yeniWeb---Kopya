@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Yönetimi - CyberEdu Admin</title>
+    <title>Video Yönetimi - Kriptarium Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -24,16 +24,72 @@
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ULTRA STRONG SIDEBAR FIX - NEVER DISAPPEAR */
+        .sidebar-container {
+            position: fixed !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 256px !important;
+            height: 100vh !important;
+            z-index: 999999 !important;
+            background-color: #0f172a !important;
+            overflow-y: auto !important;
+            transform: none !important;
+            will-change: auto !important;
+            pointer-events: auto !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        
+        .main-content {
+            margin-left: 256px !important;
+            z-index: 1 !important;
+            position: relative !important;
+        }
+        
+        /* Force sidebar to stay visible - ULTRA STRONG */
+        body > aside {
+            position: fixed !important;
+            z-index: 999999 !important;
+            left: 0 !important;
+            top: 0 !important;
+            height: 100vh !important;
+            overflow-y: auto !important;
+            transform: none !important;
+            will-change: auto !important;
+            pointer-events: auto !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        
+        /* Additional safety measures */
+        aside.sidebar-container {
+            position: fixed !important;
+            z-index: 999999 !important;
+            left: 0 !important;
+            top: 0 !important;
+            height: 100vh !important;
+            overflow-y: auto !important;
+            transform: none !important;
+            will-change: auto !important;
+            pointer-events: auto !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+    </style>
 </head>
-<body class="bg-gray-50 min-h-screen flex">
-    <!-- Sidebar -->
-    <aside class="bg-dark text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
+<body class="bg-gray-50 min-h-screen">
+    <!-- Sidebar - ULTRA STRONG FIXED - NEVER DISAPPEAR -->
+    <aside class="sidebar-container bg-dark text-white w-64 min-h-screen hidden md:block">
         <div class="p-4">
             <a href="instructor-dashboard.html" class="font-bold text-xl text-secondary block mb-8 flex items-center">
-                <i class="fas fa-shield-alt text-2xl mr-3"></i>
-                CyberEdu Admin
+                <i class="fas fa-key text-2xl mr-3"></i>
+                Kriptarium Admin
             </a>
             
             <div class="mb-8">
@@ -62,19 +118,23 @@
                     <i class="fas fa-users mr-3"></i>
                     <span>Öğrenci Yönetimi</span>
                 </a>
+                <a href="instructor-resources.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-download mr-3"></i>
+                    <span>Kaynak Yönetimi</span>
+                </a>
             </nav>
 
             <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
-                <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                <button onclick="logout()" class="flex items-center text-gray-400 hover:text-white w-full text-left">
                     <i class="fas fa-sign-out-alt mr-3"></i>
                     <span>Çıkış Yap</span>
-                </a>
+                </button>
             </div>
         </div>
     </aside>
 
     <!-- Main content -->
-    <main class="md:ml-64 p-4 md:p-8 w-full min-h-screen">
+    <main class="main-content p-4 md:p-8 w-full min-h-screen">
         <div class="max-w-7xl mx-auto">
             <!-- Header -->
             <header class="mb-8">
@@ -157,14 +217,6 @@
                             <select id="videoModule" required
                                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent">
                                 <option value="">Modül Seçin</option>
-                                <option value="1">Bilgi Güvenliği Temelleri</option>
-                                <option value="2">Kriptoloji ve Şifreleme</option>
-                                <option value="3">Ağ Güvenliği</option>
-                                <option value="4">Web Güvenliği</option>
-                                <option value="5">Malware Analizi</option>
-                                <option value="6">Penetrasyon Testleri</option>
-                                <option value="7">Incident Response</option>
-                                <option value="8">Compliance ve Standartlar</option>
                             </select>
                         </div>
                     </div>
@@ -207,9 +259,30 @@
                             <i class="fas fa-upload mr-2"></i>
                             Video Yükle
                         </button>
-                        <!-- Removed AI and manual question buttons from here - they'll be available after video is uploaded -->
                     </div>
                 </form>
+                
+                <!-- Question Addition Section - Shows after video is added -->
+                <div id="question-addition-section" class="mt-6 p-6 bg-blue-50 border border-blue-200 rounded-lg" style="display: none;">
+                    <h3 class="text-lg font-semibold mb-4 text-blue-800">
+                        <i class="fas fa-question-circle mr-2"></i>
+                        Video için Soru Eklemek İster misiniz?
+                    </h3>
+                    <div class="flex items-center space-x-4">
+                        <button type="button" id="generateAIQuestions" class="bg-accent text-white px-6 py-3 rounded-lg hover:bg-accent/90">
+                            <i class="fas fa-robot mr-2"></i>
+                            AI ile Soru Oluştur
+                        </button>
+                        <button type="button" id="addManualQuestion" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90">
+                            <i class="fas fa-plus mr-2"></i>
+                            Manuel Soru Ekle
+                        </button>
+                        <button type="button" id="skipQuestions" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600">
+                            <i class="fas fa-times mr-2"></i>
+                            Şimdilik Atla
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <!-- Manual Questions Section -->
@@ -249,10 +322,6 @@
                     <div class="flex items-center space-x-3">
                         <select class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent text-sm" id="filterModule">
                             <option value="">Tüm Modüller</option>
-                            <option value="1">Bilgi Güvenliği Temelleri</option>
-                            <option value="2">Kriptoloji ve Şifreleme</option>
-                            <option value="3">Ağ Güvenliği</option>
-                            <option value="4">Web Güvenliği</option>
                         </select>
                     </div>
                 </div>
@@ -333,6 +402,33 @@
                 });
             }
 
+            // AI Questions button
+            const generateAIBtn = document.getElementById('generateAIQuestions');
+            if (generateAIBtn) {
+                generateAIBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    generateAIQuestions('new-video');
+                });
+            }
+
+            // Manual Question button
+            const addManualBtn = document.getElementById('addManualQuestion');
+            if (addManualBtn) {
+                addManualBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showManualQuestionSection();
+                });
+            }
+
+            // Skip Questions button
+            const skipQuestionsBtn = document.getElementById('skipQuestions');
+            if (skipQuestionsBtn) {
+                skipQuestionsBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    skipQuestions();
+                });
+            }
+
             // Filter videos
             const filterModule = document.getElementById('filterModule');
             if (filterModule) {
@@ -341,29 +437,45 @@
                 });
             }
 
-            // Logout functionality
-            document.querySelectorAll('a[href="index.html"]').forEach(function(link) {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
+            // Logout function
+            function logout() {
+                if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
                     localStorage.removeItem('isLoggedIn');
                     localStorage.removeItem('userEmail');
                     localStorage.removeItem('loginTime');
+                    localStorage.removeItem('userRole');
                     
-                    console.log('Koordinatör çıkışı yapıldı');
+                    console.log('🚪 Koordinatör çıkışı yapıldı');
                     window.location.href = 'index.html';
-                });
-            });
+                }
+            }
         }
 
         // Show manual question section
         function showManualQuestionSection() {
             const section = document.getElementById('manual-questions-section');
-            section.style.display = 'block';
+            if (section) {
+                section.style.display = 'block';
+                
+                // Update section title for new video
+                const sectionTitle = section.querySelector('h2');
+                if (sectionTitle) {
+                    sectionTitle.innerHTML = `
+                        <i class="fas fa-edit text-primary mr-2"></i>
+                        Yeni Video için Manuel Soru Oluşturma
+                    `;
+                }
+            }
             
-            // Add first question if none exists
-            if (document.getElementById('manual-questions-container').children.length === 0) {
+            // Clear existing questions and add first question if none exists
+            const container = document.getElementById('manual-questions-container');
+            if (container && container.children.length === 0) {
                 addNewManualQuestion();
+            }
+            
+            // Scroll to the section
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
             }
         }
 
@@ -461,6 +573,9 @@
         // Save manual questions
         async function saveManualQuestions() {
             try {
+                console.log('🔧 Manuel soru kaydetme başladı...');
+                console.log('Current Video ID:', currentVideoId);
+                
                 if (!currentVideoId) {
                     alert('❌ Önce bir video seçin!');
                     return;
@@ -469,24 +584,49 @@
                 const questions = [];
                 const questionDivs = document.querySelectorAll('#manual-questions-container .border');
                 
+                console.log('Bulunan soru div sayısı:', questionDivs.length);
+                
                 if (questionDivs.length === 0) {
                     alert('❌ Hiç soru eklenmemiş!');
                     return;
                 }
 
                 // Process each question
+                let hasErrors = false;
                 questionDivs.forEach((div, index) => {
-                    const questionText = div.querySelector('.question-text').value.trim();
-                    const optionA = div.querySelector('.option-a').value.trim();
-                    const optionB = div.querySelector('.option-b').value.trim();
-                    const optionC = div.querySelector('.option-c').value.trim();
-                    const optionD = div.querySelector('.option-d').value.trim();
-                    const correctAnswer = parseInt(div.querySelector('.correct-answer').value);
-                    const difficulty = div.querySelector('.question-difficulty').value;
-                    const explanation = div.querySelector('.question-explanation').value.trim();
+                    console.log(`🔍 Soru ${index + 1} işleniyor...`);
+                    
+                    const questionText = div.querySelector('.question-text')?.value?.trim();
+                    const optionA = div.querySelector('.option-a')?.value?.trim();
+                    const optionB = div.querySelector('.option-b')?.value?.trim();
+                    const optionC = div.querySelector('.option-c')?.value?.trim();
+                    const optionD = div.querySelector('.option-d')?.value?.trim();
+                    const correctAnswerElement = div.querySelector('.correct-answer');
+                    const correctAnswer = correctAnswerElement ? parseInt(correctAnswerElement.value) : NaN;
+                    const difficulty = div.querySelector('.question-difficulty')?.value;
+                    const explanation = div.querySelector('.question-explanation')?.value?.trim();
 
+                    console.log('Soru verileri:', {
+                        questionText,
+                        optionA,
+                        optionB,
+                        optionC,
+                        optionD,
+                        correctAnswer,
+                        difficulty,
+                        explanation
+                    });
+
+                    // Skip empty questions instead of showing error
+                    if (!questionText && !optionA && !optionB && !optionC && !optionD) {
+                        console.log(`⏭️ Soru ${index + 1}: Boş soru atlanıyor`);
+                        return; // Skip this empty question
+                    }
+
+                    // Check if question is partially filled
                     if (!questionText || !optionA || !optionB || !optionC || !optionD || isNaN(correctAnswer)) {
-                        alert(`❌ Soru ${index + 1}: Tüm alanları doldurun ve doğru cevabı seçin!`);
+                        console.error(`❌ Soru ${index + 1}: Eksik veri tespit edildi`);
+                        hasErrors = true;
                         return;
                     }
 
@@ -499,16 +639,31 @@
                         type: 'manual',
                         createdAt: new Date().toISOString()
                     });
+                    
+                    console.log(`✅ Soru ${index + 1} başarıyla eklendi`);
                 });
+
+                // Show error message if there are partially filled questions
+                if (hasErrors) {
+                    alert('❌ Bazı sorular eksik bilgi içeriyor. Lütfen tüm alanları doldurun veya boş soruları silin.');
+                    return;
+                }
+
+                console.log('Toplam işlenecek soru sayısı:', questions.length);
 
                 if (questions.length === 0) {
                     alert('❌ Geçerli soru bulunamadı!');
                     return;
                 }
 
+                console.log('📹 Video yükleniyor, ID:', currentVideoId);
+
                 // Load existing video and add questions
                 const videoResult = await window.DB.load('coordinatorVideos', currentVideoId);
                 const video = (videoResult && videoResult.success) ? videoResult.data : null;
+                
+                console.log('Video yükleme sonucu:', videoResult);
+                console.log('Video verisi:', video);
                 
                 if (!video) {
                     alert('❌ Video bulunamadı!');
@@ -524,13 +679,20 @@
                 video.questions.push(...questions);
                 video.updatedAt = new Date().toISOString();
 
+                console.log('📝 Video kaydediliyor...');
+                console.log('Eski soru sayısı:', oldQuestionCount);
+                console.log('Yeni soru sayısı:', video.questions.length);
+
                 // Save updated video
                 const success = await window.DB.save('coordinatorVideos', video, currentVideoId);
                 
+                console.log('Kaydetme sonucu:', success);
+                
                 if (success && success.success) {
-                    console.log('✅ Sorular kaydedildi:', questions.length);
+                    console.log('✅ Sorular başarıyla kaydedildi');
                     
                     // Sync to student dashboard
+                    console.log('🔄 Senkronizasyon başlatılıyor...');
                     await window.DB.syncCoordinatorVideos();
                     
                     alert(`✅ ${questions.length} soru "${video.title}" videosuna başarıyla eklendi!\n\nÖnceki soru sayısı: ${oldQuestionCount}\nYeni soru sayısı: ${video.questions.length}`);
@@ -542,11 +704,12 @@
                     // Reload videos to show updated count
                     await loadVideos();
                 } else {
-                    throw new Error('Sorular kaydedilemedi');
+                    throw new Error('Sorular kaydedilemedi: ' + JSON.stringify(success));
                 }
 
             } catch (error) {
                 console.error('❌ Manuel soru kaydetme hatası:', error);
+                console.error('Hata detayları:', error.stack);
                 alert('❌ Sorular kaydedilirken hata oluştu: ' + error.message);
             }
         }
@@ -668,7 +831,7 @@
                 } else {
                     console.log('➕ Yeni video ekleniyor...');
                     
-                    // Create new video - without questions dependency
+                    // Create new video - without questions first
                     const videoData = {
                         title: title,
                         moduleId: moduleId,
@@ -677,7 +840,7 @@
                         description: description,
                         duration: duration,
                         difficulty: difficulty,
-                        questions: [], // Empty questions array - will be added separately
+                        questions: [], // Empty initially
                         createdAt: new Date().toISOString()
                     };
 
@@ -689,10 +852,19 @@
                         await window.DB.syncCoordinatorVideos();
                         console.log('✅ Video senkronizasyonu tamamlandı');
                         
-                        alert(`✅ "${title}" videosu başarıyla eklendi!\n\nVideo ID: ${success.id || 'Otomatik'}\nModül: ${moduleId}\n\n💡 İpucu: Video listesinden "Soru Ekle" butonunu kullanarak sorular ekleyebilirsiniz.`);
+                        // Store the new video ID for question addition
+                        currentVideoId = success.id;
                         
-                        // Clear form and reload
-                        resetVideoForm();
+                        alert(`✅ "${title}" videosu başarıyla eklendi!\n\nVideo ID: ${success.id || 'Otomatik'}\nModül: ${moduleId}`);
+                        
+                        // Show question addition section
+                        const questionSection = document.getElementById('question-addition-section');
+                        if (questionSection) {
+                            questionSection.style.display = 'block';
+                            questionSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                        
+                        // Reload videos to show the new video
                         await loadVideos();
                     } else {
                         throw new Error('Video ekleme başarısız');
@@ -970,47 +1142,137 @@
                 console.log('📚 Modüller yükleniyor...');
                 const modulesResult = await window.DB.loadModules();
                 const modules = (modulesResult && modulesResult.success) ? modulesResult.data : [];
-                const moduleSelect = document.getElementById('module-select');
+                
+                // Update video form module select
+                const moduleSelect = document.getElementById('videoModule');
+                // Update filter module select
+                const filterModuleSelect = document.getElementById('filterModule');
                 
                 if (moduleSelect) {
-                    moduleSelect.innerHTML = '<option value="">Modül Seçin</option>'; // Clear default options
-                    modules.forEach(module => {
-                        const option = document.createElement('option');
-                        option.value = module.id;
-                        option.textContent = `${module.title || module.name}`;
-                        moduleSelect.appendChild(option);
-                    });
-                    console.log('✅ Modüller başarıyla yüklendi:', modules.length);
+                    moduleSelect.innerHTML = '<option value="">Modül Seçin</option>';
+                    
+                    if (modules && modules.length > 0) {
+                        modules.forEach(module => {
+                            const option = document.createElement('option');
+                            option.value = module.id;
+                            option.textContent = module.title || module.name || 'Modül ' + module.id;
+                            moduleSelect.appendChild(option);
+                        });
+                        console.log('✅ Video form modülleri başarıyla yüklendi:', modules.length);
+                    } else {
+                        console.log('⚠️ Hiç modül bulunamadı, örnek modüller oluşturuluyor...');
+                        // Create sample modules if none exist
+                        await createSampleModules();
+                        // Reload modules after creation
+                        await loadModules();
+                        return;
+                    }
                 } else {
-                    console.error('HATA: Modül seçimi için element bulunamadı!');
+                    console.error('❌ Video form modül seçimi için element bulunamadı!');
+                }
+
+                // Update filter module select
+                if (filterModuleSelect) {
+                    filterModuleSelect.innerHTML = '<option value="">Tüm Modüller</option>';
+                    
+                    if (modules && modules.length > 0) {
+                        modules.forEach(module => {
+                            const option = document.createElement('option');
+                            option.value = module.id;
+                            option.textContent = module.title || module.name || 'Modül ' + module.id;
+                            filterModuleSelect.appendChild(option);
+                        });
+                        console.log('✅ Filter modülleri başarıyla yüklendi:', modules.length);
+                    }
+                } else {
+                    console.error('❌ Filter modül seçimi için element bulunamadı!');
                 }
             } catch (error) {
                 console.error('❌ Modül yükleme hatası:', error);
+                // Fallback: create sample modules
+                try {
+                    await createSampleModules();
+                    await loadModules();
+                } catch (fallbackError) {
+                    console.error('❌ Fallback modül oluşturma da başarısız:', fallbackError);
+                }
             }
         }
 
-        // Generate AI questions - simplified fallback only
+        async function createSampleModules() {
+            try {
+                console.log('🔧 Örnek modüller oluşturuluyor...');
+                const sampleModules = [
+                    {
+                        title: 'Bilgi Güvenliği Temelleri',
+                        description: 'Bilgi güvenliğinin temel prensipleri ve kavramları',
+                        category: 'Temel',
+                        difficulty: 'beginner',
+                        order: 1
+                    },
+                    {
+                        title: 'Kriptoloji ve Şifreleme',
+                        description: 'Kriptografi, hash fonksiyonları ve dijital imzalar',
+                        category: 'Güvenlik',
+                        difficulty: 'intermediate',
+                        order: 2
+                    },
+                    {
+                        title: 'Ağ Güvenliği',
+                        description: 'Ağ protokolleri, firewall ve VPN teknolojileri',
+                        category: 'Ağ',
+                        difficulty: 'intermediate',
+                        order: 3
+                    },
+                    {
+                        title: 'Web Güvenliği',
+                        description: 'OWASP Top 10, XSS, SQL Injection ve güvenli kodlama',
+                        category: 'Web',
+                        difficulty: 'advanced',
+                        order: 4
+                    },
+                    {
+                        title: 'Malware Analizi',
+                        description: 'Zararlı yazılım türleri, analiz teknikleri ve korunma',
+                        category: 'Analiz',
+                        difficulty: 'advanced',
+                        order: 5
+                    }
+                ];
+
+                for (const module of sampleModules) {
+                    await window.DB.saveModule(module);
+                }
+                console.log('✅ Örnek modüller oluşturuldu');
+            } catch (error) {
+                console.error('❌ Örnek modül oluşturma hatası:', error);
+            }
+        }
+
+        // Generate AI questions - for new video form
         async function generateAIQuestions(containerType) {
             try {
                 let videoTitle = document.getElementById('videoTitle').value;
                 let videoDescription = document.getElementById('videoDescription').value;
                 let moduleId = document.getElementById('videoModule').value;
                 
+                if (!videoTitle && !videoDescription && !moduleId) {
+                    alert('❌ Soru üretmek için en azından video başlığı, açıklama veya modül bilgisi gerekli!');
+                    return;
+                }
+                
                 // Determine question topic
                 let questionTopic = videoDescription || videoTitle || 'Siber güvenlik konuları';
                 
                 if (moduleId) {
-                    const moduleNames = {
-                        '1': 'Bilgi Güvenliği Temelleri',
-                        '2': 'Kriptoloji ve Şifreleme',
-                        '3': 'Ağ Güvenliği',
-                        '4': 'Web Güvenliği',
-                        '5': 'Malware Analizi',
-                        '6': 'Penetrasyon Testleri',
-                        '7': 'Incident Response',
-                        '8': 'Compliance ve Standartlar'
-                    };
-                    questionTopic = moduleNames[moduleId] || questionTopic;
+                    // Get module name from the select element
+                    const moduleSelect = document.getElementById('videoModule');
+                    if (moduleSelect) {
+                        const selectedOption = moduleSelect.options[moduleSelect.selectedIndex];
+                        if (selectedOption && selectedOption.text !== 'Modül Seçin') {
+                            questionTopic = selectedOption.text;
+                        }
+                    }
                 }
                 
                 console.log('🎯 Soru konusu:', questionTopic);
@@ -1037,7 +1299,7 @@
                     topic: questionTopic
                 }));
                 
-                // Add to current video questions
+                // Add to current video questions for later use
                 if (!currentVideoQuestions) {
                     currentVideoQuestions = [];
                 }
@@ -1046,7 +1308,7 @@
                 
                 // Show success message
                 if (aiQuestions.length > 0) {
-                    alert(`✅ ${aiQuestions.length} AI soru başarıyla oluşturuldu!\n\nKonu: ${questionTopic}\n\nToplam soru sayısı: ${currentVideoQuestions.length}\n\nSorular:\n${aiQuestions.map((q, i) => `${i + 1}. ${q.question.substring(0, 60)}...`).join('\n')}`);
+                    alert(`✅ ${aiQuestions.length} AI soru başarıyla oluşturuldu!\n\nKonu: ${questionTopic}\n\nToplam hazır soru sayısı: ${currentVideoQuestions.length}\n\n💡 Bu sorular video kaydedildiğinde otomatik olarak eklenecek.\n\nSorular:\n${aiQuestions.map((q, i) => `${i + 1}. ${q.question.substring(0, 60)}...`).join('\n')}`);
                 } else {
                     alert('❌ Sorular oluşturulamadı.');
                 }
@@ -1072,8 +1334,22 @@
         
         // Generate cyber security questions based on module
         function generateCyberSecurityQuestions(topic, moduleId) {
-            const questionSets = {
-                '1': [ // Bilgi Güvenliği Temelleri
+            // Get module name from the select element to determine topic
+            const moduleSelect = document.getElementById('videoModule');
+            let moduleName = 'Siber Güvenlik';
+            
+            if (moduleSelect && moduleSelect.value) {
+                const selectedOption = moduleSelect.options[moduleSelect.selectedIndex];
+                if (selectedOption && selectedOption.text !== 'Modül Seçin') {
+                    moduleName = selectedOption.text;
+                }
+            }
+            
+            // Generate questions based on module name/topic
+            const questions = [];
+            
+            if (moduleName.includes('Bilgi Güvenliği') || moduleName.includes('Temelleri')) {
+                questions.push(
                     {
                         question: "CIA üçlüsünde 'C' harfi neyi temsil eder?",
                         options: ['Confidentiality (Gizlilik)', 'Consistency (Tutarlılık)', 'Compliance (Uyumluluk)', 'Control (Kontrol)'],
@@ -1092,8 +1368,9 @@
                         correct: 1,
                         explanation: 'Risk, tehdit, zafiyet ve etkinin çarpımı ile hesaplanır.'
                     }
-                ],
-                '2': [ // Kriptoloji ve Şifreleme
+                );
+            } else if (moduleName.includes('Kriptoloji') || moduleName.includes('Şifreleme')) {
+                questions.push(
                     {
                         question: "AES şifreleme algoritması hangi tür şifrelemedir?",
                         options: ['Asimetrik', 'Simetrik', 'Hash', 'Hibrit'],
@@ -1112,8 +1389,9 @@
                         correct: 1,
                         explanation: 'Dijital imza, kimlik doğrulama ve veri bütünlüğü sağlamak için kullanılır.'
                     }
-                ],
-                '3': [ // Ağ Güvenliği
+                );
+            } else if (moduleName.includes('Ağ Güvenliği')) {
+                questions.push(
                     {
                         question: "Firewall'un temel işlevi nedir?",
                         options: ['Virüs tarama', 'Ağ trafiğini filtreleme', 'Veri yedekleme', 'Performans artırma'],
@@ -1132,8 +1410,9 @@
                         correct: 1,
                         explanation: 'DDoS saldırıları sistemleri aşırı yükleyerek kullanılamaz hale getirmeyi amaçlar.'
                     }
-                ],
-                '4': [ // Web Güvenliği
+                );
+            } else if (moduleName.includes('Web Güvenliği')) {
+                questions.push(
                     {
                         question: "SQL Injection saldırısı hangi katmanda gerçekleşir?",
                         options: ['Sunum katmanı', 'Uygulama katmanı', 'Veri katmanı', 'Ağ katmanı'],
@@ -1152,30 +1431,26 @@
                         correct: 2,
                         explanation: 'HTTPS hem şifreleme hem de kimlik doğrulama sağlar.'
                     }
-                ]
-            };
-            
-            // Get questions for the module or use general questions
-            let moduleQuestions = questionSets[moduleId] || questionSets['1'];
-            
-            // Add topic-specific variations
-            const generalQuestions = [
-                {
-                    question: `${topic} alanında en kritik güvenlik önlemi nedir?`,
+                );
+            } else {
+                // General cyber security questions for any module
+                questions.push(
+                                    {
+                    question: `${moduleName} alanında en kritik güvenlik önlemi nedir?`,
                     options: ['Güçlü şifreler', 'Düzenli güncellemeler', 'Kullanıcı eğitimi', 'Tümü gerekli'],
                     correct: 3,
                     explanation: 'Etkili güvenlik için tüm önlemler birlikte uygulanmalıdır.'
                 },
                 {
-                    question: `${topic} konusunda güncel kalmanın en iyi yolu nedir?`,
+                    question: `${moduleName} konusunda güncel kalmanın en iyi yolu nedir?`,
                     options: ['Sadece kitap okumak', 'Konferanslar ve eğitimler', 'İnternet araştırması', 'Deneyim kazanmak'],
                     correct: 1,
                     explanation: 'Konferanslar ve sürekli eğitim güncel kalmak için en etkili yöntemdir.'
                 }
-            ];
+            );
             
-            // Combine module questions with general questions
-            return [...moduleQuestions, ...generalQuestions].slice(0, 3);
+            // Return questions (max 3)
+            return questions.slice(0, 3);
         }
 
         // Add questions to existing video - simplified
@@ -1397,7 +1672,9 @@
         // Logout function
         function logout() {
             if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                localStorage.removeItem('isLoggedIn');
                 localStorage.removeItem('userEmail');
+                localStorage.removeItem('loginTime');
                 localStorage.removeItem('userRole');
                 window.location.href = 'index.html';
             }
@@ -1587,6 +1864,13 @@
             currentVideoId = videoId;
             console.log(`✅ currentVideoId ayarlandı: ${currentVideoId}`);
             
+            // Clear existing questions first
+            const container = document.getElementById('manual-questions-container');
+            if (container) {
+                container.innerHTML = '';
+                console.log('🧹 Eski sorular temizlendi');
+            }
+            
             // Show manual question section
             const manualQuestionsSection = document.getElementById('manual-questions-section');
             if (manualQuestionsSection) {
@@ -1602,14 +1886,87 @@
                 }
             }
             
-            // Add first question if none exists
-            if (document.getElementById('manual-questions-container').children.length === 0) {
-                addNewManualQuestion();
-            }
+            // Add first question
+            addNewManualQuestion();
+            console.log('➕ İlk soru formu eklendi');
             
             // Scroll to the section
-            manualQuestionsSection.scrollIntoView({ behavior: 'smooth' });
+            if (manualQuestionsSection) {
+                manualQuestionsSection.scrollIntoView({ behavior: 'smooth' });
+            }
         }
+
+        // Skip questions - hide the question section and reset
+        function skipQuestions() {
+            const questionSection = document.getElementById('question-addition-section');
+            if (questionSection) {
+                questionSection.style.display = 'none';
+            }
+            
+            // Reset current video and questions
+            currentVideoId = null;
+            currentVideoQuestions = [];
+            
+            // Reset form
+            resetVideoForm();
+            
+            alert('✅ Video başarıyla eklendi! İstediğiniz zaman video listesinden soru ekleyebilirsiniz.');
+            
+            console.log('⏭️ Soru ekleme atlandı');
+        }
+        
+        // ULTRA STRONG SIDEBAR VISIBILITY SYSTEM
+        function ensureSidebarVisibility() {
+            const sidebar = document.querySelector('aside');
+            if (sidebar) {
+                // Force sidebar to stay visible with ULTRA STRONG rules
+                sidebar.style.position = 'fixed';
+                sidebar.style.zIndex = '999999';
+                sidebar.style.left = '0';
+                sidebar.style.top = '0';
+                sidebar.style.height = '100vh';
+                sidebar.style.overflowY = 'auto';
+                sidebar.style.transform = 'none';
+                sidebar.style.willChange = 'auto';
+                sidebar.style.pointerEvents = 'auto';
+                sidebar.style.display = 'block';
+                sidebar.style.visibility = 'visible';
+                sidebar.style.opacity = '1';
+                
+                // Add CSS class for additional safety
+                sidebar.classList.add('sidebar-container');
+                
+                console.log('🔒 Sidebar görünürlüğü korunuyor - Z-Index:', sidebar.style.zIndex);
+            }
+        }
+        
+        // Start continuous sidebar visibility check
+        function startSidebarVisibilityCheck() {
+            // Check every 50ms (ultra frequent)
+            setInterval(ensureSidebarVisibility, 50);
+            
+            // Check on all possible events
+            const events = ['scroll', 'resize', 'load', 'visibilitychange', 'focus', 'blur', 'click', 'mousemove', 'keydown'];
+            events.forEach(event => {
+                window.addEventListener(event, ensureSidebarVisibility);
+                document.addEventListener(event, ensureSidebarVisibility);
+            });
+            
+            // Additional safety: check on DOM changes
+            const observer = new MutationObserver(ensureSidebarVisibility);
+            observer.observe(document.body, { 
+                childList: true, 
+                subtree: true, 
+                attributes: true,
+                attributeFilter: ['style', 'class']
+            });
+            
+            console.log('🚀 Ultra güçlü sidebar görünürlük sistemi başlatıldı!');
+        }
+        
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', ensureSidebarVisibility);
+        window.addEventListener('load', ensureSidebarVisibility);
     </script>
 </body>
 </html>

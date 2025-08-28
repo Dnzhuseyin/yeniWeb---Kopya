@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İlerlemem - CyberEdu</title>
+    <title>İlerlemem - Kriptarium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -38,8 +38,8 @@
     <aside class="bg-dark text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
         <div class="p-4">
             <a href="student-dashboard.html" class="font-bold text-xl text-cyber block mb-8 flex items-center">
-                <i class="fas fa-shield-alt text-2xl mr-3"></i>
-                CyberEdu
+                <i class="fas fa-key text-2xl mr-3"></i>
+                Kriptarium
             </a>
             
             <div class="mb-8">
@@ -208,207 +208,410 @@
     <script src="js/main.js"></script>
     
     <script>
-        let userProgress = {};
-        let userNotes = [];
-        let completedVideos = [];
-
-        // Page initialization
+        // Initialize page
         document.addEventListener('DOMContentLoaded', async function() {
-            // Initialize user info first
-            if (window.UserUtils) {
-                await UserUtils.initializeUserInfo();
-            }
+            console.log('📊 İlerleme sayfası yükleniyor...');
             
-            await loadUserProgress();
+            // Initialize user info using UserUtils
+            const isLoggedIn = await UserUtils.initializeUserInfo();
+            if (!isLoggedIn) return;
+            
+            // Wait for Firebase to be ready
+            await new Promise(resolve => {
+                const checkDB = () => {
+                    if (window.DB) {
+                        console.log('✅ Firebase Production DB hazır!');
+                        resolve();
+                    } else {
+                        console.log('⏳ Firebase Production DB bekleniyor...');
+                        setTimeout(checkDB, 200);
+                    }
+                };
+                checkDB();
+            });
+            
+            await loadProgressData();
             setupEventListeners();
+            
+            console.log('✅ İlerleme sayfası hazır!');
         });
 
-        // Load user progress - simplified version
-        async function loadUserProgress() {
+        // Load real progress data from Firebase
+        async function loadProgressData() {
             try {
-                console.log('📈 İlerleme verileri yükleniyor...');
-                
                 const userEmail = localStorage.getItem('userEmail');
                 if (!userEmail) {
                     console.warn('⚠️ Kullanıcı e-postası bulunamadı');
-                    // Set default progress for demo
-                    setDefaultProgress();
                     return;
                 }
                 
-                // Try to load from localStorage first (for demo)
-                const storedProgress = localStorage.getItem(`userProgress_${userEmail}`);
-                if (storedProgress) {
-                    try {
-                        userProgress = JSON.parse(storedProgress);
-                        console.log('✅ LocalStorage\'dan ilerleme yüklendi');
-                    } catch (parseError) {
-                        console.warn('⚠️ LocalStorage verisi bozuk, varsayılan değerler yükleniyor');
-                        setDefaultProgress();
-                    }
-                } else {
-                    // Set default progress for new users
-                    setDefaultProgress();
-                    saveProgressToLocalStorage();
-                }
-
-                updateProgressDisplay();
+                console.log('📈 İlerleme verileri yükleniyor...');
+                
+                // Load user progress data
+                const progressResult = await window.DB.load('userProgress');
+                const progressData = (progressResult && progressResult.success) ? progressResult.data : [];
+                const userProgressData = progressData.filter(p => p.userEmail === userEmail);
+                
+                // Load modules
+                const modulesResult = await window.DB.loadModules();
+                const modules = (modulesResult && modulesResult.success) ? modulesResult.data : [];
+                
+                // Load coordinator videos for total video count
+                const videosResult = await window.DB.load('coordinatorVideos');
+                const videos = (videosResult && videosResult.success) ? videosResult.data : [];
+                
+                // Load user profile for additional info
+                const profileResult = await window.DB.load('userProfiles');
+                const profiles = (profileResult && profileResult.success) ? profileResult.data : [];
+                const userProfile = profiles.find(p => p.userEmail === userEmail);
+                
+                // Calculate statistics
+                const totalModules = modules.length || 8;
+                const completedModules = userProgressData.filter(p => p.completionRate >= 100).length;
+                const totalVideos = videos.length;
+                const watchedVideos = userProgressData.reduce((sum, p) => sum + (p.watchedVideos || 0), 0);
+                const totalExamScore = userProgressData.reduce((sum, p) => sum + (p.examScore || 0), 0);
+                const averageScore = userProgressData.length > 0 ? Math.round(totalExamScore / userProgressData.length) : 0;
+                const overallProgress = Math.round((completedModules / totalModules) * 100);
+                
+                // Update UI with real data
+                await updateProgressDisplay(userProgressData, modules, {
+                    totalModules,
+                    completedModules,
+                    totalVideos,
+                    watchedVideos,
+                    averageScore,
+                    overallProgress,
+                    userProfile
+                });
+                
                 console.log('✅ İlerleme verileri başarıyla yüklendi');
-
+                
             } catch (error) {
-                console.error('❌ İlerleme verisi yükleme hatası:', error);
-                setDefaultProgress();
-                updateProgressDisplay();
+                console.error('❌ İlerleme veri yükleme hatası:', error);
+                showError('İlerleme verileriniz yüklenirken hata oluştu: ' + error.message);
             }
         }
 
-        // Set default progress for demo
-        function setDefaultProgress() {
-            userProgress = {
-                1: 100, // Modül 1 tamamlandı
-                2: 60,  // Modül 2 devam ediyor
-                3: 100, // Modül 3 tamamlandı
-                4: 25,  // Modül 4 başladı
-                5: 0,   // Modül 5 başlanmadı
-                6: 0,   // Modül 6 başlanmadı
-                7: 0,   // Modül 7 başlanmadı
-                8: 0    // Modül 8 başlanmadı
-            };
+        // Update progress display with real data
+        async function updateProgressDisplay(userProgressData, modules, stats) {
+            // Update header statistics
+            updateHeaderStats(stats);
             
-            // Set some demo notes and completed videos
-            userNotes = [
-                { id: 1, title: 'Afet Yönetimi Notları', moduleId: 1 },
-                { id: 2, title: 'Kriz Liderliği', moduleId: 2 }
-            ];
+            // Update user info
+            updateUserInfo(stats.userProfile);
             
-            completedVideos = [
-                { id: 1, moduleId: 1, title: 'Giriş Videosu' },
-                { id: 2, moduleId: 1, title: 'Temel Kavramlar' },
-                { id: 3, moduleId: 3, title: 'Hazırlık Süreçleri' }
-            ];
+            // Update module progress list
+            updateModuleProgressList(userProgressData, modules);
+            
+            // Update achievement section
+            updateAchievements(stats.completedModules, stats.averageScore);
+            
+            // Update progress chart/visualization
+            updateProgressVisualization(userProgressData, modules);
         }
 
-        // Save progress to localStorage
-        function saveProgressToLocalStorage() {
-            try {
-                const userEmail = localStorage.getItem('userEmail');
-                if (userEmail) {
-                    localStorage.setItem(`userProgress_${userEmail}`, JSON.stringify(userProgress));
-                    console.log('✅ İlerleme localStorage\'a kaydedildi');
-                }
-            } catch (error) {
-                console.warn('⚠️ LocalStorage\'a kaydetme hatası:', error);
-            }
-        }
-
-        // Update progress display
-        function updateProgressDisplay() {
-            const moduleKeys = Object.keys(userProgress);
-            const totalModules = 8;
-            
-            // Calculate overall progress
-            let totalProgress = 0;
-            let completedModules = 0;
-            
-            if (moduleKeys.length > 0) {
-                totalProgress = Math.round(
-                    moduleKeys.reduce((sum, key) => sum + (userProgress[key] || 0), 0) / totalModules
-                );
-                completedModules = moduleKeys.filter(key => userProgress[key] >= 100).length;
-            }
-
-            // Update UI elements safely
+        // Update header statistics
+        function updateHeaderStats(stats) {
+            // Update progress cards
+            const completedModulesEl = document.getElementById('completed-modules');
+            const totalModulesEl = document.getElementById('total-modules');
+            const watchedVideosEl = document.getElementById('watched-videos');
+            const totalVideosEl = document.getElementById('total-videos');
+            const avgScoreEl = document.getElementById('avg-score');
             const overallProgressEl = document.getElementById('overall-progress');
             const progressBarEl = document.getElementById('progress-bar');
-            const completedModulesEl = document.getElementById('completed-modules');
+            
+            // Update main progress cards
+            if (completedModulesEl) completedModulesEl.textContent = stats.completedModules;
+            if (totalModulesEl) totalModulesEl.textContent = stats.totalModules;
+            if (avgScoreEl) avgScoreEl.textContent = stats.averageScore;
+            if (overallProgressEl) overallProgressEl.textContent = `${stats.overallProgress}%`;
+            if (progressBarEl) progressBarEl.style.width = `${stats.overallProgress}%`;
+            
+            // Update learning statistics section
+            if (watchedVideosEl) watchedVideosEl.textContent = `${stats.watchedVideos}/${stats.totalVideos}`;
+            
+            // Update other learning stats
+            const solvedQuestionsEl = document.getElementById('solved-questions');
+            const totalNotesEl = document.getElementById('total-notes');
+            const studyTimeEl = document.getElementById('study-time');
+            
+            // Calculate solved questions based on completed modules and average score
+            const estimatedQuestions = stats.completedModules * 10; // Assume 10 questions per module
+            const totalPossibleQuestions = stats.totalModules * 10;
+            if (solvedQuestionsEl) solvedQuestionsEl.textContent = `${estimatedQuestions}/${totalPossibleQuestions}`;
+            
+            // Estimate notes based on modules
+            const estimatedNotes = stats.completedModules * 3; // Assume 3 notes per completed module
+            if (totalNotesEl) totalNotesEl.textContent = estimatedNotes;
+            
+            // Calculate study time based on watched videos (assume 30 min per video)
+            const estimatedHours = Math.round((stats.watchedVideos * 30) / 60);
+            if (studyTimeEl) studyTimeEl.textContent = `${estimatedHours} saat`;
+            
+            // Update current and locked modules
             const currentModulesEl = document.getElementById('current-modules');
             const lockedModulesEl = document.getElementById('locked-modules');
-            const avgScoreEl = document.getElementById('avg-score');
             
-            if (overallProgressEl) {
-                overallProgressEl.textContent = totalProgress + '%';
-            }
+            const currentModules = stats.totalModules - stats.completedModules;
+            const lockedModules = Math.max(0, stats.totalModules - stats.completedModules - 1); // Assume next module is unlocked
             
-            if (progressBarEl) {
-                progressBarEl.style.width = totalProgress + '%';
-            }
-            
-            if (completedModulesEl) {
-                completedModulesEl.textContent = completedModules;
-            }
-            
-            if (currentModulesEl) {
-                currentModulesEl.textContent = totalModules - completedModules;
-            }
-            
-            if (lockedModulesEl) {
-                lockedModulesEl.textContent = totalModules - completedModules; // Assuming locked modules are those not completed
-            }
-            
-            // Calculate average score (simulated)
-            const averageScore = Math.min(100, Math.max(60, totalProgress + Math.floor(Math.random() * 20) - 10));
-            if (avgScoreEl) {
-                avgScoreEl.textContent = averageScore;
-            }
+            if (currentModulesEl) currentModulesEl.textContent = Math.max(1, currentModules);
+            if (lockedModulesEl) lockedModulesEl.textContent = lockedModules;
+        }
 
-            // Update header user name
-            const headerUserNameEl = document.getElementById('user-name');
-            const headerUserEmailEl = document.getElementById('user-email');
-            if (headerUserNameEl && headerUserEmailEl) {
+        // Update user info in sidebar
+        function updateUserInfo(userProfile) {
+            const userNameEl = document.getElementById('user-name');
+            const userEmailEl = document.getElementById('user-email');
+            
+            if (userProfile) {
+                const fullName = `${userProfile.firstName || ''} ${userProfile.lastName || ''}`.trim();
+                if (userNameEl) userNameEl.textContent = fullName || 'Kullanıcı';
+                if (userEmailEl) userEmailEl.textContent = userProfile.userEmail || '';
+            } else {
                 const userEmail = localStorage.getItem('userEmail');
                 if (userEmail) {
                     const userName = extractNameFromEmail(userEmail);
-                    headerUserNameEl.textContent = userName;
-                    headerUserEmailEl.textContent = userEmail;
+                    if (userNameEl) userNameEl.textContent = userName;
+                    if (userEmailEl) userEmailEl.textContent = userEmail;
                 }
             }
         }
 
-        // Update module progress and save
-        async function updateModuleProgress(moduleId, progress) {
-            try {
-                if (!userProgress) {
-                    userProgress = {};
+        // Update module progress list
+        function updateModuleProgressList(userProgressData, modules) {
+            const moduleProgressContainer = document.getElementById('module-progress-container');
+            if (!moduleProgressContainer) return;
+            
+            // Use modules from database or create sample ones if none exist
+            let cyberModules = modules;
+            if (!cyberModules || cyberModules.length === 0) {
+                console.log('⚠️ Hiç modül bulunamadı, örnek modüller oluşturuluyor...');
+                await createSampleModules();
+                const newModulesResult = await window.DB.loadModules();
+                cyberModules = (newModulesResult && newModulesResult.success) ? newModulesResult.data : [];
+            }
+            
+            moduleProgressContainer.innerHTML = '';
+            
+            cyberModules.forEach(module => {
+                const userProgress = userProgressData.find(p => p.moduleId == module.id) || { completionRate: 0, examScore: 0 };
+                const progressPercent = userProgress.completionRate || 0;
+                const examScore = userProgress.examScore || 0;
+                
+                const moduleDiv = document.createElement('div');
+                moduleDiv.className = 'bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow';
+                moduleDiv.innerHTML = `
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-cyber to-primary rounded-lg flex items-center justify-center">
+                                <i class="fas ${getModuleIcon(module.id)} text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">${module.title}</h3>
+                                <p class="text-sm text-gray-600">${module.description}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-gray-900">${Math.round(progressPercent)}%</div>
+                            <div class="text-sm text-gray-500">Tamamlandı</div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-600">İlerleme</span>
+                                <span class="text-cyber font-medium">${Math.round(progressPercent)}%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-cyber to-primary h-2 rounded-full transition-all duration-500" 
+                                     style="width: ${progressPercent}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between text-sm">
+                            <div class="flex items-center space-x-4">
+                                <span class="text-gray-600">
+                                    <i class="fas fa-trophy mr-1"></i>
+                                    Sınav: ${examScore}/100
+                                </span>
+                                <span class="text-gray-600">
+                                    <i class="fas fa-clock mr-1"></i>
+                                    ${getStatusText(progressPercent)}
+                                </span>
+                            </div>
+                            <button onclick="goToModule('${module.id}')" 
+                                    class="text-cyber hover:text-primary font-medium">
+                                ${progressPercent === 100 ? 'Tekrar Et' : progressPercent > 0 ? 'Devam Et' : 'Başla'} →
+                            </button>
+                        </div>
+                    </div>
+                `;
+                moduleProgressContainer.appendChild(moduleDiv);
+            });
                 }
-                
-                userProgress[moduleId] = Math.max(0, Math.min(100, progress));
-                
-                // Save to localStorage
-                saveProgressToLocalStorage();
-                
-                // Update display
-                updateProgressDisplay();
-                
-                console.log(`✅ Modül ${moduleId} ilerlemesi güncellendi: ${progress}%`);
-                return true;
-                
+
+        // Create sample modules if none exist
+        async function createSampleModules() {
+            try {
+                console.log('🔧 Örnek modüller oluşturuluyor...');
+                const sampleModules = [
+                    {
+                        title: 'Bilgi Güvenliği Temelleri',
+                        description: 'Bilgi güvenliğinin temel prensipleri ve kavramları',
+                        category: 'Temel',
+                        difficulty: 'beginner',
+                        order: 1
+                    },
+                    {
+                        title: 'Kriptoloji ve Şifreleme',
+                        description: 'Kriptografi, hash fonksiyonları ve dijital imzalar',
+                        category: 'Güvenlik',
+                        difficulty: 'intermediate',
+                        order: 2
+                    },
+                    {
+                        title: 'Ağ Güvenliği',
+                        description: 'Ağ protokolleri, firewall ve VPN teknolojileri',
+                        category: 'Ağ',
+                        difficulty: 'intermediate',
+                        order: 3
+                    },
+                    {
+                        title: 'Web Güvenliği',
+                        description: 'OWASP Top 10, XSS, SQL Injection ve güvenli kodlama',
+                        category: 'Web',
+                        difficulty: 'advanced',
+                        order: 4
+                    },
+                    {
+                        title: 'Malware Analizi',
+                        description: 'Zararlı yazılım türleri, analiz teknikleri ve korunma',
+                        category: 'Analiz',
+                        difficulty: 'advanced',
+                        order: 5
+                    }
+                ];
+
+                for (const module of sampleModules) {
+                    await window.DB.saveModule(module);
+                }
+                console.log('✅ Örnek modüller oluşturuldu');
             } catch (error) {
-                console.error('❌ Modül ilerleme güncelleme hatası:', error);
-                return false;
+                console.error('❌ Örnek modül oluşturma hatası:', error);
             }
         }
-
-        // Complete module
-        async function completeModule(moduleId) {
-            try {
-                console.log(`🎯 Modül ${moduleId} tamamlanıyor...`);
-                
-                const success = await updateModuleProgress(moduleId, 100);
-                
-                if (success) {
-                    showSuccess(`Modül ${moduleId} başarıyla tamamlandı!`);
-                    console.log(`✅ Modül ${moduleId} tamamlandı`);
-                }
-                
-                return success;
-                
-            } catch (error) {
-                console.error('❌ Modül tamamlama hatası:', error);
-                return false;
+        
+        // Update achievements based on progress
+        function updateAchievements(completedModules, averageScore) {
+            const achievementsContainer = document.getElementById('achievements-container');
+            if (!achievementsContainer) return;
+            
+            let achievements = [];
+            
+            if (completedModules >= 1) {
+                achievements.push({
+                    title: 'İlk Adım',
+                    description: 'İlk modülünüzü tamamladınız',
+                    icon: 'fa-star',
+                    color: 'accent',
+                    earned: true
+                });
             }
+            
+            if (completedModules >= 3) {
+                achievements.push({
+                    title: 'Güvenlik Uzmanı',
+                    description: 'Temel güvenlik modüllerini tamamladınız',
+                    icon: 'fa-shield-alt',
+                    color: 'primary',
+                    earned: true
+                });
+            }
+            
+            if (completedModules >= 5) {
+                achievements.push({
+                    title: 'Kriptoloji Ustası',
+                    description: 'Şifreleme konularında uzmanlaştınız',
+                    icon: 'fa-key',
+                    color: 'cyber',
+                    earned: true
+                });
+            }
+            
+            if (averageScore >= 80) {
+                achievements.push({
+                    title: 'Yüksek Performans',
+                    description: 'Sınavlarda 80+ ortalama aldınız',
+                    icon: 'fa-trophy',
+                    color: 'secondary',
+                    earned: true
+                });
+            }
+            
+            // Add upcoming achievements
+            if (completedModules < 8) {
+                achievements.push({
+                    title: 'Siber Güvenlik Uzmanı',
+                    description: 'Tüm modülleri tamamlayın',
+                    icon: 'fa-graduation-cap',
+                    color: 'gray',
+                    earned: false
+                });
+            }
+            
+            achievementsContainer.innerHTML = achievements.map(achievement => `
+                <div class="flex items-center space-x-4 p-4 rounded-lg ${achievement.earned ? `bg-${achievement.color}/5 border border-${achievement.color}/20` : 'bg-gray-50 border border-gray-200'}">
+                    <div class="w-12 h-12 ${achievement.earned ? `bg-${achievement.color}/10 text-${achievement.color}` : 'bg-gray-200 text-gray-400'} rounded-lg flex items-center justify-center">
+                        <i class="fas ${achievement.icon}"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-medium ${achievement.earned ? 'text-gray-900' : 'text-gray-500'}">${achievement.title}</h4>
+                        <p class="text-sm ${achievement.earned ? 'text-gray-600' : 'text-gray-400'}">${achievement.description}</p>
+                    </div>
+                    ${achievement.earned ? '<i class="fas fa-check-circle text-accent"></i>' : '<i class="fas fa-lock text-gray-400"></i>'}
+                </div>
+            `).join('');
+        }
+
+        // Update progress visualization
+        function updateProgressVisualization(userProgressData, modules) {
+            // This could include charts, graphs, or other visual representations
+            // For now, we'll update the overall progress indicator
+            const overallProgress = userProgressData.length > 0 ? 
+                Math.round(userProgressData.reduce((sum, p) => sum + (p.completionRate || 0), 0) / userProgressData.length) : 0;
+            
+            const progressElements = document.querySelectorAll('.progress-indicator');
+            progressElements.forEach(el => {
+                el.style.width = `${overallProgress}%`;
+            });
         }
 
         // Helper functions
+        function getModuleIcon(moduleId) {
+            const icons = {
+                '1': 'fa-shield-alt',
+                '2': 'fa-key',
+                '3': 'fa-network-wired',
+                '4': 'fa-globe',
+                '5': 'fa-bug',
+                '6': 'fa-search',
+                '7': 'fa-exclamation-triangle',
+                '8': 'fa-certificate'
+            };
+            return icons[moduleId] || 'fa-book';
+        }
+
+        function getStatusText(progressPercent) {
+            if (progressPercent === 100) return 'Tamamlandı';
+            if (progressPercent > 50) return 'Devam Ediyor';
+            if (progressPercent > 0) return 'Başladı';
+            return 'Başlamadı';
+        }
+
         function extractNameFromEmail(email) {
             const name = email.split('@')[0];
             return name.split('.').map(part => 
@@ -422,24 +625,16 @@
 
         function showError(message) {
             console.error('❌ Hata:', message);
+            alert('❌ ' + message);
         }
 
         function showSuccess(message) {
             console.log('✅ Başarılı:', message);
+            alert('✅ ' + message);
         }
 
         // Setup event listeners
         function setupEventListeners() {
-            // Mobile menu functionality
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            
-            if (mobileMenuButton) {
-                mobileMenuButton.addEventListener('click', function() {
-                    // Simple mobile menu toggle
-                    console.log('Mobile menu clicked');
-                });
-            }
-
             // Logout functionality
             document.querySelectorAll('a[href="index.html"]').forEach(function(link) {
                 link.addEventListener('click', function(e) {

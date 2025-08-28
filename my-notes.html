@@ -121,10 +121,6 @@
                         <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
                                 id="filter-module">
                             <option value="">Tüm Modüller</option>
-                            <option value="1">Bilgi Güvenliği Temelleri</option>
-                            <option value="2">Kriptoloji ve Şifreleme</option>
-                            <option value="3">Ağ Güvenliği</option>
-                            <option value="4">Web Güvenliği</option>
                         </select>
                     </div>
                     <div>
@@ -182,10 +178,6 @@
                             <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
                                     id="note-module">
                                 <option value="">Modül Seçin</option>
-                                <option value="1">Bilgi Güvenliği Temelleri</option>
-                                <option value="2">Kriptoloji ve Şifreleme</option>
-                                <option value="3">Ağ Güvenliği</option>
-                                <option value="4">Web Güvenliği</option>
                             </select>
                         </div>
                         
@@ -326,9 +318,12 @@
                     `).join('');
                 }
                 
-                // İlk yükleme
-                renderNotes();
-                updateStats(allNotes);
+                        // Load modules for dropdowns
+        await loadModules();
+        
+        // İlk yükleme
+        renderNotes();
+        updateStats(allNotes);
                 
                 // Arama fonksiyonu
                 function filterNotes() {
@@ -376,6 +371,50 @@
                         </button>
                     </div>
                 `;
+            }
+        }
+
+        // Load modules for dropdowns
+        async function loadModules() {
+            try {
+                console.log('📚 Modüller yükleniyor...');
+                const modulesResult = await window.DB.loadModules();
+                const modules = (modulesResult && modulesResult.success) ? modulesResult.data : [];
+                
+                // Update filter module select
+                const filterModuleSelect = document.getElementById('filter-module');
+                // Update note module select
+                const noteModuleSelect = document.getElementById('note-module');
+                
+                if (filterModuleSelect) {
+                    filterModuleSelect.innerHTML = '<option value="">Tüm Modüller</option>';
+                    
+                    if (modules && modules.length > 0) {
+                        modules.forEach(module => {
+                            const option = document.createElement('option');
+                            option.value = module.id;
+                            option.textContent = module.title || module.name || 'Modül ' + module.id;
+                            filterModuleSelect.appendChild(option);
+                        });
+                        console.log('✅ Filter modülleri başarıyla yüklendi:', modules.length);
+                    }
+                }
+
+                if (noteModuleSelect) {
+                    noteModuleSelect.innerHTML = '<option value="">Modül Seçin</option>';
+                    
+                    if (modules && modules.length > 0) {
+                        modules.forEach(module => {
+                            const option = document.createElement('option');
+                            option.value = module.id;
+                            option.textContent = module.title || module.name || 'Modül ' + module.id;
+                            noteModuleSelect.appendChild(option);
+                        });
+                        console.log('✅ Note modül seçimi başarıyla yüklendi:', modules.length);
+                    }
+                }
+            } catch (error) {
+                console.error('❌ Modül yükleme hatası:', error);
             }
         }
         

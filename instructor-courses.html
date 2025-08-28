@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eğitim Modülleri - CyberEdu Admin</title>
+    <title>Eğitim Modülleri - Kriptarium Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -32,14 +32,71 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="js/firebase-production.js"></script>
     <script src="js/user-utils.js"></script>
+    <style>
+        /* ULTRA STRONG SIDEBAR FIX - NEVER DISAPPEAR */
+        .sidebar-container {
+            position: fixed !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 256px !important;
+            height: 100vh !important;
+            z-index: 999999 !important;
+            background-color: #0f172a !important;
+            overflow-y: auto !important;
+            transform: none !important;
+            will-change: auto !important;
+            pointer-events: auto !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        
+        .main-content {
+            margin-left: 256px !important;
+            z-index: 1 !important;
+            position: relative !important;
+        }
+        
+        /* Force sidebar to stay visible - ULTRA STRONG */
+        body > aside {
+            position: fixed !important;
+            z-index: 999999 !important;
+            left: 0 !important;
+            top: 0 !important;
+            height: 100vh !important;
+            overflow-y: auto !important;
+            transform: none !important;
+            will-change: auto !important;
+            pointer-events: auto !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        
+        /* Additional safety measures */
+        aside.sidebar-container {
+            position: fixed !important;
+            z-index: 999999 !important;
+            left: 0 !important;
+            top: 0 !important;
+            height: 100vh !important;
+            overflow-y: auto !important;
+            transform: none !important;
+            will-change: auto !important;
+            pointer-events: auto !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+    </style>
 </head>
-<body class="bg-gray-50 min-h-screen flex">
-    <!-- Sidebar -->
-    <aside class="bg-dark text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
+<body class="bg-gray-50 min-h-screen">
+    <!-- Sidebar - ULTRA STRONG FIXED - NEVER DISAPPEAR -->
+    <aside class="sidebar-container bg-dark text-white w-64 min-h-screen hidden md:block">
         <div class="p-4">
             <a href="instructor-dashboard.html" class="font-bold text-xl text-secondary block mb-8 flex items-center">
-                <i class="fas fa-shield-alt text-2xl mr-3"></i>
-                CyberEdu Admin
+                <i class="fas fa-key text-2xl mr-3"></i>
+                Kriptarium Admin
             </a>
             
             <div class="mb-8">
@@ -71,10 +128,10 @@
             </nav>
 
             <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
-                <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                <button onclick="logout()" class="flex items-center text-gray-400 hover:text-white w-full text-left bg-transparent border-none">
                     <i class="fas fa-sign-out-alt mr-3"></i>
                     <span>Çıkış Yap</span>
-                </a>
+                </button>
             </div>
         </div>
     </aside>
@@ -135,7 +192,7 @@
     </div>
 
     <!-- Main content -->
-    <main class="md:ml-64 p-4 md:p-8 w-full min-h-screen">
+    <main class="main-content p-4 md:p-8 w-full min-h-screen">
         <div class="max-w-7xl mx-auto">
             <!-- Header -->
             <header class="mb-8">
@@ -160,7 +217,7 @@
                             <i class="fas fa-graduation-cap"></i>
                         </div>
                     </div>
-                    <p class="text-2xl font-bold text-gray-900" id="total-modules">8</p>
+                    <p class="text-2xl font-bold text-gray-900" id="total-modules">0</p>
                     <p class="text-xs text-gray-500 mt-1">aktif modül</p>
                         </div>
                 
@@ -171,7 +228,7 @@
                             <i class="fas fa-video"></i>
                         </div>
                     </div>
-                    <p class="text-2xl font-bold text-gray-900" id="total-videos">127</p>
+                    <p class="text-2xl font-bold text-gray-900" id="total-videos">0</p>
                     <p class="text-xs text-gray-500 mt-1">eğitim videosu</p>
                 </div>
                 
@@ -182,7 +239,7 @@
                             <i class="fas fa-users"></i>
                         </div>
                     </div>
-                    <p class="text-2xl font-bold text-gray-900" id="active-students">342</p>
+                    <p class="text-2xl font-bold text-gray-900" id="active-students">0</p>
                     <p class="text-xs text-gray-500 mt-1">kayıtlı öğrenci</p>
                 </div>
                 
@@ -193,7 +250,7 @@
                             <i class="fas fa-chart-line"></i>
                         </div>
                     </div>
-                    <p class="text-2xl font-bold text-gray-900">73%</p>
+                    <p class="text-2xl font-bold text-gray-900" id="completion-rate">0%</p>
                     <p class="text-xs text-gray-500 mt-1">ortalama başarı</p>
                         </div>
                     </div>
@@ -206,7 +263,7 @@
                         Siber Güvenlik Modülleri
                     </h2>
                     <div class="flex items-center space-x-3">
-                        <select class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent text-sm">
+                        <select class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent text-sm" id="filterModule">
                             <option>Tüm Modüller</option>
                             <option>Aktif</option>
                             <option>Taslak</option>
@@ -214,9 +271,34 @@
                     </div>
                 </div>
                 
+                <!-- Loading Indicator -->
+                <div id="loading-indicator" class="text-center py-8" style="display: none;">
+                    <div class="inline-flex items-center">
+                        <div class="w-8 h-8 border-2 border-cyber border-t-transparent rounded-full animate-spin mr-3"></div>
+                        <span class="text-gray-600">Modüller yükleniyor...</span>
+                    </div>
+                        </div>
+                
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="modules-container">
                     <!-- Modules will be loaded here -->
-            </div>
+                        </div>
+                
+                <!-- Pagination -->
+                <div id="pagination" class="flex justify-center mt-8" style="display: none;">
+                    <nav class="flex items-center space-x-2">
+                        <button class="px-3 py-2 text-sm text-gray-500 hover:text-gray-700 disabled:opacity-50" disabled>
+                            <i class="fas fa-chevron-left mr-1"></i>
+                            Önceki
+                        </button>
+                        <button class="px-3 py-2 text-sm bg-cyber text-white rounded-md">1</button>
+                        <button class="px-3 py-2 text-sm text-gray-500 hover:text-gray-700">2</button>
+                        <button class="px-3 py-2 text-sm text-gray-500 hover:text-gray-700">3</button>
+                        <button class="px-3 py-2 text-sm text-gray-500 hover:text-gray-700">
+                            Sonraki
+                            <i class="fas fa-chevron-right ml-1"></i>
+                        </button>
+                    </nav>
+                </div>
             </div>
         </div>
     </main>
@@ -440,12 +522,52 @@
         // Update statistics
         async function updateStats() {
             try {
+                // Get module stats
                 const statsResult = await DB.getModuleStats();
                 const stats = (statsResult && statsResult.success) ? statsResult.data : {};
-                document.getElementById('total-modules').textContent = stats.totalModules || 0;
-                document.getElementById('active-modules').textContent = stats.activeModules || 0;
-                document.getElementById('draft-modules').textContent = stats.draftModules || 0;
-                document.getElementById('completed-modules').textContent = stats.completedModules || 0;
+                
+                // Get student progress data for more detailed stats
+                const progressResult = await DB.load('userProgress');
+                const progressData = (progressResult && progressResult.success) ? progressResult.data : [];
+                
+                // Get student profiles
+                const studentsResult = await DB.load('userProfiles');
+                const students = (studentsResult && studentsResult.success) ? studentsResult.data : [];
+                const studentCount = students.filter(s => s.role === 'student').length;
+                
+                // Get videos for total count
+                const videosResult = await DB.load('coordinatorVideos');
+                const videos = (videosResult && videosResult.success) ? videosResult.data : [];
+                const videoCount = videos.length;
+                
+                // Calculate completion stats
+                const totalModuleCompletions = progressData.filter(p => p.completionRate >= 100).length;
+                const averageCompletionRate = progressData.length > 0 ? 
+                    Math.round(progressData.reduce((sum, p) => sum + (p.completionRate || 0), 0) / progressData.length) : 0;
+                
+                // Update basic module stats
+                document.getElementById('total-modules').textContent = stats.totalModules || allModules.length || 0;
+                document.getElementById('total-videos').textContent = videoCount;
+                document.getElementById('active-students').textContent = studentCount;
+                document.getElementById('completion-rate').textContent = `${averageCompletionRate}%`;
+                
+                // Update other stats if elements exist
+                const activeModulesEl = document.getElementById('active-modules');
+                const draftModulesEl = document.getElementById('draft-modules');
+                const completedModulesEl = document.getElementById('completed-modules');
+                
+                if (activeModulesEl) activeModulesEl.textContent = stats.activeModules || allModules.filter(m => m.status === 'active' || !m.status).length || 0;
+                if (draftModulesEl) draftModulesEl.textContent = stats.draftModules || allModules.filter(m => m.status === 'draft').length || 0;
+                if (completedModulesEl) completedModulesEl.textContent = totalModuleCompletions;
+                
+                console.log('📊 İstatistikler güncellendi:', {
+                    totalModules: stats.totalModules || allModules.length,
+                    videoCount,
+                    studentCount,
+                    totalCompletions: totalModuleCompletions,
+                    avgProgress: averageCompletionRate
+                });
+                
             } catch (error) {
                 console.error('❌ İstatistik güncelleme hatası:', error);
             }
@@ -578,14 +700,23 @@
             }
 
             // Add module button
-            document.getElementById('add-module-btn').addEventListener('click', showAddModuleModal);
+            const addModuleBtn = document.getElementById('add-module');
+            if (addModuleBtn) {
+                addModuleBtn.addEventListener('click', showAddModuleModal);
+            }
             
             // Modal close buttons
-            document.getElementById('close-modal').addEventListener('click', hideAddModuleModal);
-            document.getElementById('cancel-module').addEventListener('click', hideAddModuleModal);
+            const closeModalBtn = document.getElementById('close-modal');
+            const cancelModuleBtn = document.getElementById('cancel-module');
+            
+            if (closeModalBtn) closeModalBtn.addEventListener('click', hideAddModuleModal);
+            if (cancelModuleBtn) cancelModuleBtn.addEventListener('click', hideAddModuleModal);
             
             // Module form submission
-            document.getElementById('module-form').addEventListener('submit', handleModuleSubmit);
+            const moduleForm = document.getElementById('module-form');
+            if (moduleForm) {
+                moduleForm.addEventListener('submit', handleModuleSubmit);
+            }
             
             // Icon selector
             document.querySelectorAll('.icon-option').forEach(button => {
@@ -596,9 +727,12 @@
                 });
         });
         
-            // Search and filter
-            document.getElementById('module-search').addEventListener('input', filterModules);
-            document.getElementById('module-filter').addEventListener('change', filterModules);
+            // Search and filter (if they exist)
+            const moduleSearch = document.getElementById('module-search');
+            const moduleFilter = document.getElementById('module-filter');
+            
+            if (moduleSearch) moduleSearch.addEventListener('input', filterModules);
+            if (moduleFilter) moduleFilter.addEventListener('change', filterModules);
 
             // Logout functionality
             document.querySelectorAll('a[href="index.html"]').forEach(function(link) {
@@ -763,6 +897,72 @@
                 }, 300);
             }, 5000);
         }
+        
+        // Logout function
+        function logout() {
+            if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('loginTime');
+                localStorage.removeItem('userRole');
+                
+                console.log('🚪 Koordinatör çıkışı yapıldı');
+                window.location.href = 'index.html';
+            }
+        }
+        
+        // ULTRA STRONG SIDEBAR VISIBILITY SYSTEM
+        function ensureSidebarVisibility() {
+            const sidebar = document.querySelector('aside');
+            if (sidebar) {
+                // Force sidebar to stay visible with ULTRA STRONG rules
+                sidebar.style.position = 'fixed';
+                sidebar.style.zIndex = '999999';
+                sidebar.style.left = '0';
+                sidebar.style.top = '0';
+                sidebar.style.height = '100vh';
+                sidebar.style.overflowY = 'auto';
+                sidebar.style.transform = 'none';
+                sidebar.style.willChange = 'auto';
+                sidebar.style.pointerEvents = 'auto';
+                sidebar.style.display = 'block';
+                sidebar.style.visibility = 'visible';
+                sidebar.style.opacity = '1';
+                
+                // Add CSS class for additional safety
+                sidebar.classList.add('sidebar-container');
+                
+                console.log('🔒 Sidebar görünürlüğü korunuyor - Z-Index:', sidebar.style.zIndex);
+            }
+        }
+        
+        // Start continuous sidebar visibility check
+        function startSidebarVisibilityCheck() {
+            // Check every 50ms (ultra frequent)
+            setInterval(ensureSidebarVisibility, 50);
+            
+            // Check on all possible events
+            const events = ['scroll', 'resize', 'load', 'visibilitychange', 'focus', 'blur', 'click', 'mousemove', 'keydown'];
+            events.forEach(event => {
+                window.addEventListener(event, ensureSidebarVisibility);
+                document.addEventListener(event, ensureSidebarVisibility);
+            });
+            
+            // Additional safety: check on DOM changes
+            const observer = new MutationObserver(ensureSidebarVisibility);
+            observer.observe(document.body, { 
+                childList: true, 
+                subtree: true, 
+                attributes: true,
+                attributeFilter: ['style', 'class']
+            });
+            
+            console.log('🚀 Ultra güçlü sidebar görünürlük sistemi başlatıldı!');
+        }
+        
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', ensureSidebarVisibility);
+        window.addEventListener('load', ensureSidebarVisibility);
     </script>
 </body>
 </html> 

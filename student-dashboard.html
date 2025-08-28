@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Öğrenci Paneli - CyberEdu</title>
+    <title>Dashboard - Kriptarium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -32,8 +32,8 @@
     <aside class="bg-dark text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
         <div class="p-4">
             <a href="student-dashboard.html" class="font-bold text-xl text-cyber block mb-8 flex items-center">
-                <i class="fas fa-shield-alt text-2xl mr-3"></i>
-                CyberEdu
+                <i class="fas fa-key text-2xl mr-3"></i>
+                Kriptarium
             </a>
             
             <div class="mb-8">
@@ -318,65 +318,101 @@
         // Load continue watching video
         async function loadContinueWatching() {
             try {
+                console.log('🎬 Son izlenen videolar yükleniyor...');
+                
+                // Get user progress
+                const progressResult = await DB.load('userProgress');
+                const userProgress = (progressResult && progressResult.success) ? progressResult.data : [];
+                
+                // Get user's progress
                 const userEmail = localStorage.getItem('userEmail');
-                if (!userEmail) return;
+                const myProgress = userProgress.filter(p => p.userEmail === userEmail);
                 
-                console.log('📺 Devam edilen video yükleniyor...');
-                
-                // Get user progress data
-                const progressResult = await window.DB.load('userProgress');
-                const progressData = (progressResult && progressResult.success) ? progressResult.data : [];
-                const userProgress = progressData.find(p => p.userEmail === userEmail);
-                
-                // Get coordinator videos
-                const videosResult = await window.DB.load('coordinatorVideos');
-                const videos = (videosResult && videosResult.success) ? videosResult.data : [];
-                
-                let continueVideo = null;
-                
-                if (userProgress && userProgress.lastWatchedVideo) {
-                    // Find the last watched video
-                    continueVideo = videos.find(v => v.id === userProgress.lastWatchedVideo);
-                } else if (videos.length > 0) {
-                    // Use first available video
-                    continueVideo = videos[0];
+                if (myProgress.length === 0) {
+                    // No progress yet, show first available video
+                    const videosResult = await DB.load('coordinatorVideos');
+                    const videos = (videosResult && videosResult.success) ? videosResult.data : [];
+                    
+                    if (videos.length > 0) {
+                        const firstVideo = videos[0];
+                        updateContinueWatchingUI({
+                            title: firstVideo.title,
+                            moduleTitle: 'Kriptografi Temelleri',
+                            progress: 0,
+                            videoId: firstVideo.id,
+                            moduleId: firstVideo.moduleId,
+                            thumbnail: `https://img.youtube.com/vi/${firstVideo.youtubeVideoId}/maxresdefault.jpg`
+                        });
+                    }
+                    return;
                 }
                 
-                const continueWatchingContent = document.getElementById('continue-watching-content');
+                // Get the most recent video progress
+                const recentProgress = myProgress.sort((a, b) => 
+                    new Date(b.lastWatched || b.createdAt) - new Date(a.lastWatched || a.createdAt)
+                )[0];
                 
-                if (continueVideo) {
-                    continueWatchingContent.innerHTML = `
-                        <div class="flex items-center space-x-4">
-                            <div class="w-16 h-16 bg-gradient-to-br from-cyber to-primary rounded-lg flex items-center justify-center">
-                                <i class="fas fa-play text-white text-xl"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="font-semibold text-gray-900">${continueVideo.title}</h4>
-                                <p class="text-sm text-gray-600">Modül ${continueVideo.moduleId}</p>
-                                <p class="text-xs text-gray-500 mt-1">${continueVideo.duration} dakika</p>
-                            </div>
-                            <a href="module-detail.html?module=${continueVideo.moduleId}&video=${continueVideo.id}" 
-                               class="bg-cyber text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-                                <i class="fas fa-play mr-1"></i>
-                                Devam Et
-                            </a>
-                                    </div>
-                    `;
-                } else {
-                    continueWatchingContent.innerHTML = `
-                        <div class="text-center py-8">
-                            <i class="fas fa-video text-gray-400 text-3xl mb-3"></i>
-                            <p class="text-gray-600">Henüz video izlemeye başlamadınız</p>
-                            <a href="courses.html" class="inline-block mt-3 bg-cyber text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-                                Eğitime Başla
-                            </a>
-                        </div>
-                    `;
+                // Get video details
+                const videosResult = await DB.load('coordinatorVideos');
+                const videos = (videosResult && videosResult.success) ? videosResult.data : [];
+                const currentVideo = videos.find(v => v.id === recentProgress.videoId);
+                
+                // Get module details
+                const modulesResult = await DB.load('modules');
+                const modules = (modulesResult && modulesResult.success) ? modulesResult.data : [];
+                const currentModule = modules.find(m => m.id === recentProgress.moduleId);
+                
+                if (currentVideo) {
+                    updateContinueWatchingUI({
+                        title: currentVideo.title,
+                        moduleTitle: currentModule ? currentModule.title : 'Bilinmeyen Modül',
+                        progress: recentProgress.progress || 0,
+                        videoId: currentVideo.id,
+                        moduleId: currentVideo.moduleId,
+                        thumbnail: `https://img.youtube.com/vi/${currentVideo.youtubeVideoId}/maxresdefault.jpg`
+                    });
                 }
                 
             } catch (error) {
-                console.error('❌ Continue watching yükleme hatası:', error);
+                console.error('❌ Son izlenen video yüklenirken hata:', error);
             }
+        }
+        
+        function updateContinueWatchingUI(videoData) {
+            const container = document.getElementById('continue-watching-content');
+            if (!container) return;
+            
+            container.innerHTML = `
+                <div class="bg-gradient-to-r from-cyber/10 to-primary/10 rounded-xl p-6 border border-cyber/20">
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <img src="${videoData.thumbnail}" alt="${videoData.title}" 
+                                 class="w-24 h-16 object-cover rounded-lg">
+                            <div class="absolute inset-0 bg-black bg-opacity-40 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-play text-white text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-gray-900 mb-1">${videoData.title}</h3>
+                            <p class="text-sm text-gray-600 mb-2">${videoData.moduleTitle}</p>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-cyber h-2 rounded-full" style="width: ${videoData.progress}%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">%${Math.round(videoData.progress)} tamamlandı</p>
+                            </div>
+                        <button onclick="continueWatching('${videoData.moduleId}', '${videoData.videoId}')" 
+                                class="bg-cyber text-white px-4 py-2 rounded-lg hover:bg-cyber/90 transition-colors">
+                            <i class="fas fa-play mr-2"></i>
+                            Devam Et
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Continue watching function
+        function continueWatching(moduleId, videoId) {
+            window.location.href = `module-detail.html?module=${moduleId}&video=${videoId}`;
         }
         
         // Load progress overview
@@ -404,7 +440,7 @@
                 updateProgressOverviewUI(totalProgress, completedModules, totalModules);
                 
                 // Load module progress list
-                loadModuleProgressList(modules, userProgressData);
+                await loadModuleProgressList(modules, userProgressData);
                 
             } catch (error) {
                 console.error('❌ Progress overview yükleme hatası:', error);
@@ -430,20 +466,18 @@
         }
         
         // Load module progress list
-        function loadModuleProgressList(modules, userProgressData) {
+        async function loadModuleProgressList(modules, userProgressData) {
             const moduleProgressList = document.getElementById('module-progress-list');
             if (!moduleProgressList) return;
             
-            const cyberModules = [
-                { id: 1, title: "Bilgi Güvenliği Temelleri", description: "Temel güvenlik kavramları ve prensipler" },
-                { id: 2, title: "Kriptoloji ve Şifreleme", description: "Şifreleme algoritmaları ve uygulamaları" },
-                { id: 3, title: "Ağ Güvenliği", description: "Ağ protokolleri ve güvenlik mekanizmaları" },
-                { id: 4, title: "Web Güvenliği", description: "Web uygulamaları ve güvenlik açıkları" },
-                { id: 5, title: "Malware Analizi", description: "Zararlı yazılım tespiti ve analizi" },
-                { id: 6, title: "Penetrasyon Testleri", description: "Güvenlik testleri ve değerlendirme" },
-                { id: 7, title: "Incident Response", description: "Güvenlik olaylarına müdahale" },
-                { id: 8, title: "Compliance ve Standartlar", description: "Güvenlik standartları ve uyumluluk" }
-            ];
+            // Use modules from database or create sample ones if none exist
+            let cyberModules = modules;
+            if (!cyberModules || cyberModules.length === 0) {
+                console.log('⚠️ Hiç modül bulunamadı, örnek modüller oluşturuluyor...');
+                await createSampleModules();
+                const newModulesResult = await window.DB.loadModules();
+                cyberModules = (newModulesResult && newModulesResult.success) ? newModulesResult.data : [];
+            }
             
             moduleProgressList.innerHTML = '';
             
@@ -468,10 +502,61 @@
                             <div class="h-2 bg-gradient-to-r from-cyber to-primary rounded-full" style="width: ${progressPercent}%"></div>
                                 </div>
                         <p class="text-xs text-gray-500 mt-1">${Math.round(progressPercent)}%</p>
-                    </div>
+                                </div>
                 `;
                 moduleProgressList.appendChild(moduleDiv);
             });
+        }
+
+        // Create sample modules if none exist
+        async function createSampleModules() {
+            try {
+                console.log('🔧 Örnek modüller oluşturuluyor...');
+                const sampleModules = [
+                    {
+                        title: 'Bilgi Güvenliği Temelleri',
+                        description: 'Bilgi güvenliğinin temel prensipleri ve kavramları',
+                        category: 'Temel',
+                        difficulty: 'beginner',
+                        order: 1
+                    },
+                    {
+                        title: 'Kriptoloji ve Şifreleme',
+                        description: 'Kriptografi, hash fonksiyonları ve dijital imzalar',
+                        category: 'Güvenlik',
+                        difficulty: 'intermediate',
+                        order: 2
+                    },
+                    {
+                        title: 'Ağ Güvenliği',
+                        description: 'Ağ protokolleri, firewall ve VPN teknolojileri',
+                        category: 'Ağ',
+                        difficulty: 'intermediate',
+                        order: 3
+                    },
+                    {
+                        title: 'Web Güvenliği',
+                        description: 'OWASP Top 10, XSS, SQL Injection ve güvenli kodlama',
+                        category: 'Web',
+                        difficulty: 'advanced',
+                        order: 4
+                    },
+                    {
+                        title: 'Malware Analizi',
+                        description: 'Zararlı yazılım türleri, analiz teknikleri ve korunma',
+                        category: 'Analiz',
+                        difficulty: 'advanced',
+                        order: 5
+                    }
+                ];
+
+                for (const module of sampleModules) {
+                    await window.DB.saveModule(module);
+                }
+                console.log('✅ Örnek modüller oluşturuldu');
+            } catch (error) {
+                console.error('❌ Örnek modül oluşturma hatası:', error);
+            }
         }
         
         // Load active tasks

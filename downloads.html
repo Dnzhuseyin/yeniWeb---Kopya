@@ -114,7 +114,7 @@
                     </div>
                 </div>
             </header>
-
+            
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                 <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
@@ -133,8 +133,8 @@
                         <h3 class="text-sm font-medium text-gray-600">Video Kaynaklar</h3>
                         <div class="h-10 w-10 bg-cyber/10 text-cyber rounded-lg flex items-center justify-center">
                             <i class="fas fa-video"></i>
-                        </div>
-                    </div>
+                </div>
+            </div>
                     <p class="text-2xl font-bold text-gray-900">12</p>
                     <p class="text-xs text-gray-500 mt-1">ek video</p>
                 </div>
@@ -148,20 +148,20 @@
                     </div>
                     <p class="text-2xl font-bold text-gray-900">7</p>
                     <p class="text-xs text-gray-500 mt-1">güvenlik aracı</p>
-                </div>
+                        </div>
                 
                 <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-sm font-medium text-gray-600">Toplam İndirme</h3>
                         <div class="h-10 w-10 bg-accent/10 text-accent rounded-lg flex items-center justify-center">
-                            <i class="fas fa-download"></i>
+                                    <i class="fas fa-download"></i>
                         </div>
-                    </div>
+                            </div>
                     <p class="text-2xl font-bold text-gray-900">1,247</p>
                     <p class="text-xs text-gray-500 mt-1">bu ay</p>
-                </div>
-            </div>
-
+                        </div>
+                    </div>
+                    
             <!-- Filter and Search -->
             <div class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-100">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -170,8 +170,8 @@
                         <input type="text" placeholder="Kaynak ara..." 
                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
                                id="search-resources">
-                    </div>
-                    <div>
+                            </div>
+                            <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Kategori</label>
                         <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
                                 id="filter-category">
@@ -187,13 +187,9 @@
                         <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
                                 id="filter-module">
                             <option value="">Tüm Modüller</option>
-                            <option value="1">Bilgi Güvenliği Temelleri</option>
-                            <option value="2">Kriptoloji ve Şifreleme</option>
-                            <option value="3">Ağ Güvenliği</option>
-                            <option value="4">Web Güvenliği</option>
                         </select>
-                    </div>
-                    <div>
+                            </div>
+                            <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Sıralama</label>
                         <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
                                 id="sort-resources">
@@ -202,10 +198,10 @@
                             <option value="name">İsim</option>
                             <option value="size">Boyut</option>
                         </select>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-
+                    
             <!-- Featured Resources -->
             <div class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-100">
                 <h2 class="text-xl font-semibold mb-6 flex items-center">
@@ -213,57 +209,11 @@
                     Öne Çıkan Kaynaklar
                 </h2>
                 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-gradient-to-br from-cyber/5 to-primary/5 rounded-lg p-4 border border-cyber/20">
-                        <div class="flex items-center mb-3">
-                            <div class="w-10 h-10 bg-cyber/10 text-cyber rounded-lg flex items-center justify-center mr-3">
-                                <i class="fas fa-file-pdf"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-gray-900">Siber Güvenlik El Kitabı</h3>
-                                <p class="text-xs text-gray-600">2.4 MB • PDF</p>
-                            </div>
-                        </div>
-                        <p class="text-sm text-gray-600 mb-3">Kapsamlı siber güvenlik rehberi ve best practices</p>
-                        <button class="w-full bg-cyber text-white py-2 rounded-lg text-sm hover:bg-cyber/90">
-                            <i class="fas fa-download mr-2"></i>İndir
-                        </button>
-                    </div>
-                    
-                    <div class="bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg p-4 border border-primary/20">
-                        <div class="flex items-center mb-3">
-                            <div class="w-10 h-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center mr-3">
-                                <i class="fas fa-tools"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-gray-900">Penetrasyon Test Araçları</h3>
-                                <p class="text-xs text-gray-600">125 MB • ZIP</p>
-                            </div>
-                        </div>
-                        <p class="text-sm text-gray-600 mb-3">Etik hacking için gerekli araç koleksiyonu</p>
-                        <button class="w-full bg-primary text-white py-2 rounded-lg text-sm hover:bg-primary/90">
-                            <i class="fas fa-download mr-2"></i>İndir
-                        </button>
-                    </div>
-                    
-                    <div class="bg-gradient-to-br from-accent/5 to-secondary/5 rounded-lg p-4 border border-accent/20">
-                        <div class="flex items-center mb-3">
-                            <div class="w-10 h-10 bg-accent/10 text-accent rounded-lg flex items-center justify-center mr-3">
-                                <i class="fas fa-file-excel"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-gray-900">Risk Değerlendirme Şablonu</h3>
-                                <p class="text-xs text-gray-600">156 KB • XLSX</p>
-                            </div>
-                        </div>
-                        <p class="text-sm text-gray-600 mb-3">Güvenlik risk analizi için Excel şablonu</p>
-                        <button class="w-full bg-accent text-white py-2 rounded-lg text-sm hover:bg-accent/90">
-                            <i class="fas fa-download mr-2"></i>İndir
-                        </button>
-                    </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="featured-resources">
+                    <!-- Featured resources will be loaded here -->
                 </div>
             </div>
-
+            
             <!-- Resources Grid -->
             <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
                 <h2 class="text-xl font-semibold mb-6 flex items-center">
@@ -287,6 +237,7 @@
             if (!isLoggedIn) return;
             
             setupEventListeners();
+            await loadDownloads(); // Load resources on page load
         });
 
         // Setup event listeners
@@ -314,49 +265,327 @@
             });
         }
 
-        // Show notification function
-        function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg text-white transition-all duration-300 transform translate-x-full`;
+        // Load downloadable resources from database
+        async function loadDownloads() {
+            try {
+                console.log('📥 İndirilebilir kaynaklar yükleniyor...');
+                
+                // Wait for Firebase to be ready
+                await new Promise(resolve => {
+                    const checkDB = () => {
+                        if (window.DB) {
+                            resolve();
+                        } else {
+                            setTimeout(checkDB, 200);
+                        }
+                    };
+                    checkDB();
+                });
+                
+                // Get downloads from Firebase
+                const downloadsResult = await window.DB.load('downloads');
+                let downloads = (downloadsResult && downloadsResult.success) ? downloadsResult.data : [];
+                
+                if (downloads.length === 0) {
+                    // Create sample downloads if none exist
+                    await createSampleDownloads();
+                    const newDownloadsResult = await window.DB.load('downloads');
+                    downloads = (newDownloadsResult && newDownloadsResult.success) ? newDownloadsResult.data : [];
+                }
+                
+                // Get user progress for personalized recommendations
+                const userEmail = localStorage.getItem('userEmail');
+                const progressResult = await window.DB.load('userProgress');
+                const userProgress = (progressResult && progressResult.success) ? progressResult.data : [];
+                const myProgress = userProgress.filter(p => p.userEmail === userEmail);
+                
+                // Load modules for filter dropdown
+                await loadModules();
+                
+                displayDownloads(downloads);
+                displayFeaturedResources(downloads);
+                updateDownloadStats(downloads, myProgress);
+                
+            } catch (error) {
+                console.error('❌ İndirilebilir kaynaklar yüklenirken hata:', error);
+            }
+        }
+
+        // Load modules for filter dropdown
+        async function loadModules() {
+            try {
+                console.log('📚 Modüller yükleniyor...');
+                const modulesResult = await window.DB.loadModules();
+                const modules = (modulesResult && modulesResult.success) ? modulesResult.data : [];
+                
+                // Update filter module select
+                const filterModuleSelect = document.getElementById('filter-module');
+                
+                if (filterModuleSelect) {
+                    filterModuleSelect.innerHTML = '<option value="">Tüm Modüller</option>';
+                    
+                    if (modules && modules.length > 0) {
+                        modules.forEach(module => {
+                            const option = document.createElement('option');
+                            option.value = module.id;
+                            option.textContent = module.title || module.name || 'Modül ' + module.id;
+                            filterModuleSelect.appendChild(option);
+                        });
+                        console.log('✅ Filter modülleri başarıyla yüklendi:', modules.length);
+                    }
+                }
+            } catch (error) {
+                console.error('❌ Modül yükleme hatası:', error);
+            }
+        }
+        
+        // Display featured resources
+        function displayFeaturedResources(downloads) {
+            const container = document.getElementById('featured-resources');
+            if (!container) return;
             
-            switch (type) {
-                case 'success':
-                    notification.classList.add('bg-green-500');
-                    break;
-                case 'error':
-                    notification.classList.add('bg-red-500');
-                    break;
-                case 'warning':
-                    notification.classList.add('bg-yellow-500');
-                    break;
-                default:
-                    notification.classList.add('bg-blue-500');
+            // Get top 3 resources by rating or download count
+            const featured = downloads
+                .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+                .slice(0, 3);
+            
+            if (featured.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-3 text-center py-8">
+                        <i class="fas fa-star text-4xl text-gray-300 mb-2"></i>
+                        <p class="text-gray-500">Henüz öne çıkan kaynak bulunmuyor</p>
+                    </div>
+                `;
+                return;
             }
             
-            notification.innerHTML = `
-                <div class="flex items-center">
-                    <span>${message}</span>
-                    <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">
-                        <i class="fas fa-times"></i>
+            container.innerHTML = featured.map(resource => `
+                <div class="bg-gradient-to-br from-cyber/5 to-primary/5 rounded-lg p-4 border border-cyber/20">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 bg-cyber/10 text-cyber rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas ${getResourceIcon(resource.category)}"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">${resource.title}</h3>
+                            <p class="text-xs text-gray-600">${resource.fileSize || 'N/A'} • ${getCategoryName(resource.category)}</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">${resource.description}</p>
+                    <button onclick="downloadResource('${resource.id}', '${resource.downloadUrl}', '${resource.title}')" 
+                            class="w-full bg-cyber text-white py-2 rounded-lg text-sm hover:bg-cyber/90">
+                        <i class="fas fa-download mr-2"></i>İndir
                     </button>
                 </div>
-            `;
+            `).join('');
+        }
+
+        // Get resource icon based on category
+        function getResourceIcon(category) {
+            const icons = {
+                'pdf': 'fa-file-pdf text-red-500',
+                'code': 'fa-code text-blue-500',
+                'tool': 'fa-tools text-green-500',
+                'template': 'fa-file-alt text-purple-500'
+            };
+            return icons[category] || 'fa-file text-gray-500';
+        }
+
+        // Get category name
+        function getCategoryName(category) {
+            const names = {
+                'pdf': 'PDF',
+                'code': 'Kod',
+                'tool': 'Araç',
+                'template': 'Şablon'
+            };
+            return names[category] || category;
+        }
+        
+        // Display downloads in the UI
+        function displayDownloads(downloads) {
+            const container = document.getElementById('resources-container');
+            if (!container) return;
+            
+            // Group downloads by category
+            const categories = {
+                'pdf': downloads.filter(d => d.category === 'pdf'),
+                'code': downloads.filter(d => d.category === 'code'),
+                'tool': downloads.filter(d => d.category === 'tool'),
+                'template': downloads.filter(d => d.category === 'template')
+            };
+            
+            const categoryNames = {
+                'pdf': 'PDF Dokümanları',
+                'code': 'Kod Örnekleri',
+                'tool': 'Araçlar',
+                'template': 'Şablonlar'
+            };
+            
+            const categoryIcons = {
+                'pdf': 'fas fa-file-pdf text-red-500',
+                'code': 'fas fa-code text-blue-500',
+                'tool': 'fas fa-tools text-green-500',
+                'template': 'fas fa-file-alt text-purple-500'
+            };
+            
+            container.innerHTML = Object.keys(categories)
+                .filter(cat => categories[cat].length > 0)
+                .map(category => `\n                    <div class="mb-8">\n                        <div class="flex items-center mb-4">\n                            <i class="${categoryIcons[category]} text-xl mr-3"></i>\n                            <h3 class="text-lg font-semibold text-gray-900">${categoryNames[category]}</h3>\n                            <span class="ml-2 text-sm text-gray-500">(${categories[category].length})</span>\n                        </div>\n                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">\n                            ${categories[category].map(resource => `\n                                <div class="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow">\n                                    <div class="flex items-start justify-between mb-3">\n                                        <div class="flex-1">\n                                            <h4 class="font-semibold text-gray-900 mb-1">${resource.title}</h4>\n                                            <p class="text-sm text-gray-600 mb-2">${resource.description}</p>\n                                            <div class="flex items-center space-x-3 text-xs text-gray-500">\n                                                <span><i class="fas fa-download mr-1"></i>${resource.downloadCount || 0}</span>\n                                                <span><i class="fas fa-file mr-1"></i>${resource.fileSize || 'N/A'}</span>\n                                                <span><i class="fas fa-star mr-1"></i>${resource.rating || '4.5'}</span>\n                                            </div>\n                                        </div>\n                                        <i class="${categoryIcons[category]} text-2xl"></i>\n                                    </div>\n                                    <div class="flex items-center justify-between">\n                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                                            resource.level === 'Başlangıç' ? 'bg-green-100 text-green-800' :
+                                            resource.level === 'Orta' ? 'bg-yellow-100 text-yellow-800' :
+                                            'bg-red-100 text-red-800'
+                                        }">\n                                            ${resource.level || 'Orta'}\n                                        </span>\n                                        <button onclick="downloadResource('${resource.id}', '${resource.downloadUrl}', '${resource.title}')\" \n                                                class="bg-cyber text-white px-3 py-1 rounded text-sm hover:bg-cyber/90 transition-colors">\n                                            <i class="fas fa-download mr-1"></i>\n                                            İndir\n                                        </button>\n                                    </div>\n                                </div>\n                            `).join('')}\n                        </div>\n                    </div>\n                `).join('');
+        }
+        
+        // Update download statistics
+        function updateDownloadStats(downloads, userProgress) {
+            const totalDownloads = downloads.length;
+            const completedModules = userProgress.filter(p => p.completed).length;
+            const userLevel = completedModules < 5 ? 'Başlangıç' : completedModules < 15 ? 'Orta' : 'İleri';
+            const recommendedDownloads = downloads.filter(d => d.level === userLevel).length;
+            
+            // Update stats cards
+            document.getElementById('total-resources').textContent = totalDownloads;
+            document.getElementById('user-level').textContent = userLevel;
+            document.getElementById('recommended-count').textContent = recommendedDownloads;
+        }
+        
+        // Download resource function
+        async function downloadResource(resourceId, downloadUrl, title) {
+            try {
+                console.log(`📥 İndiriliyor: ${title}`);
+                
+                // Update download count
+                const downloadsResult = await window.DB.load('downloads');
+                const downloads = (downloadsResult && downloadsResult.success) ? downloadsResult.data : [];
+                const resource = downloads.find(d => d.id === resourceId);
+                
+                if (resource) {
+                    resource.downloadCount = (resource.downloadCount || 0) + 1;
+                    resource.lastDownloaded = new Date().toISOString();
+                    await window.DB.save('downloads', resource, resourceId);
+                }
+                
+                // Simulate download (in real app, this would be actual file download)
+                if (downloadUrl && downloadUrl !== '#') {
+                    window.open(downloadUrl, '_blank');
+                } else {
+                    // Create a demo download
+                    const blob = new Blob([`# ${title}\n\nBu bir demo dosyasıdır.\nGerçek uygulamada buradan dosya indirilecektir.`], 
+                        { type: 'text/plain' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${title.replace(/\s+/g, '_')}.txt`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                }
+                
+                // Show success message
+                showNotification(`✅ ${title} başarıyla indirildi!`, 'success');
+                
+            } catch (error) {
+                console.error('❌ İndirme hatası:', error);
+                showNotification('❌ İndirme sırasında hata oluştu', 'error');
+            }
+        }
+        
+        // Create sample downloads
+        async function createSampleDownloads() {
+            console.log('📝 Örnek indirilebilir kaynaklar oluşturuluyor...');
+            
+            const sampleDownloads = [
+                {
+                    title: 'Kriptografi Algoritmaları Rehberi',
+                    description: 'AES, RSA, SHA algoritmaları detaylı açıklamaları',
+                    category: 'pdf',
+                    level: 'Başlangıç',
+                    fileSize: '2.5 MB',
+                    downloadUrl: '#',
+                    downloadCount: 156,
+                    rating: 4.8,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    title: 'Python Kriptografi Kütüphanesi',
+                    description: 'Python ile şifreleme işlemleri için kod örnekleri',
+                    category: 'code',
+                    level: 'Orta',
+                    fileSize: '850 KB',
+                    downloadUrl: '#',
+                    downloadCount: 89,
+                    rating: 4.6,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    title: 'Hash Cracking Araçları',
+                    description: 'Parola kırma ve hash analiz araçları',
+                    category: 'tool',
+                    level: 'İleri',
+                    fileSize: '15.2 MB',
+                    downloadUrl: '#',
+                    downloadCount: 234,
+                    rating: 4.9,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    title: 'Güvenlik Politikası Şablonu',
+                    description: 'Kurumsal güvenlik politikası hazırlama şablonu',
+                    category: 'template',
+                    level: 'Başlangıç',
+                    fileSize: '125 KB',
+                    downloadUrl: '#',
+                    downloadCount: 67,
+                    rating: 4.3,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    title: 'Blockchain Teknolojisi Kılavuzu',
+                    description: 'Blockchain ve kripto para teknolojileri',
+                    category: 'pdf',
+                    level: 'İleri',
+                    fileSize: '4.1 MB',
+                    downloadUrl: '#',
+                    downloadCount: 198,
+                    rating: 4.7,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    title: 'RSA Şifreleme Uygulaması',
+                    description: 'Java ile RSA algoritması implementasyonu',
+                    category: 'code',
+                    level: 'Orta',
+                    fileSize: '1.2 MB',
+                    downloadUrl: '#',
+                    downloadCount: 112,
+                    rating: 4.5,
+                    createdAt: new Date().toISOString()
+                }
+            ];
+            
+            for (const download of sampleDownloads) {
+                await window.DB.save('downloads', download);
+            }
+            
+            console.log('✅ Örnek indirilebilir kaynaklar oluşturuldu');
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg text-white font-medium z-50 ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 
+                'bg-blue-500'
+            }`;
+            notification.textContent = message;
             
             document.body.appendChild(notification);
             
-            // Animate in
             setTimeout(() => {
-                notification.classList.remove('translate-x-full');
-            }, 100);
-            
-            // Auto remove after 3 seconds
-            setTimeout(() => {
-                notification.classList.add('translate-x-full');
-                setTimeout(() => {
-                    if (notification.parentElement) {
-                        notification.remove();
-                    }
-                }, 300);
+                notification.remove();
             }, 3000);
         }
     </script>

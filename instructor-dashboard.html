@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Koordinatör Paneli - CyberEdu Admin</title>
+    <title>Genel Bakış - Kriptarium Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -24,16 +24,72 @@
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ULTRA STRONG SIDEBAR FIX - NEVER DISAPPEAR */
+        .sidebar-container {
+            position: fixed !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 256px !important;
+            height: 100vh !important;
+            z-index: 999999 !important;
+            background-color: #0f172a !important;
+            overflow-y: auto !important;
+            transform: none !important;
+            will-change: auto !important;
+            pointer-events: auto !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        
+        .main-content {
+            margin-left: 256px !important;
+            z-index: 1 !important;
+            position: relative !important;
+        }
+        
+        /* Force sidebar to stay visible - ULTRA STRONG */
+        body > aside {
+            position: fixed !important;
+            z-index: 999999 !important;
+            left: 0 !important;
+            top: 0 !important;
+            height: 100vh !important;
+            overflow-y: auto !important;
+            transform: none !important;
+            will-change: auto !important;
+            pointer-events: auto !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        
+        /* Additional safety measures */
+        aside.sidebar-container {
+            position: fixed !important;
+            z-index: 999999 !important;
+            left: 0 !important;
+            top: 0 !important;
+            height: 100vh !important;
+            overflow-y: auto !important;
+            transform: none !important;
+            will-change: auto !important;
+            pointer-events: auto !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+    </style>
 </head>
-<body class="bg-gray-50 min-h-screen flex">
-    <!-- Sidebar -->
-    <aside class="bg-dark text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
+<body class="bg-gray-50 min-h-screen">
+    <!-- Sidebar - ULTRA STRONG FIXED - NEVER DISAPPEAR -->
+    <aside class="sidebar-container bg-dark text-white w-64 min-h-screen hidden md:block">
         <div class="p-4">
             <a href="instructor-dashboard.html" class="font-bold text-xl text-secondary block mb-8 flex items-center">
-                <i class="fas fa-shield-alt text-2xl mr-3"></i>
-                CyberEdu Admin
+                <i class="fas fa-key text-2xl mr-3"></i>
+                Kriptarium Admin
             </a>
             
             <div class="mb-8">
@@ -65,16 +121,16 @@
             </nav>
 
             <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
-                <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                <button onclick="logout()" class="flex items-center text-gray-400 hover:text-white w-full text-left bg-transparent border-none">
                     <i class="fas fa-sign-out-alt mr-3"></i>
                     <span>Çıkış Yap</span>
-                </a>
+                </button>
             </div>
         </div>
     </aside>
 
     <!-- Main content -->
-    <main class="md:ml-64 p-4 md:p-8 w-full min-h-screen">
+    <main class="main-content p-4 md:p-8 w-full min-h-screen">
         <div class="max-w-7xl mx-auto">
             <!-- Header -->
             <header class="mb-8">
@@ -512,6 +568,72 @@
                 return date.toLocaleDateString('tr-TR');
             }
         }
+        
+        // Logout function
+        function logout() {
+            if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('loginTime');
+                localStorage.removeItem('userRole');
+                
+                console.log('🚪 Koordinatör çıkışı yapıldı');
+                window.location.href = 'index.html';
+            }
+        }
+        
+        // ULTRA STRONG SIDEBAR VISIBILITY SYSTEM
+        function ensureSidebarVisibility() {
+            const sidebar = document.querySelector('aside');
+            if (sidebar) {
+                // Force sidebar to stay visible with ULTRA STRONG rules
+                sidebar.style.position = 'fixed';
+                sidebar.style.zIndex = '999999';
+                sidebar.style.left = '0';
+                sidebar.style.top = '0';
+                sidebar.style.height = '100vh';
+                sidebar.style.overflowY = 'auto';
+                sidebar.style.transform = 'none';
+                sidebar.style.willChange = 'auto';
+                sidebar.style.pointerEvents = 'auto';
+                sidebar.style.display = 'block';
+                sidebar.style.visibility = 'visible';
+                sidebar.style.opacity = '1';
+                
+                // Add CSS class for additional safety
+                sidebar.classList.add('sidebar-container');
+                
+                console.log('🔒 Sidebar görünürlüğü korunuyor - Z-Index:', sidebar.style.zIndex);
+            }
+        }
+        
+        // Start continuous sidebar visibility check
+        function startSidebarVisibilityCheck() {
+            // Check every 50ms (ultra frequent)
+            setInterval(ensureSidebarVisibility, 50);
+            
+            // Check on all possible events
+            const events = ['scroll', 'resize', 'load', 'visibilitychange', 'focus', 'blur', 'click', 'mousemove', 'keydown'];
+            events.forEach(event => {
+                window.addEventListener(event, ensureSidebarVisibility);
+                document.addEventListener(event, ensureSidebarVisibility);
+            });
+            
+            // Additional safety: check on DOM changes
+            const observer = new MutationObserver(ensureSidebarVisibility);
+            observer.observe(document.body, { 
+                childList: true, 
+                subtree: true, 
+                attributes: true,
+                attributeFilter: ['style', 'class']
+            });
+            
+            console.log('🚀 Ultra güçlü sidebar görünürlük sistemi başlatıldı!');
+        }
+        
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', ensureSidebarVisibility);
+        window.addEventListener('load', ensureSidebarVisibility);
     </script>
 </body>
 </html> 

@@ -186,235 +186,237 @@
             }
         }
 
+        // Load modules from database
         async function loadModules() {
             try {
-                console.log('📚 Modüller yükleniyor...');
+                console.log('📚 Modüller veritabanından yükleniyor...');
                 
                 // Wait for Firebase to be ready
                 await new Promise(resolve => {
                     const checkDB = () => {
                         if (window.DB) {
+                            console.log('✅ Firebase Production DB hazır!');
                             resolve();
                         } else {
-                            setTimeout(checkDB, 100);
+                            console.log('⏳ Firebase Production DB bekleniyor...');
+                            setTimeout(checkDB, 200);
                         }
                     };
                     checkDB();
                 });
-
-                // Load modules from Firebase
-                const modulesResult = await DB.loadModules();
-                allModules = modulesResult.success ? modulesResult.data : [];
                 
-                // If no modules exist, create cyber security modules
-                if (allModules.length === 0) {
-                    console.log('📦 Siber güvenlik modülleri oluşturuluyor...');
-                    await createCyberSecurityModules();
-                    const newModulesResult = await DB.loadModules();
-                    allModules = newModulesResult.success ? newModulesResult.data : [];
+                // Get modules from Firebase
+                const modulesResult = await window.DB.load('modules');
+                const modules = (modulesResult && modulesResult.success) ? modulesResult.data : [];
+                
+                // Get user progress
+                const userEmail = localStorage.getItem('userEmail');
+                const progressResult = await window.DB.load('userProgress');
+                const userProgress = (progressResult && progressResult.success) ? progressResult.data : [];
+                const myProgress = userProgress.filter(p => p.userEmail === userEmail);
+                
+                // Get coordinator videos to count videos per module
+                const videosResult = await window.DB.load('coordinatorVideos');
+                const videos = (videosResult && videosResult.success) ? videosResult.data : [];
+                
+                console.log(`📊 ${modules.length} modül, ${videos.length} video, ${myProgress.length} ilerleme kaydı bulundu`);
+                
+                if (modules.length === 0) {
+                    // Create sample modules if none exist
+                    await createSampleModules();
+                    return loadModules(); // Reload after creating sample data
                 }
-
-                console.log(`📚 ${allModules.length} modül yüklendi`);
-                renderModules();
-
+                
+                displayModules(modules, myProgress, videos);
+                
             } catch (error) {
-                console.error('❌ Modül yükleme hatası:', error);
-                document.getElementById('modules-container').innerHTML = '<p class="text-red-500 text-center py-8">Modüller yüklenirken hata oluştu.</p>';
+                console.error('❌ Modüller yüklenirken hata:', error);
+                displayErrorMessage();
             }
         }
-
-        // Create cyber security modules
-        async function createCyberSecurityModules() {
-            const cyberModules = [
-                {
-                    id: 1,
-                    title: "Bilgi Güvenliği Temelleri",
-                    description: "Bilgi güvenliğinin temel kavramları, CIA üçlüsü (Confidentiality, Integrity, Availability) ve güvenlik politikaları",
-                    difficulty: "Başlangıç",
-                    duration: "4 hafta",
-                    videoCount: 12,
-                    status: "active",
-                    icon: "fa-shield-alt",
-                    color: "primary",
-                    topics: ["Bilgi Güvenliği Nedir?", "CIA Üçlüsü", "Güvenlik Politikaları", "Risk Yönetimi"]
-                },
-                {
-                    id: 2,
-                    title: "Kriptoloji ve Şifreleme",
-                    description: "Klasik ve modern şifreleme teknikleri, hash fonksiyonları, dijital imzalar ve PKI altyapısı",
-                    difficulty: "Orta",
-                    duration: "6 hafta",
-                    videoCount: 18,
-                    status: "active",
-                    icon: "fa-key",
-                    color: "cyber",
-                    topics: ["Simetrik Şifreleme", "Asimetrik Şifreleme", "Hash Fonksiyonları", "Dijital İmzalar"]
-                },
-                {
-                    id: 3,
-                    title: "Ağ Güvenliği",
-                    description: "TCP/IP protokolleri, firewall teknolojileri, IDS/IPS sistemleri ve ağ saldırı türleri",
-                    difficulty: "Orta",
-                    duration: "5 hafta",
-                    videoCount: 15,
-                    status: "active",
-                    icon: "fa-network-wired",
-                    color: "accent",
-                    topics: ["TCP/IP Güvenliği", "Firewall Teknolojileri", "IDS/IPS", "Ağ Saldırıları"]
-                },
-                {
-                    id: 4,
-                    title: "Web Güvenliği",
-                    description: "Web uygulaması güvenlik açıkları, OWASP Top 10, güvenli kodlama teknikleri",
-                    difficulty: "Orta",
-                    duration: "4 hafta",
-                    videoCount: 14,
-                    status: "active",
-                    icon: "fa-globe",
-                    color: "secondary",
-                    topics: ["OWASP Top 10", "SQL Injection", "XSS Saldırıları", "Güvenli Kodlama"]
-                },
-                {
-                    id: 5,
-                    title: "Malware Analizi",
-                    description: "Zararlı yazılım türleri, analiz teknikleri, sandboxing ve reverse engineering",
-                    difficulty: "İleri",
-                    duration: "6 hafta",
-                    videoCount: 16,
-                    status: "active",
-                    icon: "fa-bug",
-                    color: "secondary",
-                    topics: ["Malware Türleri", "Statik Analiz", "Dinamik Analiz", "Reverse Engineering"]
-                },
-                {
-                    id: 6,
-                    title: "Penetrasyon Testleri",
-                    description: "Etik hacking, penetrasyon test metodolojileri, güvenlik açığı değerlendirme",
-                    difficulty: "İleri",
-                    duration: "7 hafta",
-                    videoCount: 20,
-                    status: "active",
-                    icon: "fa-search",
-                    color: "primary",
-                    topics: ["Pentest Metodolojileri", "Vulnerability Assessment", "Exploitation", "Reporting"]
-                },
-                {
-                    id: 7,
-                    title: "Incident Response",
-                    description: "Güvenlik olaylarına müdahale, forensik analiz, olay yönetimi ve iyileştirme",
-                    difficulty: "İleri",
-                    duration: "5 hafta",
-                    videoCount: 13,
-                    status: "active",
-                    icon: "fa-exclamation-triangle",
-                    color: "secondary",
-                    topics: ["Olay Müdahalesi", "Forensik Analiz", "Olay Yönetimi", "İyileştirme Süreçleri"]
-                },
-                {
-                    id: 8,
-                    title: "Compliance ve Standartlar",
-                    description: "ISO 27001, NIST Framework, GDPR ve diğer güvenlik standartları ve uyumluluk",
-                    difficulty: "İleri",
-                    duration: "4 hafta",
-                    videoCount: 11,
-                    status: "active",
-                    icon: "fa-certificate",
-                    color: "accent",
-                    topics: ["ISO 27001", "NIST Framework", "GDPR", "Compliance Süreçleri"]
+        
+        // Display modules in the UI
+        function displayModules(modules, userProgress, videos) {
+            const container = document.getElementById('modules-container');
+            if (!container) return;
+            
+            container.innerHTML = modules.map((module, index) => {
+                // Calculate module progress
+                const moduleVideos = videos.filter(v => v.moduleId === module.id);
+                const moduleProgress = userProgress.filter(p => p.moduleId === module.id);
+                const completedVideos = moduleProgress.filter(p => p.completed).length;
+                const progressPercentage = moduleVideos.length > 0 ? (completedVideos / moduleVideos.length) * 100 : 0;
+                
+                // Determine module status
+                let status = 'locked';
+                let statusText = 'Kilitli';
+                let statusIcon = 'fas fa-lock';
+                let statusColor = 'text-gray-500';
+                
+                if (index === 0 || progressPercentage > 0) {
+                    status = progressPercentage === 100 ? 'completed' : 'active';
+                    statusText = progressPercentage === 100 ? 'Tamamlandı' : 'Aktif';
+                    statusIcon = progressPercentage === 100 ? 'fas fa-check-circle' : 'fas fa-play-circle';
+                    statusColor = progressPercentage === 100 ? 'text-green-600' : 'text-cyber';
+                } else if (index > 0) {
+                    // Check if previous module is completed
+                    const prevModule = modules[index - 1];
+                    const prevModuleVideos = videos.filter(v => v.moduleId === prevModule.id);
+                    const prevModuleProgress = userProgress.filter(p => p.moduleId === prevModule.id);
+                    const prevCompletedVideos = prevModuleProgress.filter(p => p.completed).length;
+                    const prevProgressPercentage = prevModuleVideos.length > 0 ? (prevCompletedVideos / prevModuleVideos.length) * 100 : 0;
+                    
+                    if (prevProgressPercentage === 100) {
+                        status = 'active';
+                        statusText = 'Aktif';
+                        statusIcon = 'fas fa-play-circle';
+                        statusColor = 'text-cyber';
+                    }
                 }
-            ];
-
-            for (const module of cyberModules) {
-                await DB.save('modules', module, module.id.toString());
-            }
-            
-            console.log('✅ Siber güvenlik modülleri oluşturuldu');
-        }
-
-        function renderModules() {
-            const modulesContainer = document.getElementById('modules-container');
-            
-            if (allModules.length === 0) {
-                modulesContainer.innerHTML = '<p class="text-gray-500 text-center py-8 col-span-full">Henüz modül bulunmuyor.</p>';
-                return;
-            }
-
-            modulesContainer.innerHTML = allModules.map(module => {
-                const progress = userProgress[module.id] || 0;
-                const isCompleted = progress >= 100;
-                const isAccessible = true; // Tüm modüller erişilebilir
                 
-                const difficultyColors = {
-                    'Başlangıç': 'bg-green-100 text-green-800',
-                    'Orta': 'bg-yellow-100 text-yellow-800',
-                    'İleri': 'bg-red-100 text-red-800'
-                };
-
                 return `
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow ${!isAccessible ? 'opacity-60' : ''}">
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="w-12 h-12 bg-gradient-to-br from-${module.color || 'cyber'} to-primary rounded-lg flex items-center justify-center">
-                                    <i class="fas ${module.icon || 'fa-book'} text-white text-xl"></i>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <span class="text-xs px-2 py-1 ${difficultyColors[module.difficulty] || 'bg-gray-100 text-gray-800'} rounded-full">
-                                        ${module.difficulty || 'Orta'}
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex-1">
+                                <div class="flex items-center mb-2">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${status === 'completed' ? 'bg-green-100 text-green-800' : status === 'active' ? 'bg-cyber/10 text-cyber' : 'bg-gray-100 text-gray-800'}">
+                                        <i class="${statusIcon} mr-1"></i>
+                                        ${statusText}
                                     </span>
-                                    ${isCompleted ? '<i class="fas fa-check-circle text-accent text-xl"></i>' : ''}
-                                    ${!isAccessible ? '<i class="fas fa-lock text-gray-400 text-xl"></i>' : ''}
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-900 mb-2">${module.title}</h3>
+                                <p class="text-gray-600 text-sm mb-4">${module.description}</p>
+                                
+                                <!-- Progress Bar -->
+                                <div class="mb-4">
+                                    <div class="flex items-center justify-between text-sm text-gray-600 mb-1">
+                                        <span>İlerleme</span>
+                                        <span>%${Math.round(progressPercentage)}</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-cyber h-2 rounded-full transition-all" style="width: ${progressPercentage}%"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Module Stats -->
+                                <div class="flex items-center space-x-4 text-sm text-gray-500 mb-4">
+                                    <span><i class="fas fa-video mr-1"></i>${moduleVideos.length} Video</span>
+                                    <span><i class="fas fa-clock mr-1"></i>${module.estimatedDuration || '2-3'} saat</span>
+                                    <span><i class="fas fa-signal mr-1"></i>${module.difficulty || 'Orta'}</span>
                                 </div>
                             </div>
-                            
-                            <h3 class="text-lg font-semibold text-gray-900 mb-2">${module.title}</h3>
-                            <p class="text-sm text-gray-600 mb-4 line-clamp-3">${module.description}</p>
-                            
-                            <div class="mb-4">
-                                <div class="flex justify-between items-center mb-2">
-                                    <span class="text-xs font-medium text-gray-600">İlerleme</span>
-                                    <span class="text-xs font-bold text-${module.color || 'cyber'}">${Math.round(progress)}%</span>
-                                </div>
-                                <div class="w-full bg-gray-200 rounded-full h-2">
-                                    <div class="bg-gradient-to-r from-${module.color || 'cyber'} to-primary h-2 rounded-full transition-all duration-300" style="width: ${progress}%"></div>
-                    </div>
-                </div>
-                
-                            <div class="flex items-center justify-between text-xs text-gray-500 mb-4">
-                            <div class="flex items-center">
-                                    <i class="fas fa-video mr-1"></i>
-                                    <span>${module.videoCount || 0} video</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <i class="fas fa-clock mr-1"></i>
-                                    <span>${module.duration || '4 hafta'}</span>
-                    </div>
-                </div>
-                
-                            <div class="space-y-2 mb-4">
-                                <h4 class="text-xs font-medium text-gray-700">Konular:</h4>
-                                <div class="flex flex-wrap gap-1">
-                                    ${(module.topics || []).slice(0, 3).map(topic => `
-                                        <span class="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded">
-                                            ${topic}
-                                        </span>
-                                    `).join('')}
-                                    ${(module.topics || []).length > 3 ? `<span class="text-xs text-gray-400">+${(module.topics || []).length - 3} daha</span>` : ''}
-                                </div>
+                        </div>
+                        
+                        <!-- Action Button -->
+                        <div class="flex items-center justify-between">
+                            <div class="text-sm text-gray-500">
+                                ${completedVideos}/${moduleVideos.length} video tamamlandı
                             </div>
-                            
-                            <button onclick="openModule('${module.id}')" 
-                                class="w-full py-3 px-4 rounded-lg font-medium transition-all ${
-                                    isAccessible ? 
-                                    `bg-gradient-to-r from-${module.color || 'cyber'} to-primary text-white hover:opacity-90 transform hover:scale-105` : 
-                                    'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                }" ${!isAccessible ? 'disabled' : ''}>
-                                <i class="fas ${isCompleted ? 'fa-redo' : isAccessible ? 'fa-play' : 'fa-lock'} mr-2"></i>
-                                ${isCompleted ? 'Tekrar İzle' : isAccessible ? 'Modüle Başla' : 'Kilitli'}
-                            </button>
+                            ${status !== 'locked' ? 
+                                `<button onclick="startModule('${module.id}')" class="bg-cyber text-white px-4 py-2 rounded-lg hover:bg-cyber/90 transition-colors flex items-center">
+                                    <i class="fas fa-${status === 'completed' ? 'eye' : 'play'} mr-2"></i>
+                                    ${status === 'completed' ? 'Tekrar İzle' : progressPercentage > 0 ? 'Devam Et' : 'Başla'}
+                                </button>` :
+                                `<button disabled class="bg-gray-300 text-gray-500 px-4 py-2 rounded-lg cursor-not-allowed flex items-center">
+                                    <i class="fas fa-lock mr-2"></i>
+                                    Kilitli
+                                </button>`
+                            }
                         </div>
                     </div>
                 `;
             }).join('');
+        }
+        
+        // Start module function
+        function startModule(moduleId) {
+            window.location.href = `module-detail.html?module=${moduleId}`;
+        }
+        
+        // Create sample modules if none exist
+        async function createSampleModules() {
+            console.log('📝 Örnek modüller oluşturuluyor...');
+            
+            const sampleModules = [
+                {
+                    title: 'Kriptografi Temelleri',
+                    description: 'Şifreleme algoritmalarının temel prensipleri ve matematik temelleri',
+                    difficulty: 'Başlangıç',
+                    estimatedDuration: '3-4',
+                    order: 1,
+                    isActive: true,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    title: 'Simetrik Şifreleme',
+                    description: 'AES, DES ve diğer simetrik şifreleme algoritmaları',
+                    difficulty: 'Orta',
+                    estimatedDuration: '4-5',
+                    order: 2,
+                    isActive: true,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    title: 'Asimetrik Şifreleme',
+                    description: 'RSA, ECC ve dijital imza sistemleri',
+                    difficulty: 'İleri',
+                    estimatedDuration: '5-6',
+                    order: 3,
+                    isActive: true,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    title: 'Hash Fonksiyonları',
+                    description: 'SHA, MD5 ve kriptografik hash fonksiyonları',
+                    difficulty: 'Orta',
+                    estimatedDuration: '2-3',
+                    order: 4,
+                    isActive: true,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    title: 'Ağ Güvenliği',
+                    description: 'SSL/TLS, VPN ve güvenli iletişim protokolleri',
+                    difficulty: 'İleri',
+                    estimatedDuration: '4-5',
+                    order: 5,
+                    isActive: true,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    title: 'Blockchain ve Kripto Para',
+                    description: 'Blockchain teknolojisi ve kripto para sistemleri',
+                    difficulty: 'İleri',
+                    estimatedDuration: '6-7',
+                    order: 6,
+                    isActive: true,
+                    createdAt: new Date().toISOString()
+                }
+            ];
+            
+            for (const module of sampleModules) {
+                await window.DB.save('modules', module);
+            }
+            
+            console.log('✅ Örnek modüller oluşturuldu');
+        }
+        
+        // Display error message
+        function displayErrorMessage() {
+            const container = document.getElementById('modules-container');
+            if (!container) return;
+            
+            container.innerHTML = `
+                <div class="col-span-full text-center py-12">
+                    <i class="fas fa-exclamation-triangle text-red-400 text-4xl mb-4"></i>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Modüller Yüklenemedi</h3>
+                    <p class="text-gray-600 mb-4">Modüller yüklenirken bir hata oluştu.</p>
+                    <button onclick="loadModules()" class="bg-cyber text-white px-4 py-2 rounded-lg hover:bg-cyber/90">
+                        <i class="fas fa-redo mr-2"></i>
+                        Tekrar Dene
+                    </button>
+                </div>
+            `;
         }
 
         async function loadUserProgress() {
