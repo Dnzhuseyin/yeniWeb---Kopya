@@ -755,14 +755,24 @@
 
         // Show add module modal
         function showAddModuleModal() {
-            document.getElementById('add-module-modal').classList.remove('hidden');
+            const modal = document.getElementById('add-module-modal');
+            const modalTitle = modal.querySelector('h3');
+            const submitBtn = modal.querySelector('button[type="submit"]');
+            
+            // Reset to add mode
+            modalTitle.textContent = 'Yeni Modül Ekle';
+            submitBtn.innerHTML = '<i class="fas fa-save mr-2"></i> Modül Ekle';
+            delete submitBtn.dataset.moduleId;
+            
+            modal.classList.remove('hidden');
             document.body.classList.add('overflow-hidden');
             
             // Reset form
             document.getElementById('module-form').reset();
             document.getElementById('module-icon').value = 'fas fa-graduation-cap';
             document.querySelectorAll('.icon-option').forEach(btn => btn.classList.remove('border-primary', 'bg-primary/10'));
-            document.querySelector('.icon-option').classList.add('border-primary', 'bg-primary/10');
+            const firstIcon = document.querySelector('.icon-option');
+            if (firstIcon) firstIcon.classList.add('border-primary', 'bg-primary/10');
         }
 
         // Hide add module modal
@@ -776,7 +786,10 @@
             e.preventDefault();
             
             try {
-                const formData = new FormData(e.target);
+                const submitBtn = e.target.querySelector('button[type="submit"]');
+                const moduleId = submitBtn.dataset.moduleId;
+                const isEdit = !!moduleId;
+                
                 const moduleData = {
                     title: document.getElementById('module-title').value,
                     description: document.getElementById('module-description').value,
@@ -784,31 +797,52 @@
                     estimatedDuration: document.getElementById('module-duration').value,
                     color: document.getElementById('module-color').value,
                     status: document.getElementById('module-status').value,
-                    icon: document.getElementById('module-icon').value,
-                    videoCount: 0,
-                    enrollmentCount: 0,
-                    completionRate: 0,
-                    rating: 0,
-                    reviewCount: 0,
-                    order: allModules.length + 1
+                    icon: document.getElementById('module-icon').value
                 };
                 
-                // Save to Firebase
-                const success = await DB.saveModule(moduleData);
-                
-                if (success) {
-                    hideAddModuleModal();
-                    await loadModules(); // Reload modules
+                if (isEdit) {
+                    // Edit existing module
+                    const existingModule = allModules.find(m => m.id === moduleId);
+                    if (existingModule) {
+                        moduleData.id = moduleId;
+                        moduleData.videoCount = existingModule.videoCount || 0;
+                        moduleData.enrollmentCount = existingModule.enrollmentCount || 0;
+                        moduleData.completionRate = existingModule.completionRate || 0;
+                        moduleData.rating = existingModule.rating || 0;
+                        moduleData.reviewCount = existingModule.reviewCount || 0;
+                        moduleData.order = existingModule.order || allModules.length;
+                    }
                     
-                    // Show success message
-                    showNotification('✅ Modül başarıyla eklendi!', 'success');
+                    const success = await DB.saveModule(moduleData);
+                    if (success) {
+                        hideAddModuleModal();
+                        await loadModules();
+                        showNotification('✅ Modül başarıyla güncellendi!', 'success');
+                    } else {
+                        throw new Error('Modül güncellenemedi');
+                    }
                 } else {
-                    throw new Error('Modül kaydedilemedi');
+                    // Add new module
+                    moduleData.videoCount = 0;
+                    moduleData.enrollmentCount = 0;
+                    moduleData.completionRate = 0;
+                    moduleData.rating = 0;
+                    moduleData.reviewCount = 0;
+                    moduleData.order = allModules.length + 1;
+                    
+                    const success = await DB.saveModule(moduleData);
+                    if (success) {
+                        hideAddModuleModal();
+                        await loadModules();
+                        showNotification('✅ Modül başarıyla eklendi!', 'success');
+                    } else {
+                        throw new Error('Modül kaydedilemedi');
+                    }
                 }
                 
             } catch (error) {
-                console.error('❌ Modül ekleme hatası:', error);
-                showNotification('❌ Modül eklenirken hata oluştu: ' + error.message, 'error');
+                console.error('❌ Modül işlemi hatası:', error);
+                showNotification('❌ İşlem sırasında hata oluştu: ' + error.message, 'error');
             }
         }
 
@@ -829,9 +863,47 @@
         }
 
         // Edit module
-        function editModule(moduleId) {
-            // TODO: Implement edit functionality
-            showNotification('🔧 Düzenleme özelliği yakında eklenecek!', 'info');
+        async function editModule(moduleId) {
+            try {
+                const module = allModules.find(m => m.id === moduleId);
+                if (!module) {
+                    showNotification('❌ Modül bulunamadı!', 'error');
+                    return;
+                }
+                
+                // Fill form with module data
+                document.getElementById('module-title').value = module.title || '';
+                document.getElementById('module-description').value = module.description || '';
+                document.getElementById('module-difficulty').value = module.difficulty || '';
+                document.getElementById('module-duration').value = module.estimatedDuration || '';
+                document.getElementById('module-color').value = module.color || '';
+                document.getElementById('module-status').value = module.status || 'draft';
+                document.getElementById('module-icon').value = module.icon || 'fas fa-graduation-cap';
+                
+                // Select icon
+                document.querySelectorAll('.icon-option').forEach(btn => {
+                    btn.classList.remove('border-primary', 'bg-primary/10');
+                    if (btn.dataset.icon === module.icon) {
+                        btn.classList.add('border-primary', 'bg-primary/10');
+                    }
+                });
+                
+                // Change modal title and button
+                const modal = document.getElementById('add-module-modal');
+                const modalTitle = modal.querySelector('h3');
+                const submitBtn = modal.querySelector('button[type="submit"]');
+                
+                modalTitle.textContent = 'Modülü Düzenle';
+                submitBtn.innerHTML = '<i class="fas fa-save mr-2"></i> Değişiklikleri Kaydet';
+                submitBtn.dataset.moduleId = moduleId;
+                
+                // Show modal
+                showAddModuleModal();
+                
+            } catch (error) {
+                console.error('❌ Modül düzenleme hatası:', error);
+                showNotification('❌ Modül düzenlenirken hata oluştu: ' + error.message, 'error');
+            }
         }
 
         // Delete module

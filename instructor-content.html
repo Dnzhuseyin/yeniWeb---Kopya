@@ -118,10 +118,6 @@
                     <i class="fas fa-users mr-3"></i>
                     <span>Öğrenci Yönetimi</span>
                 </a>
-                <a href="instructor-quiz.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
-                    <i class="fas fa-question-circle mr-3"></i>
-                    <span>Soru Yönetimi</span>
-                </a>
             </nav>
 
             <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
@@ -209,51 +205,51 @@
                     <div class="bg-gray-50 p-4 rounded-lg">
                         <h3 class="font-semibold mb-4 text-gray-700">1. Video Bilgileri</h3>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Video Başlığı *</label>
-                                <input type="text" id="videoTitle" required
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                            <input type="text" id="videoTitle" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
                                        placeholder="Örn: Kriptoloji Temelleri">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Modül *</label>
-                                <select id="videoModule" required
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent">
-                                    <option value="">Modül Seçin</option>
-                                </select>
-                            </div>
                         </div>
-                        
+                        <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Modül *</label>
+                            <select id="videoModule" required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent">
+                                <option value="">Modül Seçin</option>
+                            </select>
+                        </div>
+                    </div>
+                    
                         <div class="mt-4">
                             <label class="block text-sm font-medium text-gray-700 mb-2">Video Açıklaması *</label>
-                            <textarea id="videoDescription" rows="3" required
-                                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
-                                      placeholder="Video içeriği hakkında detaylı açıklama..."></textarea>
-                        </div>
-                        
+                        <textarea id="videoDescription" rows="3" required
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                                  placeholder="Video içeriği hakkında detaylı açıklama..."></textarea>
+                    </div>
+                    
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
-                            <div>
+                        <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">YouTube URL *</label>
-                                <input type="url" id="youtubeUrl" required
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                            <input type="url" id="youtubeUrl" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
                                        placeholder="https://youtube.com/...">
-                            </div>
-                            <div>
+                        </div>
+                        <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Süre (dk) *</label>
-                                <input type="number" id="videoDuration" min="1" required
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
-                                       placeholder="45">
-                            </div>
-                            <div>
+                            <input type="number" id="videoDuration" min="1" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent"
+                                   placeholder="45">
+                        </div>
+                    <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Zorluk *</label>
-                                <select id="difficulty-level" required
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent">
+                        <select id="difficulty-level" required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent">
                                     <option value="">Seçin</option>
-                                    <option value="beginner">Başlangıç</option>
-                                    <option value="intermediate">Orta</option>
-                                    <option value="advanced">İleri</option>
-                                </select>
+                            <option value="beginner">Başlangıç</option>
+                            <option value="intermediate">Orta</option>
+                            <option value="advanced">İleri</option>
+                        </select>
                             </div>
                         </div>
                     </div>
@@ -272,8 +268,8 @@
                             </button>
                             <button type="button" onclick="addNewVideoQuestion('fill-blank')" class="flex-1 bg-secondary text-white px-4 py-2 rounded-lg hover:bg-secondary/90">
                                 <i class="fas fa-edit mr-2"></i>Boşluk Doldurma
-                            </button>
-                        </div>
+                        </button>
+                    </div>
                         
                         <div id="video-questions-container" class="space-y-4">
                             <!-- Sorular buraya eklenecek -->
@@ -287,13 +283,13 @@
                             <button type="button" onclick="resetVideoForm()" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600">
                                 <i class="fas fa-redo mr-2"></i>
                                 Formu Temizle
-                            </button>
+                        </button>
                             <button type="submit" class="bg-cyber text-white px-6 py-3 rounded-lg hover:bg-cyber/90">
                                 <i class="fas fa-save mr-2"></i>
                                 Videoyu Kaydet
-                            </button>
-                        </div>
+                        </button>
                     </div>
+                </div>
                 </form>
             </div>
 
@@ -1650,7 +1646,7 @@
                         if (modules.length === 0) {
                             console.error('❌ Modüller hala boş!');
                             moduleSelect.innerHTML = '<option value="">Modül bulunamadı</option>';
-                            return;
+                        return;
                         }
                     }
                 } else {
