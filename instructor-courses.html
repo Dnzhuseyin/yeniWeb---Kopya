@@ -125,10 +125,6 @@
                     <i class="fas fa-users mr-3"></i>
                     <span>Öğrenci Yönetimi</span>
                 </a>
-                <a href="instructor-quiz.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
-                    <i class="fas fa-question-circle mr-3"></i>
-                    <span>Soru Yönetimi</span>
-                </a>
             </nav>
 
             <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
@@ -813,9 +809,9 @@
                         moduleData.order = existingModule.order || allModules.length;
                     }
                     
-                    const success = await DB.saveModule(moduleData);
-                    if (success) {
-                        hideAddModuleModal();
+                const success = await DB.saveModule(moduleData);
+                if (success) {
+                    hideAddModuleModal();
                         await loadModules();
                         showNotification('✅ Modül başarıyla güncellendi!', 'success');
                     } else {
@@ -834,9 +830,9 @@
                     if (success) {
                         hideAddModuleModal();
                         await loadModules();
-                        showNotification('✅ Modül başarıyla eklendi!', 'success');
-                    } else {
-                        throw new Error('Modül kaydedilemedi');
+                    showNotification('✅ Modül başarıyla eklendi!', 'success');
+                } else {
+                    throw new Error('Modül kaydedilemedi');
                     }
                 }
                 

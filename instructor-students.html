@@ -125,10 +125,6 @@
                     <i class="fas fa-users mr-3 text-secondary"></i>
                     <span>Öğrenci Yönetimi</span>
                 </a>
-                <a href="instructor-quiz.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
-                    <i class="fas fa-question-circle mr-3"></i>
-                    <span>Soru Yönetimi</span>
-                </a>
             </nav>
 
             <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
@@ -276,6 +272,21 @@
             </div>
         </div>
     </main>
+
+    <!-- Student Detail Modal -->
+    <div id="student-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 hidden">
+        <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-2/3 shadow-lg rounded-md bg-white max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-2xl font-bold text-gray-900">Öğrenci Detayları</h3>
+                <button onclick="closeStudentModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div id="student-detail-content">
+                <!-- Content will be loaded here -->
+            </div>
+        </div>
+    </div>
 
     <script>
         let allStudents = [];
@@ -963,12 +974,47 @@
         }
 
         // View student detail
-        function viewStudentDetail(studentId) {
+        async function viewStudentDetail(studentId) {
             const student = allStudents.find(s => s.id === studentId);
-            if (!student) return;
+            if (!student) {
+                console.error('Öğrenci bulunamadı:', studentId);
+                return;
+            }
 
             const modal = document.getElementById('student-modal');
             const content = document.getElementById('student-detail-content');
+            
+            if (!modal || !content) {
+                console.error('Modal elementleri bulunamadı');
+                return;
+            }
+            
+            // Show loading first
+            content.innerHTML = '<div class="text-center py-8"><div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-cyber"></div><p class="mt-4 text-gray-600">Yükleniyor...</p></div>';
+            modal.classList.remove('hidden');
+            
+            // Load additional data
+            let additionalData = {};
+            try {
+                const progressResult = await DB.load('userProgress');
+                const notesResult = await DB.load('userNotes');
+                
+                if (progressResult && progressResult.success) {
+                    const userProgress = Array.isArray(progressResult.data) 
+                        ? progressResult.data.find(p => p.userEmail === student.email)
+                        : null;
+                    additionalData.progress = userProgress;
+                }
+                
+                if (notesResult && notesResult.success) {
+                    const userNotes = Array.isArray(notesResult.data)
+                        ? notesResult.data.filter(n => n.userEmail === student.email)
+                        : [];
+                    additionalData.notes = userNotes;
+                }
+            } catch (error) {
+                console.error('Ek veriler yüklenirken hata:', error);
+            }
             
             content.innerHTML = `
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1063,9 +1109,27 @@
                         `).join('')}
                     </div>
                 </div>
+                
+                <div class="mt-6">
+                    <h3 class="text-lg font-semibold mb-4">Ek Bilgiler</h3>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <p class="text-sm text-gray-700">
+                            <strong>Notlar:</strong> ${additionalData.notes ? additionalData.notes.length : 0} adet
+                        </p>
+                        <p class="text-sm text-gray-700 mt-2">
+                            <strong>Son Aktivite:</strong> ${formatRelativeTime(student.lastActivity)}
+                        </p>
+                        <p class="text-sm text-gray-700 mt-2">
+                            <strong>Durum:</strong> 
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                                student.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                            }">
+                                ${student.isActive ? 'Aktif' : 'Pasif'}
+                            </span>
+                        </p>
+                    </div>
+                </div>
             `;
-            
-            modal.classList.remove('hidden');
         }
 
         // Close student modal

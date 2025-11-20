@@ -281,40 +281,18 @@
                 const completedVideos = moduleProgress.filter(p => p.completed).length;
                 const progressPercentage = moduleVideos.length > 0 ? (completedVideos / moduleVideos.length) * 100 : 0;
                 
-                // Determine module status - improved logic
-                let status = 'locked';
-                let statusText = 'Kilitli';
-                let statusIcon = 'fas fa-lock';
-                let statusColor = 'text-gray-500';
+                // All modules are always accessible - no locking
+                let status = 'active';
+                let statusText = 'Aktif';
+                let statusIcon = 'fas fa-play-circle';
+                let statusColor = 'text-cyber';
                 
-                // First module is always unlocked
-                if (index === 0) {
-                    status = progressPercentage === 100 ? 'completed' : 'active';
-                    statusText = progressPercentage === 100 ? 'Tamamlandı' : 'Aktif';
-                    statusIcon = progressPercentage === 100 ? 'fas fa-check-circle' : 'fas fa-play-circle';
-                    statusColor = progressPercentage === 100 ? 'text-green-600' : 'text-cyber';
-                } else {
-                    // For other modules, check if previous module is completed OR if this module has any progress
-                    const prevModule = modules[index - 1];
-                    const prevModuleVideos = videos.filter(v => v.moduleId === prevModule.id);
-                    const prevModuleProgress = userProgress.filter(p => p.moduleId === prevModule.id);
-                    const prevCompletedVideos = prevModuleProgress.filter(p => p.completed).length;
-                    const prevProgressPercentage = prevModuleVideos.length > 0 ? (prevCompletedVideos / prevModuleVideos.length) * 100 : 0;
-                    
-                    // Unlock if previous module is completed OR if this module has any progress (for newly added modules)
-                    if (prevProgressPercentage === 100 || progressPercentage > 0) {
-                        status = progressPercentage === 100 ? 'completed' : 'active';
-                        statusText = progressPercentage === 100 ? 'Tamamlandı' : 'Aktif';
-                        statusIcon = progressPercentage === 100 ? 'fas fa-check-circle' : 'fas fa-play-circle';
-                        statusColor = progressPercentage === 100 ? 'text-green-600' : 'text-cyber';
-                    }
-                    // Special case: If previous module has no videos, unlock this module
-                    else if (prevModuleVideos.length === 0) {
-                        status = 'active';
-                        statusText = 'Aktif';
-                        statusIcon = 'fas fa-play-circle';
-                        statusColor = 'text-cyber';
-                    }
+                // Only change status if module is completed
+                if (progressPercentage === 100) {
+                    status = 'completed';
+                    statusText = 'Tamamlandı';
+                    statusIcon = 'fas fa-check-circle';
+                    statusColor = 'text-green-600';
                 }
                 
                 return `
@@ -355,16 +333,10 @@
                             <div class="text-sm text-gray-500">
                                 ${completedVideos}/${moduleVideos.length} video tamamlandı
                             </div>
-                            ${status !== 'locked' ? 
-                                `<button onclick="startModule('${module.id}')" class="bg-cyber text-white px-4 py-2 rounded-lg hover:bg-cyber/90 transition-colors flex items-center">
-                                    <i class="fas fa-${status === 'completed' ? 'eye' : 'play'} mr-2"></i>
-                                    ${status === 'completed' ? 'Tekrar İzle' : progressPercentage > 0 ? 'Devam Et' : 'Başla'}
-                                </button>` :
-                                `<button disabled class="bg-gray-300 text-gray-500 px-4 py-2 rounded-lg cursor-not-allowed flex items-center">
-                                    <i class="fas fa-lock mr-2"></i>
-                                    Kilitli
-                                </button>`
-                            }
+                            <button onclick="startModule('${module.id}')" class="bg-cyber text-white px-4 py-2 rounded-lg hover:bg-cyber/90 transition-colors flex items-center">
+                                <i class="fas fa-${status === 'completed' ? 'eye' : 'play'} mr-2"></i>
+                                ${status === 'completed' ? 'Tekrar İzle' : progressPercentage > 0 ? 'Devam Et' : 'Başla'}
+                            </button>
                         </div>
                     </div>
                 `;
