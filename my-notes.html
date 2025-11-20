@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notlarım - CyberEdu</title>
+    <title>Notlarım - EduPlatform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -38,8 +38,8 @@
     <aside class="bg-dark text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
         <div class="p-4">
             <a href="student-dashboard.html" class="font-bold text-xl text-cyber block mb-8 flex items-center">
-                <i class="fas fa-shield-alt text-2xl mr-3"></i>
-                CyberEdu
+                <i class="fas fa-graduation-cap text-2xl mr-3"></i>
+                EduPlatform
             </a>
             
             <div class="mb-8">
@@ -68,10 +68,6 @@
                     <i class="fas fa-sticky-note mr-3 text-cyber"></i>
                     <span>Notlarım</span>
                 </a>
-                <a href="downloads.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
-                    <i class="fas fa-download mr-3"></i>
-                    <span>Kaynaklar</span>
-                </a>
                 <a href="account.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
                     <i class="fas fa-user-cog mr-3"></i>
                     <span>Profil Ayarları</span>
@@ -79,7 +75,7 @@
             </nav>
 
             <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
-                <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                <a href="#" onclick="logout()" class="flex items-center text-gray-400 hover:text-white">
                     <i class="fas fa-sign-out-alt mr-3"></i>
                     <span>Çıkış Yap</span>
                 </a>
@@ -464,7 +460,7 @@
                 2: 'Risk Değerlendirme',
                 3: 'Kriz Yönetimi',
                 4: 'İletişim',
-                5: 'Liderlik',
+                5: 'Malware Analizi',
                 6: 'Uygulama',
                 7: 'İyileşme',
                 8: 'Mastery'
@@ -550,6 +546,19 @@
             // Load notes
             await loadNotes();
         });
+        
+        // Logout function
+        function logout() {
+            if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('loginTime');
+                localStorage.removeItem('userRole');
+                
+                console.log('🚪 Öğrenci çıkışı yapıldı');
+                window.location.href = 'index.html';
+            }
+        }
     </script>
 </body>
 </html> 

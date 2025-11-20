@@ -3,192 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Afet Bölgesi Okul Yöneticileri Çevik Liderlik Eğitim Platformu</title>
+    <title>EduPlatform - Online Eğitim Platformu</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#0ea5e9', // Sky blue for trust and stability
-                        secondary: '#f97316', // Orange for urgency and action
-                        accent: '#10b981', // Green for growth and recovery
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#06b6d4',
+                        dark: '#0f172a',
+                        'dark-light': '#1e293b',
+                        'dark-lighter': '#334155'
                     }
-                },
-                fontFamily: {
-                    sans: ['Inter', 'sans-serif'],
                 }
             }
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-sky-100 min-h-screen">
-    <!-- Header with project info -->
-    <div class="bg-white shadow-sm border-b">
-        <div class="max-w-6xl mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-bold text-gray-900">Çevik Liderlik Eğitimi</h1>
-                        <p class="text-sm text-gray-600">Afet Bölgesi Okul Yöneticileri Platformu</p>
-                    </div>
-                </div>
-                <div class="hidden md:flex items-center space-x-6 text-sm text-gray-600">
-                    <div class="flex items-center">
-                        <svg class="w-4 h-4 mr-1 text-secondary" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
-                        </svg>
-                        11 Afet Bölgesi Şehri
-                    </div>
-                    <div class="flex items-center">
-                        <svg class="w-4 h-4 mr-1 text-accent" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
-                        </svg>
-                        Okul Yöneticileri
-                    </div>
-                </div>
-            </div>
-        </div>
+<body class="bg-gradient-to-br from-dark via-dark-light to-dark-lighter min-h-screen overflow-y-auto">
+    <!-- Floating Shapes Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-primary/20 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-secondary/20 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-accent/10 rounded-full blur-3xl"></div>
     </div>
 
-    <div class="flex items-center justify-center min-h-[calc(100vh-80px)] py-12 px-4">
-        <div class="max-w-md w-full space-y-8">
-            <!-- Project Description Card -->
-            <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
-                <div class="text-center mb-6">
-                    <div class="flex justify-center mb-4">
-                        <div class="w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
-                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Çevik Liderlik Geliştirme</h2>
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        Kahramanmaraş depremleri sonrası afet bölgesi ilan edilen 11 şehirdeki 
-                        anaokulu, ilkokul, ortaokul ve lise yöneticilerinin çevik liderlik becerilerini 
-                        geliştirerek öğretmenlerin afet bilinci ve kriz yönetimi algılarını artırmayı amaçlıyoruz.
-                    </p>
-                </div>
-                
-                <!-- Key Features -->
-                <div class="grid grid-cols-1 gap-3 mb-6">
-                    <div class="flex items-center p-3 bg-blue-50 rounded-lg">
-                        <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mr-3">
-                            <svg class="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
-                            </svg>
+    <div class="relative z-10 min-h-screen">
+        <!-- Header -->
+        <header class="p-6">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-gradient-to-r from-primary via-secondary to-accent rounded-xl flex items-center justify-center">
+                            <i class="fas fa-graduation-cap text-white text-xl"></i>
                         </div>
                         <div>
-                            <p class="font-medium text-gray-900 text-sm">Çevik Liderlik Becerileri</p>
-                            <p class="text-xs text-gray-600">Adaptasyon ve yenilikçi yaklaşım</p>
+                            <h1 class="text-xl font-bold text-white">EduPlatform</h1>
+                            <p class="text-sm text-gray-300">Online Eğitim Merkezi</p>
                         </div>
                     </div>
-                    
-                    <div class="flex items-center p-3 bg-orange-50 rounded-lg">
-                        <div class="w-8 h-8 bg-secondary/10 rounded-full flex items-center justify-center mr-3">
-                            <svg class="w-4 h-4 text-secondary" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="font-medium text-gray-900 text-sm">Kriz Yönetimi</p>
-                            <p class="text-xs text-gray-600">Acil durum müdahale stratejileri</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center p-3 bg-green-50 rounded-lg">
-                        <div class="w-8 h-8 bg-accent/10 rounded-full flex items-center justify-center mr-3">
-                            <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="font-medium text-gray-900 text-sm">Afet Bilinci</p>
-                            <p class="text-xs text-gray-600">Hazırlık ve farkındalık artırma</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Login Form -->
-            <div class="bg-white p-8 rounded-xl shadow-lg">
-                <div class="text-center mb-6">
-                    <h3 class="text-xl font-semibold text-gray-900">Okul Yöneticisi Girişi</h3>
-                    <p class="text-gray-600 text-sm mt-1">Eğitim platformuna erişim için giriş yapın</p>
-        </div>
-
-        <form id="login-form" class="space-y-6">
-                    <div id="error-message" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg" role="alert">
-                <span class="block sm:inline error-text"></span>
-            </div>
-            
-            <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">E-posta Adresi</label>
-                <input type="email" id="email" name="email" required 
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                            placeholder="ornek@meb.gov.tr">
-            </div>
-            
-            <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Şifre</label>
-                <input type="password" id="password" name="password" required 
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                            placeholder="••••••••">
-            </div>
-
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <input id="remember-me" name="remember-me" type="checkbox" 
-                        class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
-                    <label for="remember-me" class="ml-2 block text-sm text-gray-700">
-                        Beni hatırla
-                    </label>
-                </div>
-                <a href="#" class="text-sm text-primary hover:underline">
-                            Şifremi unuttum?
-                </a>
-            </div>
-
-            <button type="submit" 
-                        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-white bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary font-medium">
-                        Eğitime Başla
-            </button>
-        </form>
-
-                <div class="mt-6 text-center space-y-3">
-                    <p class="text-sm text-gray-600">
-                        Henüz hesabınız yok mu? 
-                        <a href="register.html" class="text-primary hover:underline font-medium">Kayıt olun</a>
-            </p>
-                    <div class="border-t pt-4">
-                        <p class="text-sm text-gray-500 mb-3">Koordinatör misiniz?</p>
-                        <a href="instructor-login.html" class="inline-flex items-center justify-center w-full py-3 px-4 border border-secondary text-secondary bg-orange-50 hover:bg-orange-100 rounded-lg font-medium transition-colors">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                            </svg>
-                            Koordinatör Paneli
+                    <div class="flex items-center space-x-4">
+                        <a href="register.html" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fas fa-user-plus mr-2"></i>Kayıt Ol
+                        </a>
+                        <a href="instructor-login.html" class="bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-lg hover:bg-white/20 transition-all">
+                            <i class="fas fa-user-shield mr-2"></i>Koordinatör Girişi
                         </a>
                     </div>
                 </div>
             </div>
+        </header>
 
-            <!-- Support Info -->
-            <div class="text-center text-sm text-gray-600">
-                <p>Teknik destek için: <a href="mailto:destek@afetegitim.gov.tr" class="text-primary hover:underline">destek@afetegitim.gov.tr</a></p>
+        <!-- Main Content -->
+        <main class="flex items-center justify-center py-12 px-4">
+            <div class="max-w-6xl w-full">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <!-- Left Side - Info -->
+                    <div class="text-center lg:text-left">
+                        <h2 class="text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+                            Online Eğitim
+                            <span class="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                                Platformu
+                            </span>
+                        </h2>
+                        <p class="text-xl text-gray-300 mb-8 leading-relaxed">
+                            Temel seviyeden ileri seviyeye kadar kapsamlı eğitim içerikleri ile bilgi ve becerilerinizi geliştirin.
+                        </p>
+                        
+                        <!-- Features -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-video text-primary"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-white">Video Dersler</h3>
+                                    <p class="text-sm text-gray-400">İnteraktif video içerikleri</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-secondary/20 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-tasks text-secondary"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-white">Pratik Alıştırmalar</h3>
+                                    <p class="text-sm text-gray-400">Uygulamalı öğrenme</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-certificate text-accent"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-white">Sertifika Programı</h3>
+                                    <p class="text-sm text-gray-400">Başarı belgeleri</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-users text-primary"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-white">Uzman Eğitmenler</h3>
+                                    <p class="text-sm text-gray-400">Alanında uzman kadro</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Side - Login Form -->
+                    <div class="flex justify-center lg:justify-end">
+                        <div class="w-full max-w-md">
+                            <div class="backdrop-blur-xl bg-white/10 p-8 rounded-2xl shadow-2xl border border-white/20">
+                                <div class="text-center mb-8">
+                                    <div class="w-16 h-16 bg-gradient-to-r from-primary via-secondary to-accent rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                        <i class="fas fa-graduation-cap text-white text-2xl"></i>
+                                    </div>
+                                    <h2 class="text-2xl font-semibold text-white mb-2">Öğrenci Girişi</h2>
+                                    <p class="text-gray-300 text-sm">Eğitim platformuna erişim için giriş yapın</p>
+                                </div>
+
+                                <form id="login-form" class="space-y-6">
+                                    <div id="error-message" class="hidden bg-red-500/20 border border-red-500/30 text-red-300 px-4 py-3 rounded-xl backdrop-blur-sm" role="alert">
+                                        <span class="block sm:inline error-text"></span>
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="email" class="block text-sm font-medium text-gray-300 mb-3 text-center">E-posta Adresi</label>
+                                        <input type="email" id="email" name="email" required 
+                                            class="w-full px-4 py-4 bg-white/10 border border-white/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-white placeholder-gray-400 backdrop-blur-sm text-center"
+                                            placeholder="ogrenci@email.com">
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="password" class="block text-sm font-medium text-gray-300 mb-3 text-center">Şifre</label>
+                                        <input type="password" id="password" name="password" required 
+                                            class="w-full px-4 py-4 bg-white/10 border border-white/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-white placeholder-gray-400 backdrop-blur-sm text-center"
+                                            placeholder="••••••••">
+                                    </div>
+
+                                    <div class="flex items-center justify-between text-sm">
+                                        <label class="flex items-center text-gray-300">
+                                            <input type="checkbox" class="mr-2 rounded border-white/20 bg-white/10 text-primary focus:ring-primary">
+                                            Beni hatırla
+                                        </label>
+                                        <a href="#" class="text-primary hover:text-secondary transition-colors">Şifreyi unuttum?</a>
+                                    </div>
+
+                                    <button type="submit" class="w-full bg-gradient-to-r from-primary via-secondary to-accent text-white font-semibold py-4 px-6 rounded-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 backdrop-blur-sm">
+                                        <i class="fas fa-sign-in-alt mr-2"></i>
+                                        Giriş Yap
+                                    </button>
+
+                                    <div class="text-center">
+                                        <p class="text-gray-300 text-sm">
+                                            Hesabınız yok mu? 
+                                            <a href="register.html" class="text-primary hover:text-secondary transition-colors font-semibold">Kayıt olun</a>
+                                        </p>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="mt-16 p-6">
+            <div class="max-w-7xl mx-auto">
+                <div class="border-t border-white/10 pt-6">
+                    <div class="flex flex-col md:flex-row justify-between items-center">
+                        <div class="text-gray-400 text-sm">
+                            © 2024 EduPlatform. Tüm hakları saklıdır.
+                        </div>
+                        <div class="flex items-center space-x-6 mt-4 md:mt-0">
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
 
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase Production DB -->
+    <script src="js/firebase-production.js"></script>
+    <script src="js/user-utils.js"></script>
+
     <script>
-        // Basit giriş sistemi
+        // Student login system
         document.getElementById('login-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -197,7 +216,7 @@
             var errorElement = document.getElementById('error-message');
             var errorText = document.querySelector('.error-text');
             
-            // E-posta ve şifre kontrolü (basit validasyon)
+            // Email and password validation
             if (!email || !password) {
                 errorElement.classList.remove('hidden');
                 errorText.textContent = 'E-posta ve şifre alanları zorunludur.';
@@ -216,50 +235,68 @@
                 return;
             }
             
-            // Hata mesajını gizle
+            // Hide error message
             errorElement.classList.add('hidden');
             
-            // Başarılı giriş simülasyonu
-            console.log('Giriş başarılı:', email);
+            // Successful login simulation
+            console.log('Öğrenci girişi başarılı:', email);
             
-            // Kullanıcı bilgilerini localStorage'a kaydet
+            // Save user info to localStorage
             localStorage.setItem('userEmail', email);
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('loginTime', new Date().toISOString());
+            localStorage.setItem('userRole', 'student');
                     
-            // Loading göstergesi
+            // Loading indicator
             var submitButton = document.querySelector('button[type="submit"]');
-            var originalText = submitButton.textContent;
-            submitButton.textContent = 'Giriş yapılıyor...';
+            var originalText = submitButton.innerHTML;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Giriş yapılıyor...';
             submitButton.disabled = true;
             
-            // Koordinatör kontrolü (basit)
+            // Redirect to student dashboard
             setTimeout(function() {
-                if (email.includes('koordinator') || email.includes('instructor') || email.includes('admin')) {
-                    console.log('Koordinatör olarak yönlendiriliyor...');
-                    window.location.href = 'instructor-dashboard.html';
-                } else {
-                    console.log('Öğrenci olarak yönlendiriliyor...');
-                    window.location.href = 'student-dashboard.html';
-                }
-            }, 1000);
+                console.log('Öğrenci paneline yönlendiriliyor...');
+                window.location.href = 'student-dashboard.html';
+            }, 1500);
         });
         
-        // Sayfa yüklendiğinde oturum kontrolü
+        // Check login status on page load and show welcome message
         document.addEventListener('DOMContentLoaded', function() {
             var isLoggedIn = localStorage.getItem('isLoggedIn');
             if (isLoggedIn === 'true') {
                 var userEmail = localStorage.getItem('userEmail');
-                console.log('Zaten giriş yapılmış:', userEmail);
+                var userRole = localStorage.getItem('userRole');
+                console.log('Zaten giriş yapılmış:', userEmail, 'Rol:', userRole);
                 
-                // Eğer zaten giriş yapılmışsa uygun sayfaya yönlendir
-                if (userEmail && (userEmail.includes('koordinator') || userEmail.includes('instructor') || userEmail.includes('admin'))) {
-                                window.location.href = 'instructor-dashboard.html';
-                            } else {
-                                window.location.href = 'student-dashboard.html';
-                            }
+                // Show a welcome back message instead of auto-redirecting
+                var errorElement = document.getElementById('error-message');
+                var errorText = document.querySelector('.error-text');
+                if (errorElement && errorText) {
+                    errorElement.classList.remove('hidden');
+                    errorElement.classList.remove('bg-red-500/20', 'border-red-500/30', 'text-red-300');
+                    errorElement.classList.add('bg-green-500/20', 'border-green-500/30', 'text-green-300');
+                    errorText.textContent = `Hoş geldiniz ${userEmail}! Zaten giriş yapmışsınız. Dashboard'a gitmek için tekrar giriş yapabilirsiniz.`;
+                }
             }
         });
+
+        // Add floating animations to background elements
+        document.addEventListener('DOMContentLoaded', function() {
+            const shapes = document.querySelectorAll('.absolute');
+            shapes.forEach((shape, index) => {
+                shape.style.animation = `float ${3 + index}s ease-in-out infinite alternate`;
+            });
+        });
+
+        // Add CSS for floating animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes float {
+                0% { transform: translateY(0px) translateX(0px); }
+                100% { transform: translateY(-20px) translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
-</html> 
+</html>

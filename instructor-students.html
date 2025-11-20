@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Öğrenci Yönetimi - CyberEdu Admin</title>
+    <title>Öğrenci Yönetimi - EduPlatform Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -95,8 +95,8 @@
     <aside class="sidebar-container bg-dark text-white w-64 min-h-screen hidden md:block">
         <div class="p-4">
             <a href="instructor-dashboard.html" class="font-bold text-xl text-secondary block mb-8 flex items-center">
-                <i class="fas fa-shield-alt text-2xl mr-3"></i>
-                CyberEdu Admin
+                <i class="fas fa-graduation-cap text-2xl mr-3"></i>
+                EduPlatform Admin
             </a>
             
             <div class="mb-8">
@@ -124,6 +124,10 @@
                 <a href="instructor-students.html" class="flex items-center px-4 py-3 rounded-lg bg-slate-800">
                     <i class="fas fa-users mr-3 text-secondary"></i>
                     <span>Öğrenci Yönetimi</span>
+                </a>
+                <a href="instructor-quiz.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-question-circle mr-3"></i>
+                    <span>Soru Yönetimi</span>
                 </a>
             </nav>
 
@@ -402,7 +406,7 @@
                                 lastName: profile.lastName || '',
                                 studentId: profile.studentId || '',
                                 department: profile.department || 'bilgisayar-muhendisligi',
-                                school: profile.school || 'CyberEdu Üniversitesi',
+                                school: profile.school || 'EduPlatform Üniversitesi',
                                 city: profile.city || getRandomCity(),
                                 phone: profile.phone || '',
                                 bio: profile.bio || '',
@@ -498,7 +502,7 @@
                             lastName: 'Kaya',
                             studentId: '20240001',
                             department: 'bilgisayar-muhendisligi',
-                            school: 'CyberEdu Üniversitesi',
+                            school: 'EduPlatform Üniversitesi',
                             city: 'İstanbul',
                             totalProgress: 75,
                             completedModules: 3,
@@ -517,7 +521,7 @@
                             lastName: 'Demir',
                             studentId: '20240002',
                             department: 'siber-guvenlik',
-                            school: 'CyberEdu Üniversitesi',
+                            school: 'EduPlatform Üniversitesi',
                             city: 'Ankara',
                             totalProgress: 90,
                             completedModules: 4,
@@ -536,7 +540,7 @@
                             lastName: 'Özkan',
                             studentId: '20240003',
                             department: 'bilisim-sistemleri',
-                            school: 'CyberEdu Üniversitesi',
+                            school: 'EduPlatform Üniversitesi',
                             city: 'İzmir',
                             totalProgress: 45,
                             completedModules: 1,
@@ -555,7 +559,7 @@
                             lastName: 'Yılmaz',
                             studentId: '20240004',
                             department: 'yazilim-muhendisligi',
-                            school: 'CyberEdu Üniversitesi',
+                            school: 'EduPlatform Üniversitesi',
                             city: 'Bursa',
                             totalProgress: 60,
                             completedModules: 2,
@@ -643,7 +647,7 @@
                         school: 'Gaziantep Anadolu Lisesi',
                         city: 'Gaziantep',
                         phone: '+90 532 345 67 89',
-                        bio: 'Afet bölgesi okul yönetimi deneyimi olan müdür.',
+                        bio: 'Siber güvenlik alanında deneyimli öğrenci.',
                         joinDate: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
                         createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
                         updatedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
@@ -706,8 +710,8 @@
                     },
                     {
                         userEmail: 'fatma.demir@meb.gov.tr',
-                        title: 'Liderlik Stratejileri',
-                        content: 'Çevik liderlik prensipleri ve uygulamaları...',
+                        title: 'Şifreleme Teknikleri',
+                        content: 'Şifreleme teknikleri ve uygulamaları...',
                         createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString()
                     },
                     {

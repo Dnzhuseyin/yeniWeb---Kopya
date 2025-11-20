@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil Ayarları - Kriptarium</title>
+    <title>Profil Ayarları - EduPlatform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -33,7 +33,7 @@
         <div class="p-4">
             <a href="student-dashboard.html" class="font-bold text-xl text-cyber block mb-8 flex items-center">
                 <i class="fas fa-key text-2xl mr-3"></i>
-                Kriptarium
+                EduPlatform
             </a>
             
             <div class="mb-8">
@@ -62,10 +62,6 @@
                     <i class="fas fa-sticky-note mr-3"></i>
                     <span>Notlarım</span>
                 </a>
-                <a href="downloads.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
-                    <i class="fas fa-download mr-3"></i>
-                    <span>Kaynaklar</span>
-                </a>
                 <a href="account.html" class="flex items-center px-4 py-3 rounded-lg bg-slate-800">
                     <i class="fas fa-user-cog mr-3 text-cyber"></i>
                     <span>Profil Ayarları</span>
@@ -73,7 +69,7 @@
             </nav>
 
             <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
-                <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                <a href="#" onclick="logout()" class="flex items-center text-gray-400 hover:text-white">
                     <i class="fas fa-sign-out-alt mr-3"></i>
                     <span>Çıkış Yap</span>
                 </a>
@@ -83,7 +79,7 @@
 
     <!-- Mobile menu -->
     <div class="md:hidden fixed top-0 left-0 right-0 z-20 bg-dark text-white p-4 flex justify-between items-center">
-        <a href="student-dashboard.html" class="font-bold text-xl text-cyber">Kriptarium</a>
+        <a href="student-dashboard.html" class="font-bold text-xl text-cyber">EduPlatform</a>
         <button class="text-white" id="mobile-menu-button">
             <i class="fas fa-bars text-xl"></i>
         </button>
@@ -173,7 +169,7 @@
             <!-- Security Settings -->
             <div class="bg-white rounded-xl shadow-sm p-8 mb-8 border border-gray-100">
                 <h2 class="text-xl font-semibold mb-6 flex items-center">
-                    <i class="fas fa-shield-alt text-secondary mr-3"></i>
+                    <i class="fas fa-graduation-cap text-secondary mr-3"></i>
                     Güvenlik Ayarları
                 </h2>
                 
@@ -561,6 +557,19 @@
                     window.location.href = 'index.html';
                 });
             });
+        }
+        
+        // Logout function
+        function logout() {
+            if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('loginTime');
+                localStorage.removeItem('userRole');
+                
+                console.log('🚪 Öğrenci çıkışı yapıldı');
+                window.location.href = 'index.html';
+            }
         }
     </script>
 </body>

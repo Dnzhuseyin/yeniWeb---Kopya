@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canlı Sorular - EduPlatform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#dc2626',
+                        accent: '#059669',
+                        cyber: '#6366f1',
+                        dark: '#0f172a'
+                    }
+                },
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="bg-dark text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
+        <div class="p-4">
+            <a href="student-dashboard.html" class="font-bold text-xl text-cyber block mb-8 flex items-center">
+                <i class="fas fa-key text-2xl mr-3"></i>
+                EduPlatform
+            </a>
+            
+            <div class="mb-8">
+                <div class="flex items-center mb-4">
+                    <div>
+                        <p class="font-medium" id="user-name"></p>
+                        <p class="text-sm text-gray-400" id="user-email"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="space-y-1">
+                <a href="student-dashboard.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    <span>Genel Bakış</span>
+                </a>
+                <a href="courses.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-graduation-cap mr-3"></i>
+                    <span>Eğitim Modülleri</span>
+                </a>
+                <a href="progress.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-chart-line mr-3"></i>
+                    <span>İlerlemem</span>
+                </a>
+                <a href="my-notes.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-sticky-note mr-3"></i>
+                    <span>Notlarım</span>
+                </a>
+                <a href="student-quiz.html" class="flex items-center px-4 py-3 rounded-lg bg-slate-800">
+                    <i class="fas fa-question-circle mr-3 text-cyber"></i>
+                    <span>Canlı Sorular</span>
+                </a>
+                <a href="account.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-user-cog mr-3"></i>
+                    <span>Profil Ayarları</span>
+                </a>
+            </nav>
+
+            <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
+                <a href="#" onclick="logout()" class="flex items-center text-gray-400 hover:text-white">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    <span>Çıkış Yap</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="md:ml-64 p-4 md:p-8 w-full min-h-screen">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header -->
+            <header class="mb-8">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2 flex items-center">
+                            <i class="fas fa-question-circle text-cyber mr-3"></i>
+                            Canlı Sorular
+                        </h1>
+                        <p class="text-gray-600">Kahoot benzeri canlı soru-cevap sistemi</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="flex items-center space-x-4">
+                            <div class="text-center">
+                                <div class="text-lg font-bold text-gray-900" id="quiz-status">Bekleniyor</div>
+                                <div class="text-sm text-gray-500">Quiz Durumu</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-lg font-bold text-cyber" id="participant-count">0</div>
+                                <div class="text-sm text-gray-500">Katılımcı</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Quiz Not Active State -->
+            <div id="no-active-quiz" class="bg-white rounded-xl shadow-sm p-8 text-center border border-gray-100">
+                <div class="max-w-md mx-auto">
+                    <i class="fas fa-clock text-6xl text-gray-300 mb-6"></i>
+                    <h2 class="text-2xl font-semibold text-gray-700 mb-4">Quiz Bekleniyor</h2>
+                    <p class="text-gray-500 mb-6">
+                        Şu anda aktif bir quiz bulunmuyor. Koordinatör tarafından quiz başlatıldığında burada görünecek.
+                    </p>
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                            <p class="text-sm text-blue-700">
+                                Sayfa otomatik olarak yenilenmektedir. Quiz başladığında bildirim alacaksınız.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Quiz State -->
+            <div id="active-quiz" class="space-y-6" style="display: none;">
+                <!-- Quiz Info -->
+                <div class="bg-gradient-to-r from-cyber/10 to-primary/10 rounded-xl p-6 border border-cyber/20">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h2 class="text-xl font-semibold text-gray-900 mb-1" id="quiz-title">Quiz Başlığı</h2>
+                            <p class="text-gray-600" id="quiz-description">Quiz açıklaması</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-cyber" id="question-counter">1 / 10</div>
+                            <div class="text-sm text-gray-500">Soru</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question Display -->
+                <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
+                    <!-- Timer -->
+                    <div class="flex justify-center mb-6">
+                        <div class="relative w-24 h-24">
+                            <svg class="w-24 h-24 transform -rotate-90" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" stroke="#e5e7eb" stroke-width="6" fill="none"></circle>
+                                <circle id="timer-circle" cx="50" cy="50" r="45" stroke="#6366f1" stroke-width="6" 
+                                        fill="none" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="0"
+                                        class="transition-all duration-1000"></circle>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-2xl font-bold text-gray-900" id="timer-text">30</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question Text -->
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-semibold text-gray-900 leading-relaxed" id="question-text">
+                            Soru metni burada görünecek
+                        </h3>
+                    </div>
+
+                    <!-- Answer Options -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="answer-options">
+                        <!-- Options will be dynamically inserted here -->
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center mt-8">
+                        <button id="submit-answer-btn" class="bg-cyber text-white px-8 py-3 rounded-lg text-lg font-medium hover:bg-cyber/90 transition-colors" disabled>
+                            <i class="fas fa-paper-plane mr-2"></i>
+                            Cevabı Gönder
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Answer Submitted State -->
+                <div id="answer-submitted" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 text-center" style="display: none;">
+                    <i class="fas fa-check-circle text-6xl text-green-500 mb-4"></i>
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-2">Cevabınız Gönderildi!</h3>
+                    <p class="text-gray-600 mb-4">Sonuçları bekliyoruz...</p>
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 inline-block">
+                        <p class="text-sm text-green-700">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            Seçtiğiniz cevap: <span class="font-medium" id="selected-answer">A</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Results Display -->
+                <div id="question-results" class="bg-white rounded-xl shadow-sm p-6 border border-gray-100" style="display: none;">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-chart-bar text-primary mr-2"></i>
+                        Soru Sonuçları
+                    </h3>
+                    <div id="results-content">
+                        <!-- Results will be displayed here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Quiz History -->
+            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 mt-8">
+                <h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <i class="fas fa-history text-accent mr-2"></i>
+                    Son Quiz Geçmişi
+                </h2>
+                <div id="quiz-history" class="space-y-3">
+                    <!-- Quiz history will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase Production DB -->
+    <script src="js/firebase-production.js"></script>
+    <script src="js/user-utils.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        let currentQuiz = null;
+        let currentQuestion = null;
+        let selectedAnswer = null;
+        let timer = null;
+        let timeLeft = 0;
+        let userEmail = null;
+        let hasAnswered = false;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize user info
+            const isLoggedIn = await UserUtils.initializeUserInfo();
+            if (!isLoggedIn) return;
+
+            userEmail = localStorage.getItem('userEmail');
+            setupEventListeners();
+            checkForActiveQuiz();
+            
+            // Start checking for active quiz every 5 seconds
+            setInterval(checkForActiveQuiz, 5000);
+        });
+
+        function setupEventListeners() {
+            // Logout functionality
+            document.querySelectorAll('a[href="index.html"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('loginTime');
+                    
+                    console.log('Öğrenci çıkışı yapıldı');
+                    window.location.href = 'index.html';
+                });
+            });
+
+            // Submit answer button
+            document.getElementById('submit-answer-btn').addEventListener('click', submitAnswer);
+        }
+
+        async function checkForActiveQuiz() {
+            try {
+                // Wait for Firebase to be ready
+                await new Promise(resolve => {
+                    const checkDB = () => {
+                        if (window.DB) {
+                            resolve();
+                        } else {
+                            setTimeout(checkDB, 100);
+                        }
+                    };
+                    checkDB();
+                });
+
+                const result = await window.DB.load('liveQuiz');
+                const liveQuizData = (result && result.success) ? result.data : [];
+                const activeLiveQuiz = liveQuizData.find(q => q.id === 'current' && q.isActive);
+
+                if (activeLiveQuiz) {
+                    if (!currentQuiz || currentQuiz.id !== activeLiveQuiz.quizId) {
+                        // New quiz detected
+                        await loadActiveQuiz(activeLiveQuiz);
+                    } else {
+                        // Check for question change
+                        if (currentQuestion && activeLiveQuiz.currentQuestionIndex !== currentQuestion.index) {
+                            await loadCurrentQuestion(activeLiveQuiz);
+                        }
+                    }
+                } else {
+                    // No active quiz
+                    showNoActiveQuiz();
+                }
+
+            } catch (error) {
+                console.error('Aktif quiz kontrol hatası:', error);
+            }
+        }
+
+        async function loadActiveQuiz(liveQuizData) {
+            try {
+                // Load quiz details
+                const quizzesResult = await window.DB.load('quizzes');
+                const quizzes = (quizzesResult && quizzesResult.success) ? quizzesResult.data : [];
+                currentQuiz = quizzes.find(q => q.id === liveQuizData.quizId);
+
+                if (currentQuiz) {
+                    document.getElementById('quiz-title').textContent = currentQuiz.title;
+                    document.getElementById('quiz-description').textContent = currentQuiz.description || '';
+                    
+                    // Show active quiz interface
+                    document.getElementById('no-active-quiz').style.display = 'none';
+                    document.getElementById('active-quiz').style.display = 'block';
+                    document.getElementById('quiz-status').textContent = 'Aktif';
+                    
+                    await loadCurrentQuestion(liveQuizData);
+                    
+                    // Show notification
+                    showNotification('🎉 Yeni quiz başladı: ' + currentQuiz.title, 'success');
+                }
+
+            } catch (error) {
+                console.error('Quiz yükleme hatası:', error);
+            }
+        }
+
+        async function loadCurrentQuestion(liveQuizData) {
+            try {
+                if (!currentQuiz || liveQuizData.currentQuestionIndex >= currentQuiz.questions.length) {
+                    return;
+                }
+
+                const question = currentQuiz.questions[liveQuizData.currentQuestionIndex];
+                currentQuestion = {
+                    ...question,
+                    index: liveQuizData.currentQuestionIndex
+                };
+
+                // Reset state
+                hasAnswered = false;
+                selectedAnswer = null;
+                
+                // Update UI
+                document.getElementById('question-counter').textContent = 
+                    `${liveQuizData.currentQuestionIndex + 1} / ${currentQuiz.questions.length}`;
+                document.getElementById('question-text').textContent = question.text;
+                
+                // Clear previous states
+                document.getElementById('answer-submitted').style.display = 'none';
+                document.getElementById('question-results').style.display = 'none';
+                
+                // Load answer options
+                loadAnswerOptions(question);
+                
+                // Start timer
+                startTimer(question.timeLimit || 30);
+                
+            } catch (error) {
+                console.error('Soru yükleme hatası:', error);
+            }
+        }
+
+        function loadAnswerOptions(question) {
+            const optionsContainer = document.getElementById('answer-options');
+            optionsContainer.innerHTML = '';
+
+            const colors = {
+                A: 'red',
+                B: 'blue', 
+                C: 'green',
+                D: 'yellow'
+            };
+
+            Object.entries(question.options).forEach(([key, value]) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = `answer-option p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-${colors[key]}-400 transition-colors`;
+                optionDiv.dataset.answer = key;
+                
+                optionDiv.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-${colors[key]}-500 text-white rounded-lg flex items-center justify-center font-bold">
+                            ${key}
+                        </div>
+                        <span class="text-lg">${value}</span>
+                    </div>
+                `;
+                
+                optionDiv.addEventListener('click', () => selectAnswer(key, optionDiv));
+                optionsContainer.appendChild(optionDiv);
+            });
+
+            // Reset submit button
+            document.getElementById('submit-answer-btn').disabled = true;
+        }
+
+        function selectAnswer(answer, optionElement) {
+            if (hasAnswered) return;
+
+            // Clear previous selections
+            document.querySelectorAll('.answer-option').forEach(option => {
+                option.classList.remove('border-cyber', 'bg-cyber/10');
+                option.classList.add('border-gray-200');
+            });
+
+            // Select current option
+            optionElement.classList.remove('border-gray-200');
+            optionElement.classList.add('border-cyber', 'bg-cyber/10');
+            
+            selectedAnswer = answer;
+            document.getElementById('submit-answer-btn').disabled = false;
+        }
+
+        async function submitAnswer() {
+            if (!selectedAnswer || hasAnswered || !currentQuestion) return;
+
+            try {
+                hasAnswered = true;
+                
+                // Disable all options
+                document.querySelectorAll('.answer-option').forEach(option => {
+                    option.style.pointerEvents = 'none';
+                    option.classList.add('opacity-60');
+                });
+
+                // Save response
+                const response = {
+                    userEmail: userEmail,
+                    quizId: currentQuiz.id,
+                    questionIndex: currentQuestion.index,
+                    answer: selectedAnswer,
+                    timestamp: new Date().toISOString(),
+                    timeLeft: timeLeft
+                };
+
+                await window.DB.save('quizResponses', response);
+
+                // Update UI
+                document.getElementById('selected-answer').textContent = selectedAnswer;
+                document.getElementById('answer-submitted').style.display = 'block';
+                document.getElementById('submit-answer-btn').style.display = 'none';
+
+                // Stop timer
+                if (timer) {
+                    clearInterval(timer);
+                }
+
+                showNotification('✅ Cevabınız gönderildi!', 'success');
+
+            } catch (error) {
+                console.error('Cevap gönderme hatası:', error);
+                showNotification('❌ Cevap gönderilemedi', 'error');
+                hasAnswered = false;
+            }
+        }
+
+        function startTimer(duration) {
+            timeLeft = duration;
+            const timerText = document.getElementById('timer-text');
+            const timerCircle = document.getElementById('timer-circle');
+            const circumference = 2 * Math.PI * 45; // radius = 45
+            
+            if (timer) clearInterval(timer);
+            
+            timer = setInterval(() => {
+                timeLeft--;
+                timerText.textContent = timeLeft;
+                
+                // Update circle progress
+                const progress = (duration - timeLeft) / duration;
+                const offset = circumference * progress;
+                timerCircle.style.strokeDashoffset = offset;
+                
+                // Change color based on time left
+                if (timeLeft <= 5) {
+                    timerCircle.style.stroke = '#dc2626'; // red
+                    timerText.style.color = '#dc2626';
+                } else if (timeLeft <= 10) {
+                    timerCircle.style.stroke = '#f59e0b'; // yellow
+                    timerText.style.color = '#f59e0b';
+                } else {
+                    timerCircle.style.stroke = '#6366f1'; // blue
+                    timerText.style.color = '#1f2937';
+                }
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    if (!hasAnswered) {
+                        // Time's up - auto submit or show timeout message
+                        showTimeoutMessage();
+                    }
+                }
+            }, 1000);
+        }
+
+        function showTimeoutMessage() {
+            document.querySelectorAll('.answer-option').forEach(option => {
+                option.style.pointerEvents = 'none';
+                option.classList.add('opacity-60');
+            });
+            
+            document.getElementById('submit-answer-btn').textContent = 'Süre Doldu';
+            document.getElementById('submit-answer-btn').disabled = true;
+            document.getElementById('submit-answer-btn').classList.add('bg-gray-500');
+            
+            showNotification('⏰ Süre doldu!', 'warning');
+        }
+
+        function showNoActiveQuiz() {
+            currentQuiz = null;
+            currentQuestion = null;
+            
+            document.getElementById('no-active-quiz').style.display = 'block';
+            document.getElementById('active-quiz').style.display = 'none';
+            document.getElementById('quiz-status').textContent = 'Bekleniyor';
+            document.getElementById('participant-count').textContent = '0';
+            
+            if (timer) {
+                clearInterval(timer);
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            // Remove any existing notifications
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(n => n.remove());
+
+            const notification = document.createElement('div');
+            notification.className = `notification fixed top-4 right-4 px-6 py-3 rounded-lg text-white font-medium z-50 ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 
+                type === 'warning' ? 'bg-yellow-500' :
+                'bg-blue-500'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Load quiz history
+        async function loadQuizHistory() {
+            try {
+                if (!userEmail) return;
+
+                const result = await window.DB.load('quizResponses');
+                const responses = (result && result.success) ? result.data : [];
+                
+                const userResponses = responses
+                    .filter(r => r.userEmail === userEmail)
+                    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+                    .slice(0, 5);
+
+                const historyContainer = document.getElementById('quiz-history');
+                
+                if (userResponses.length === 0) {
+                    historyContainer.innerHTML = `
+                        <div class="text-center py-4">
+                            <i class="fas fa-history text-gray-300 text-2xl mb-2"></i>
+                            <p class="text-gray-500">Henüz quiz geçmişi bulunmuyor</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                historyContainer.innerHTML = userResponses.map(response => `
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div>
+                            <p class="font-medium text-gray-900">Quiz ${response.quizId}</p>
+                            <p class="text-sm text-gray-600">Soru ${response.questionIndex + 1} - Cevap: ${response.answer}</p>
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            ${new Date(response.timestamp).toLocaleDateString('tr-TR')}
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error('Quiz geçmişi yükleme hatası:', error);
+            }
+        }
+
+        // Load quiz history on page load
+        setTimeout(loadQuizHistory, 2000);
+        
+        // Logout function
+        function logout() {
+            if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('loginTime');
+                localStorage.removeItem('userRole');
+                
+                console.log('🚪 Öğrenci çıkışı yapıldı');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

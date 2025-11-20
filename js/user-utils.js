@@ -31,10 +31,11 @@ async function loadCoordinatorInfo(userEmail) {
         }
         
         // Load coordinator profiles from Firebase
-        const coordinatorProfiles = await DB.load('coordinatorProfiles');
+        const coordinatorProfilesResult = await DB.load('coordinatorProfiles');
+        const coordinatorProfiles = (coordinatorProfilesResult && coordinatorProfilesResult.success && Array.isArray(coordinatorProfilesResult.data)) ? coordinatorProfilesResult.data : [];
         console.log('📄 Firebase coordinator profiles yüklendi:', coordinatorProfiles.length);
         
-        const coordinatorProfile = coordinatorProfiles.find(p => p.userEmail === userEmail);
+        const coordinatorProfile = coordinatorProfiles.length > 0 ? coordinatorProfiles.find(p => p.userEmail === userEmail) : null;
         if (coordinatorProfile) {
             console.log('✅ Koordinatör profili bulundu:', coordinatorProfile);
             
@@ -46,8 +47,9 @@ async function loadCoordinatorInfo(userEmail) {
         }
         
         // If not found in coordinator profiles, check regular user profiles
-        const userProfiles = await DB.load('userProfiles');
-        const userProfile = userProfiles.find(p => p.userEmail === userEmail);
+        const userProfilesResult = await DB.load('userProfiles');
+        const userProfiles = (userProfilesResult && userProfilesResult.success && Array.isArray(userProfilesResult.data)) ? userProfilesResult.data : [];
+        const userProfile = userProfiles.length > 0 ? userProfiles.find(p => p.userEmail === userEmail) : null;
         
         if (userProfile) {
             console.log('✅ Kullanıcı profili bulundu:', userProfile);
@@ -131,16 +133,30 @@ async function loadUserInfo() {
         // For regular users or if coordinator info not found
         if (window.DB) {
             // Try to load from Firebase first
-            const profiles = await DB.load('userProfiles');
+            const profilesResult = await DB.load('userProfiles');
+            console.log('📄 Firebase profiles result:', profilesResult);
+            
+            let profiles = [];
+            if (profilesResult && profilesResult.success) {
+                if (Array.isArray(profilesResult.data)) {
+                    profiles = profilesResult.data;
+                } else if (profilesResult.data && typeof profilesResult.data === 'object') {
+                    // If data is an object, convert to array
+                    profiles = Object.values(profilesResult.data);
+                }
+            }
+            
             console.log('📄 Firebase profiles yüklendi:', profiles.length);
             
-            const userProfile = profiles.find(p => p.userEmail === userEmail);
-            if (userProfile) {
-                console.log('✅ Kullanıcı profili bulundu:', userProfile);
-                const fullName = `${userProfile.firstName || ''} ${userProfile.lastName || ''}`.trim();
-                const displayName = fullName || extractNameFromEmail(userEmail);
-                updateUserDisplay(displayName, userEmail);
-                return;
+            if (Array.isArray(profiles) && profiles.length > 0) {
+                const userProfile = profiles.find(p => p && p.userEmail === userEmail);
+                if (userProfile) {
+                    console.log('✅ Kullanıcı profili bulundu:', userProfile);
+                    const fullName = `${userProfile.firstName || ''} ${userProfile.lastName || ''}`.trim();
+                    const displayName = fullName || extractNameFromEmail(userEmail);
+                    updateUserDisplay(displayName, userEmail);
+                    return;
+                }
             }
         }
         

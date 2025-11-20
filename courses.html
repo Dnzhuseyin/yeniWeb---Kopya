@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eğitim Modülleri - CyberEdu</title>
+    <title>Eğitim Modülleri - EduPlatform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -32,8 +32,8 @@
     <aside class="bg-dark text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
         <div class="p-4">
             <a href="student-dashboard.html" class="font-bold text-xl text-cyber block mb-8 flex items-center">
-                <i class="fas fa-shield-alt text-2xl mr-3"></i>
-                CyberEdu
+                <i class="fas fa-graduation-cap text-2xl mr-3"></i>
+                EduPlatform
             </a>
             
             <div class="mb-8">
@@ -62,10 +62,6 @@
                     <i class="fas fa-sticky-note mr-3"></i>
                     <span>Notlarım</span>
                 </a>
-                <a href="downloads.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
-                    <i class="fas fa-download mr-3"></i>
-                    <span>Kaynaklar</span>
-                </a>
                 <a href="account.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
                     <i class="fas fa-user-cog mr-3"></i>
                     <span>Profil Ayarları</span>
@@ -73,7 +69,7 @@
             </nav>
 
             <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
-                <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                <a href="#" onclick="logout()" class="flex items-center text-gray-400 hover:text-white">
                     <i class="fas fa-sign-out-alt mr-3"></i>
                     <span>Çıkış Yap</span>
                 </a>
@@ -89,7 +85,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <h1 class="text-3xl font-bold text-gray-900 mb-2">Eğitim Modülleri</h1>
-                        <p class="text-gray-600">Bilgi Sistemleri ve Güvenlik Eğitimi Programı</p>
+                        <p class="text-gray-600">Kapsamlı Online Eğitim Programı</p>
                     </div>
                     <div class="flex items-center space-x-4">
                         <div class="bg-white rounded-lg px-4 py-2 shadow-sm border">
@@ -147,11 +143,49 @@
     <script src="js/main.js"></script>
 
     <script>
+        let modules = []; // Global modules array
         let allModules = [];
         let userProgress = {};
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', async function() {
+            console.log('📄 Courses sayfası yükleniyor...');
+            console.log('Firebase DB mevcut:', window.DB ? 'YES' : 'NO');
+            
+            // Wait for Firebase DB to be available
+            if (!window.DB) {
+                console.log('⏳ Firebase DB bekleniyor...');
+                let waitAttempts = 0;
+                while (!window.DB && waitAttempts < 10) {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    waitAttempts++;
+                    console.log(`⏳ Firebase DB bekleme denemesi: ${waitAttempts}/10`);
+                }
+                
+                if (!window.DB) {
+                    console.error('❌ Firebase DB sistemi 5 saniye içinde yüklenmedi!');
+                    return;
+                }
+            }
+            
+            // Wait for Firebase to be ready
+            if (!window.DB.isFirebaseReady) {
+                console.log('⏳ Firebase hazır olması bekleniyor...');
+                let readyAttempts = 0;
+                while (!window.DB.isFirebaseReady && readyAttempts < 10) {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    readyAttempts++;
+                    console.log(`⏳ Firebase ready bekleme denemesi: ${readyAttempts}/10`);
+                }
+                
+                if (!window.DB.isFirebaseReady) {
+                    console.error('❌ Firebase 5 saniye içinde hazır olmadı!');
+                    return;
+                }
+            }
+            
+            console.log('✅ Firebase hazır, sayfa yükleniyor...');
+            
             // Initialize user info using UserUtils
             await UserUtils.initializeUserInfo();
             
@@ -179,7 +213,7 @@
                 });
                 
                 // Re-render modules with updated video counts
-                renderModules();
+                // displayModules(); // Will be called from loadModules() instead
                 
             } catch (error) {
                 console.error('❌ Koordinatör videoları yükleme hatası:', error);
@@ -207,7 +241,7 @@
                 
                 // Get modules from Firebase
                 const modulesResult = await window.DB.load('modules');
-                const modules = (modulesResult && modulesResult.success) ? modulesResult.data : [];
+                modules = (modulesResult && modulesResult.success) ? modulesResult.data : [];
                 
                 // Get user progress
                 const userEmail = localStorage.getItem('userEmail');
@@ -222,9 +256,9 @@
                 console.log(`📊 ${modules.length} modül, ${videos.length} video, ${myProgress.length} ilerleme kaydı bulundu`);
                 
                 if (modules.length === 0) {
-                    // Create sample modules if none exist
-                    await createSampleModules();
-                    return loadModules(); // Reload after creating sample data
+                    // No modules found - coordinator needs to create modules
+                    console.log('⚠️ Henüz modül eklenmemiş. Koordinatör modül eklemeli.');
+                    allModules = [];
                 }
                 
                 displayModules(modules, myProgress, videos);
@@ -330,6 +364,8 @@
         
         // Start module function
         function startModule(moduleId) {
+            // Use Firebase module ID directly - no mapping needed
+            console.log('🚀 Starting module:', moduleId);
             window.location.href = `module-detail.html?module=${moduleId}`;
         }
         
@@ -339,8 +375,8 @@
             
             const sampleModules = [
                 {
-                    title: 'Kriptografi Temelleri',
-                    description: 'Şifreleme algoritmalarının temel prensipleri ve matematik temelleri',
+                    title: 'Temel Programlama',
+                    description: 'Programlama mantığı, algoritma geliştirme ve temel kavramlar',
                     difficulty: 'Başlangıç',
                     estimatedDuration: '3-4',
                     order: 1,
@@ -348,8 +384,8 @@
                     createdAt: new Date().toISOString()
                 },
                 {
-                    title: 'Simetrik Şifreleme',
-                    description: 'AES, DES ve diğer simetrik şifreleme algoritmaları',
+                    title: 'Web Geliştirme',
+                    description: 'HTML, CSS, JavaScript ile modern web uygulamaları',
                     difficulty: 'Orta',
                     estimatedDuration: '4-5',
                     order: 2,
@@ -357,8 +393,8 @@
                     createdAt: new Date().toISOString()
                 },
                 {
-                    title: 'Asimetrik Şifreleme',
-                    description: 'RSA, ECC ve dijital imza sistemleri',
+                    title: 'Veri Analizi',
+                    description: 'Veri işleme, analiz teknikleri ve görselleştirme',
                     difficulty: 'İleri',
                     estimatedDuration: '5-6',
                     order: 3,
@@ -366,28 +402,28 @@
                     createdAt: new Date().toISOString()
                 },
                 {
-                    title: 'Hash Fonksiyonları',
-                    description: 'SHA, MD5 ve kriptografik hash fonksiyonları',
+                    title: 'Mobil Uygulama Geliştirme',
+                    description: 'iOS ve Android platformları için uygulama geliştirme',
                     difficulty: 'Orta',
-                    estimatedDuration: '2-3',
+                    estimatedDuration: '4-5',
                     order: 4,
                     isActive: true,
                     createdAt: new Date().toISOString()
                 },
                 {
-                    title: 'Ağ Güvenliği',
-                    description: 'SSL/TLS, VPN ve güvenli iletişim protokolleri',
+                    title: 'Veritabanı Yönetimi',
+                    description: 'SQL, NoSQL ve veritabanı tasarım prensipleri',
                     difficulty: 'İleri',
-                    estimatedDuration: '4-5',
+                    estimatedDuration: '3-4',
                     order: 5,
                     isActive: true,
                     createdAt: new Date().toISOString()
                 },
                 {
-                    title: 'Blockchain ve Kripto Para',
-                    description: 'Blockchain teknolojisi ve kripto para sistemleri',
-                    difficulty: 'İleri',
-                    estimatedDuration: '6-7',
+                    title: 'Proje Yönetimi',
+                    description: 'Agile, Scrum metodolojileri ve proje planlama',
+                    difficulty: 'Orta',
+                    estimatedDuration: '2-3',
                     order: 6,
                     isActive: true,
                     createdAt: new Date().toISOString()
@@ -472,6 +508,19 @@
 
         function setupEventListeners() {
             // Add any additional event listeners here
+        }
+        
+        // Logout function
+        function logout() {
+            if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('loginTime');
+                localStorage.removeItem('userRole');
+                
+                console.log('🚪 Öğrenci çıkışı yapıldı');
+                window.location.href = 'index.html';
+            }
         }
     </script>
 </body>

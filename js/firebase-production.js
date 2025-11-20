@@ -27,7 +27,11 @@ class FirebaseProductionDB {
             userProfiles: 'user_profiles',
             coordinatorProfiles: 'coordinator_profiles',
             userAchievements: 'user_achievements',
-            modules: 'modules'
+            modules: 'modules',
+            quizzes: 'quizzes',
+            liveQuiz: 'live_quiz',
+            quizResponses: 'quiz_responses',
+            downloads: 'downloads'
         };
         
         // Add caching for better performance
@@ -53,9 +57,10 @@ class FirebaseProductionDB {
                 
                 this.db = firebase.firestore();
                 
-                // Configure Firestore settings for better performance
+                // Configure Firestore settings for better performance - use merge: true to avoid override warning
                 this.db.settings({
-                    cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED
+                    cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED,
+                    merge: true
                 });
                 
                 try {
@@ -124,9 +129,16 @@ class FirebaseProductionDB {
         }
         
         try {
-            const testRef = this.db.collection('test');
+            // Test with modules collection instead of test collection
+            const testRef = this.db.collection(this.collections.modules);
             await testRef.limit(1).get();
             console.log('🔗 Firebase bağlantı testi başarılı');
+            
+            // Also test coordinator videos collection
+            const videosRef = this.db.collection(this.collections.coordinatorVideos);
+            await videosRef.limit(1).get();
+            console.log('🔗 Coordinator videos collection erişilebilir');
+            
         } catch (error) {
             console.error('❌ Firebase bağlantı testi başarısız:', error);
             throw error;
@@ -137,6 +149,16 @@ class FirebaseProductionDB {
     async preloadCriticalData() {
         try {
             console.log('⚡ Kritik veriler önceden yükleniyor...');
+            
+            // Preload modules first (most important for coordinator panel)
+            this.load('modules').catch(err => 
+                console.warn('⚠️ Modules preload failed:', err)
+            );
+            
+            // Preload coordinator videos
+            this.load('coordinatorVideos').catch(err => 
+                console.warn('⚠️ Coordinator videos preload failed:', err)
+            );
             
             // Preload coordinator profiles
             this.load('coordinatorProfiles').catch(err => 
@@ -448,115 +470,9 @@ class FirebaseProductionDB {
     }
 
     async createDefaultModules() {
-        const defaultModules = [
-            {
-                id: '1',
-                title: 'Çevik Liderlik Temelleri',
-                description: 'Afet durumlarında etkili liderlik becerilerinin temellerini öğrenin.',
-                status: 'active',
-                difficulty: 'beginner',
-                estimatedDuration: '2.5',
-                videoCount: 12,
-                enrollmentCount: 387,
-                completionRate: 89,
-                rating: 4.8,
-                reviewCount: 387,
-                color: 'primary',
-                icon: 'fas fa-graduation-cap',
-                order: 1
-            },
-            {
-                id: '2',
-                title: 'Kriz Durumlarında Liderlik',
-                description: 'Acil durumlarda hızlı ve etkili karar verme becerileri geliştirin.',
-                status: 'active',
-                difficulty: 'intermediate',
-                estimatedDuration: '3.2',
-                videoCount: 18,
-                enrollmentCount: 234,
-                completionRate: 76,
-                rating: 4.9,
-                reviewCount: 234,
-                color: 'secondary',
-                icon: 'fas fa-exclamation-triangle',
-                order: 2
-            },
-            {
-                id: '3',
-                title: 'Afet Öncesi Hazırlık',
-                description: 'Afet öncesi etkili hazırlık stratejileri ve risk yönetimi.',
-                status: 'draft',
-                difficulty: 'intermediate',
-                estimatedDuration: '2.8',
-                videoCount: 15,
-                enrollmentCount: 0,
-                completionRate: 0,
-                rating: 0,
-                reviewCount: 0,
-                color: 'accent',
-                icon: 'fas fa-shield-alt',
-                order: 3
-            },
-            {
-                id: '4',
-                title: 'İletişim ve Koordinasyon',
-                description: 'Afet durumlarında etkili iletişim ve koordinasyon teknikleri.',
-                status: 'active',
-                difficulty: 'intermediate',
-                estimatedDuration: '2.1',
-                videoCount: 10,
-                enrollmentCount: 156,
-                completionRate: 68,
-                rating: 4.2,
-                reviewCount: 156,
-                color: 'purple',
-                icon: 'fas fa-comments',
-                order: 4
-            },
-            {
-                id: '5',
-                title: 'Ekip Yönetimi',
-                description: 'Stresli durumlarda ekip motivasyonu ve yönetimi becerileri.',
-                status: 'active',
-                difficulty: 'advanced',
-                estimatedDuration: '2.7',
-                videoCount: 14,
-                enrollmentCount: 198,
-                completionRate: 72,
-                rating: 4.6,
-                reviewCount: 198,
-                color: 'blue',
-                icon: 'fas fa-users',
-                order: 5
-            },
-            {
-                id: '6',
-                title: 'Afet Sonrası Rehabilitasyon',
-                description: 'Afet sonrası toparlanma süreci ve eğitim kurumlarının yeniden yapılandırılması.',
-                status: 'active',
-                difficulty: 'advanced',
-                estimatedDuration: '3.1',
-                videoCount: 16,
-                enrollmentCount: 89,
-                completionRate: 54,
-                rating: 4.1,
-                reviewCount: 89,
-                color: 'pink',
-                icon: 'fas fa-tools',
-                order: 6
-            }
-        ];
-        
-        try {
-            for (const module of defaultModules) {
-                await this.saveModule(module, module.id);
-            }
-            console.log('✅ Varsayılan modüller oluşturuldu');
-            return { success: true };
-        } catch (error) {
-            console.error('❌ Varsayılan modül oluşturma hatası:', error);
-            throw error;
-        }
+        // Default modüller devre dışı - sadece koordinatörün eklediği modüller kullanılacak
+        console.log('ℹ️ Default modül oluşturma atlandı - sadece koordinatör modülleri kullanılıyor');
+        return { success: true, message: 'Default modules disabled' };
     }
     
     async syncCoordinatorVideos() {
@@ -602,6 +518,40 @@ class FirebaseProductionDB {
         } catch (error) {
             console.error('❌ Senkronizasyon hatası:', error);
             return { success: false, error: error.message };
+        }
+    }
+
+    // Get coordinator videos for student pages
+    async getCoordinatorVideos() {
+        try {
+            console.log('📹 Koordinatör videoları alınıyor...');
+            
+            const result = await this.load('coordinatorVideos');
+            const videos = (result && result.success) ? result.data : [];
+            
+            console.log(`📹 ${videos.length} koordinatör videosu bulundu`);
+            return videos;
+            
+        } catch (error) {
+            console.error('❌ Koordinatör videoları alma hatası:', error);
+            return [];
+        }
+    }
+
+    // Get student videos (for backward compatibility)
+    async getStudentVideos() {
+        try {
+            console.log('📹 Öğrenci videoları alınıyor...');
+            
+            const result = await this.load('studentVideos');
+            const videos = (result && result.success) ? result.data : [];
+            
+            console.log(`📹 ${videos.length} öğrenci videosu bulundu`);
+            return videos;
+            
+        } catch (error) {
+            console.error('❌ Öğrenci videoları alma hatası:', error);
+            return [];
         }
     }
     
@@ -666,7 +616,7 @@ class FirebaseProductionDB {
             moduleId: "2",
             youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
             youtubeVideoId: "dQw4w9WgXcQ",
-            description: "Bu bir production test videosudur - Kriz anında liderlik becerileri",
+            description: "Bu bir production test videosudur - Kriptoloji ve şifreleme teknikleri",
             duration: "25",
             difficulty: "intermediate",
             questions: [

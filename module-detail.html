@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modül Detayı - CyberEdu</title>
+    <title>Modül Detayı - EduPlatform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -32,8 +32,8 @@
     <aside class="bg-dark text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
         <div class="p-4">
             <a href="student-dashboard.html" class="font-bold text-xl text-cyber block mb-8 flex items-center">
-                <i class="fas fa-shield-alt text-2xl mr-3"></i>
-                CyberEdu
+                <i class="fas fa-graduation-cap text-2xl mr-3"></i>
+                EduPlatform
             </a>
             
             <div class="mb-8">
@@ -62,10 +62,6 @@
                     <i class="fas fa-sticky-note mr-3"></i>
                     <span>Notlarım</span>
                 </a>
-                <a href="downloads.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
-                    <i class="fas fa-download mr-3"></i>
-                    <span>Kaynaklar</span>
-                </a>
                 <a href="account.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
                     <i class="fas fa-user-cog mr-3"></i>
                     <span>Profil Ayarları</span>
@@ -73,7 +69,7 @@
             </nav>
 
             <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
-                <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                <a href="#" onclick="logout()" class="flex items-center text-gray-400 hover:text-white">
                     <i class="fas fa-sign-out-alt mr-3"></i>
                     <span>Çıkış Yap</span>
                 </a>
@@ -93,9 +89,9 @@
                     <div>
                         <h1 class="text-3xl font-bold flex items-center" id="module-title">
                             <i class="fas fa-shield-alt text-cyber mr-3"></i>
-                            Modül 2: Kriptoloji ve Şifreleme
+                            Modül Yükleniyor...
                         </h1>
-                        <p class="text-gray-600 mt-2" id="module-description">Şifreleme algoritmaları, hash fonksiyonları ve dijital imzalar</p>
+                        <p class="text-gray-600 mt-2" id="module-description">İçerik yükleniyor...</p>
                     </div>
                 </div>
                 
@@ -103,10 +99,10 @@
                 <div class="bg-white p-4 rounded-lg shadow-md border border-gray-100">
                     <div class="flex justify-between items-center mb-2">
                         <span class="text-sm font-medium">Modül İlerlemesi</span>
-                        <span class="text-sm font-bold text-cyber" id="module-progress">60%</span>
+                        <span class="text-sm font-bold text-cyber" id="module-progress">0%</span>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-2">
-                        <div class="bg-gradient-to-r from-cyber to-primary h-2 rounded-full" style="width: 60%" id="progress-bar"></div>
+                        <div class="bg-gradient-to-r from-cyber to-primary h-2 rounded-full" style="width: 0%" id="progress-bar"></div>
                     </div>
                 </div>
             </header>
@@ -129,8 +125,8 @@
                             </div>
                         </div>
                         <div class="p-6">
-                            <h2 class="text-xl font-semibold mb-2" id="video-title">Bölüm 3: Asimetrik Şifreleme</h2>
-                            <p class="text-gray-600 mb-4" id="video-description">RSA, ECC ve public key kriptografi</p>
+                            <h2 class="text-xl font-semibold mb-2" id="video-title">Video Yükleniyor...</h2>
+                            <p class="text-gray-600 mb-4" id="video-description">Açıklama yükleniyor...</p>
                             
                             <!-- Video Controls -->
                             <div class="flex items-center justify-between border-t pt-4">
@@ -154,57 +150,16 @@
                         </div>
                     </div>
 
-                    <!-- AI Analysis Section -->
-                    <div id="ai-analysis-section" class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-100" style="display: none;">
-                        <h2 class="text-xl font-semibold mb-4 flex items-center">
-                            <i class="fas fa-brain text-cyber mr-2"></i>
-                            AI Öğrenme Analizi
-                        </h2>
-                        
-                        <div id="wrong-answers-analysis" class="mb-6">
-                            <h3 class="text-lg font-medium mb-3 text-secondary">Yanlış Cevapladığınız Sorular:</h3>
-                            <div id="wrong-answers-list" class="space-y-4">
-                                <!-- Wrong answers will be populated here -->
-                            </div>
-                        </div>
-                        
-                        <div id="ai-recommendations" class="mb-6">
-                            <h3 class="text-lg font-medium mb-3 text-primary">AI Önerileri:</h3>
-                            <div id="ai-recommendations-content" class="bg-blue-50 p-4 rounded-lg">
-                                <!-- AI recommendations will be populated here -->
-                            </div>
-                        </div>
-                        
-                        <div id="similar-questions-section">
-                            <h3 class="text-lg font-medium mb-3 text-accent">Benzer Sorular:</h3>
-                            <div id="similar-questions-container" class="space-y-4">
-                                <!-- Similar questions will be populated here -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Questions Section -->
-                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100" id="questions-section" style="display: none;">
+                    <!-- Questions Section - Videonun Altında -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-100">
                         <h3 class="text-xl font-semibold mb-6 flex items-center">
-                            <i class="fas fa-question-circle text-cyber mr-2"></i>
-                            Video Değerlendirme Soruları
+                            <i class="fas fa-question-circle mr-2 text-primary"></i>
+                            Video Test Soruları
                         </h3>
-                        
                         <div id="questions-container">
-                            <!-- Questions will be loaded here -->
-                        </div>
-
-                        <div class="mt-6 flex justify-between items-center">
-                            <button class="bg-gray-500 text-white px-4 py-2 rounded-lg" id="show-results" style="display: none;">
-                                Sonuçları Göster
-                            </button>
-                            <div class="flex space-x-3">
-                                <button class="bg-cyber text-white px-6 py-2 rounded-lg" id="submit-answers">
-                                    Cevapları Gönder
-                                </button>
-                                <button class="bg-accent text-white px-6 py-2 rounded-lg" id="continue-module" style="display: none;">
-                                    Modüle Devam Et
-                                </button>
+                            <div class="text-center text-gray-500 py-8">
+                                <i class="fas fa-spinner fa-spin text-2xl mb-3"></i>
+                                <p class="text-sm">Sorular yükleniyor...</p>
                             </div>
                         </div>
                     </div>
@@ -220,7 +175,10 @@
                         </h3>
                         
                         <div class="space-y-3" id="video-list">
-                            <!-- Video list will be populated here -->
+                            <div class="text-center py-8 text-gray-500">
+                                <i class="fas fa-spinner fa-spin text-2xl mb-3"></i>
+                                <p class="text-sm">Videolar yükleniyor...</p>
+                            </div>
                         </div>
                     </div>
 
@@ -242,51 +200,7 @@
                         </button>
                         
                         <div class="mt-4 space-y-2" id="saved-notes">
-                            <!-- Saved notes will appear here -->
-                        </div>
-                    </div>
-
-                    <!-- AI Help -->
-                    <div class="bg-white rounded-xl shadow-sm p-6 sidebar-ai-container border border-gray-100">
-                        <h3 class="text-lg font-semibold mb-4 flex items-center">
-                            <i class="fas fa-brain text-cyber mr-2"></i>
-                            AI Öğrenme Analizi
-                        </h3>
-                        
-                        <!-- AI Analysis Content -->
-                        <div id="sidebar-ai-analysis" style="display: none;">
-                            <div id="sidebar-wrong-answers" class="mb-4">
-                                <h4 class="text-sm font-medium mb-2 text-secondary">Yanlış Cevaplar:</h4>
-                                <div id="sidebar-wrong-answers-list" class="space-y-2 text-xs">
-                                    <!-- Wrong answers will be populated here -->
-                                </div>
-                            </div>
-                            
-                            <div id="sidebar-ai-recommendations" class="mb-4">
-                                <h4 class="text-sm font-medium mb-2 text-primary">AI Önerileri:</h4>
-                                <div id="sidebar-ai-recommendations-content" class="bg-blue-50 p-3 rounded text-xs">
-                                    <!-- AI recommendations will be populated here -->
-                                </div>
-                            </div>
-                            
-                            <div id="sidebar-similar-questions">
-                                <h4 class="text-sm font-medium mb-2 text-accent">Benzer Sorular:</h4>
-                                <div id="sidebar-similar-questions-container" class="space-y-2">
-                                    <!-- Similar questions will be populated here -->
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Default message when no analysis -->
-                        <div id="sidebar-ai-default" class="text-sm text-gray-600 mb-3">
-                            Yanlış cevapladığınız sorularla ilgili AI analizi ve ek pratik soruları burada bulabilirsiniz.
-                        </div>
-                        
-                        <div id="ai-questions" class="space-y-3 ai-text-content">
-                            <div class="text-center text-gray-500 py-4">
-                                <i class="fas fa-lightbulb text-2xl mb-2"></i>
-                                <p class="text-sm">Henüz ek soru önerisi yok</p>
-                            </div>
+                            <p class="text-gray-500 text-sm">Henüz not yok</p>
                         </div>
                     </div>
                 </div>
@@ -294,7 +208,6 @@
         </div>
     </main>
 
-    <!-- Modals -->
     <!-- Note Modal -->
     <div id="note-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
         <div class="flex items-center justify-center min-h-screen p-4">
@@ -313,28 +226,33 @@
         </div>
     </div>
 
-    <!-- Firebase CDN -->
+    <!-- Scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
-    
-    <!-- Firebase Production DB -->
     <script src="js/firebase-production.js"></script>
     <script src="js/user-utils.js"></script>
-    <script src="js/gemini-api.js"></script>
+    <script src="js/groq-api.js"></script>
     <script src="js/main.js"></script>
     
     <script>
-        // Initialize user info when page loads
+        // Module data - Empty initially, will be populated by coordinator videos
+        // Module data will be loaded dynamically from Firebase
+        const moduleData = {};
+
+        let currentModule = 2;
+        let currentVideoId = 1;
+        let currentVideo = null; // Current video object
+        let userAnswers = {};
+        let wrongAnswers = [];
+
+        // Initialize when page loads
         document.addEventListener('DOMContentLoaded', async function() {
-            // Initialize user info using UserUtils
             await UserUtils.initializeUserInfo();
-            
             loadModuleContent();
         });
         
-        // Load module content including coordinator videos
         async function loadModuleContent() {
-            // Wait for Firebase Production DB to initialize
+            // Wait for Firebase to be ready
             await new Promise(resolve => {
                 const checkDB = () => {
                     if (window.DB) {
@@ -348,1684 +266,1270 @@
                 checkDB();
             });
             
-            console.log('🔥 Firebase Production DB sistemi hazır!');
-            
-            // Get module from URL parameter
+            // Get module from URL - keep as string to match Firebase IDs
             const urlParams = new URLSearchParams(window.location.search);
             const moduleParam = urlParams.get('module');
             if (moduleParam) {
-                // Handle both numeric and string module IDs
-                currentModule = isNaN(moduleParam) ? moduleParam : parseInt(moduleParam);
+                currentModule = moduleParam; // Keep as string, don't convert to number
+                console.log('📍 URL\'den alınan modül ID:', currentModule, 'Tip:', typeof currentModule);
             }
             
-            console.log('🎯 Current module from URL:', currentModule, 'Type:', typeof currentModule);
-
-            // Set initial video based on module
-            if (currentModule === 1) {
+            // Always start from first video
                 currentVideoId = 1;
-            } else if (currentModule === 3) {
-                currentVideoId = 1;
-            } else if (currentModule === 4) {
-                currentVideoId = 2;
-            } else {
-                currentVideoId = 3; // Default for module 2
-            }
 
-            // Load coordinator videos and merge with module data
+            // Load coordinator videos
             await loadCoordinatorVideos();
             
+            // Load module content
             loadModule();
             setupEventListeners();
             loadSavedNotes();
         }
         
-        // Remove old API configuration - now using Gemini API
-        
-        // Module data - Cyber Security Education
-        const moduleData = {
-            1: {
-                title: "Modül 1: Bilgi Güvenliği Temelleri",
-                description: "Bilgi güvenliğinin temel kavramları, CIA üçlüsü ve güvenlik politikaları",
-                videos: [
-                    {
-                        id: 1,
-                        title: "Bölüm 1: Bilgi Güvenliği Nedir?",
-                        description: "Bilgi güvenliğinin tanımı ve temel kavramları",
-                        duration: "25:30",
-                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-                        completed: true
-                    },
-                    {
-                        id: 2,
-                        title: "Bölüm 2: CIA Üçlüsü",
-                        description: "Confidentiality, Integrity, Availability prensipleri",
-                        duration: "32:45",
-                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
-                        completed: true
-                    },
-                    {
-                        id: 3,
-                        title: "Bölüm 3: Güvenlik Politikaları",
-                        description: "Kurumsal güvenlik politikalarının oluşturulması",
-                        duration: "28:20",
-                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-                        completed: true
-                    },
-                    {
-                        id: 4,
-                        title: "Bölüm 4: Risk Yönetimi",
-                        description: "Bilgi güvenliği risk değerlendirme ve yönetimi",
-                        duration: "35:15",
-                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
-                        completed: true
-                    }
-                ],
-                questions: {
-                    1: [
-                        {
-                            id: 1,
-                            question: "CIA üçlüsünde 'C' harfi neyi temsil eder?",
-                            options: [
-                                "Cryptography",
-                                "Confidentiality",
-                                "Compliance",
-                                "Control"
-                            ],
-                            correct: 1,
-                            explanation: "CIA üçlüsünde C harfi Confidentiality (Gizlilik) prensibini temsil eder."
-                        },
-                        {
-                            id: 2,
-                            question: "Bilgi güvenliğinde en önemli varlık hangisidir?",
-                            options: [
-                                "Donanım",
-                                "Yazılım",
-                                "Veri",
-                                "Ağ altyapısı"
-                            ],
-                            correct: 2,
-                            explanation: "Bilgi güvenliğinde en değerli varlık veridir. Diğer tüm bileşenler veriyi korumak için vardır."
-                        },
-                        {
-                            id: 3,
-                            question: "Güvenlik politikalarının temel amacı nedir?",
-                            options: [
-                                "Kullanıcıları kısıtlamak",
-                                "Sistemleri yavaşlatmak",
-                                "Bilgi varlıklarını korumak",
-                                "Maliyeti artırmak"
-                            ],
-                            correct: 2,
-                            explanation: "Güvenlik politikalarının temel amacı organizasyonun bilgi varlıklarını korumaktır."
-                        }
-                    ]
-                }
-            },
-            2: {
-                title: "Modül 2: Kriptoloji ve Şifreleme",
-                description: "Şifreleme algoritmaları, hash fonksiyonları ve dijital imzalar",
-                videos: [
-                    {
-                        id: 1,
-                        title: "Bölüm 1: Kriptoloji Temelleri",
-                        description: "Şifreleme biliminin temel prensipleri",
-                        duration: "35:20",
-                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-                        completed: true
-                    },
-                    {
-                        id: 2,
-                        title: "Bölüm 2: Simetrik Şifreleme",
-                        description: "AES, DES ve diğer simetrik şifreleme algoritmaları",
-                        duration: "28:45",
-                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
-                        completed: true
-                    },
-                    {
-                        id: 3,
-                        title: "Bölüm 3: Asimetrik Şifreleme",
-                        description: "RSA, ECC ve public key kriptografi",
-                        duration: "42:15",
-                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-                        completed: false,
-                        current: true
-                    },
-                    {
-                        id: 4,
-                        title: "Bölüm 4: Hash Fonksiyonları",
-                        description: "SHA, MD5 ve hash algoritmaları",
-                        duration: "38:30",
-                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
-                        completed: false
-                    },
-                    {
-                        id: 5,
-                        title: "Bölüm 5: Dijital İmzalar",
-                        description: "Dijital imza algoritmaları ve PKI",
-                        duration: "45:10",
-                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-                        completed: false
-                    }
-                ],
-                questions: {
-                    1: [
-                        {
-                            id: 1,
-                            question: "Kriptolojinin temel amacı nedir?",
-                            options: [
-                                "Verileri yavaşlatmak",
-                                "Verileri gizlemek ve korumak",
-                                "Sistemleri karmaşıklaştırmak",
-                                "Maliyeti artırmak"
-                            ],
-                            correct: 1,
-                            explanation: "Kriptolojinin temel amacı verileri yetkisiz erişimlerden korumak ve gizliliğini sağlamaktır."
-                        },
-                        {
-                            id: 2,
-                            question: "Simetrik şifreleme sistemlerinde hangi durum geçerlidir?",
-                            options: [
-                                "Şifreleme ve çözme için farklı anahtarlar kullanılır",
-                                "Şifreleme ve çözme için aynı anahtar kullanılır",
-                                "Anahtar kullanılmaz",
-                                "Sadece çözme için anahtar gerekir"
-                            ],
-                            correct: 1,
-                            explanation: "Simetrik şifreleme sistemlerinde şifreleme ve çözme işlemleri için aynı anahtar kullanılır."
-                        }
-                    ],
-                    2: [
-                        {
-                            id: 1,
-                            question: "AES şifreleme algoritmasında anahtar uzunluğu kaç bit olabilir?",
-                            options: [
-                                "Sadece 128 bit",
-                                "128, 192 veya 256 bit",
-                                "Sadece 256 bit",
-                                "64 veya 128 bit"
-                            ],
-                            correct: 1,
-                            explanation: "AES algoritması 128, 192 ve 256 bit anahtar uzunluklarını destekler."
-                        },
-                        {
-                            id: 2,
-                            question: "DES algoritmasının ana güvenlik sorunu nedir?",
-                            options: [
-                                "Çok yavaş çalışması",
-                                "Anahtar uzunluğunun kısa olması (56 bit)",
-                                "Çok karmaşık olması",
-                                "Sadece metinleri şifreleyebilmesi"
-                            ],
-                            correct: 1,
-                            explanation: "DES'in 56 bitlik anahtar uzunluğu günümüz standartlarında güvensiz kabul edilir."
-                        }
-                    ],
-                    3: [
-                        {
-                            id: 1,
-                            question: "RSA algoritmasının güvenliği hangi matematiksel probleme dayanır?",
-                            options: [
-                                "Logaritma problemi",
-                                "Büyük sayıları çarpanlarına ayırma problemi",
-                                "Karekökleme problemi",
-                                "Toplama problemi"
-                            ],
-                            correct: 1,
-                            explanation: "RSA'nın güvenliği büyük sayıları asal çarpanlarına ayırmanın zorluğuna dayanır."
-                        },
-                        {
-                            id: 2,
-                            question: "Public key kriptografide hangi anahtar şifreleme için kullanılır?",
-                            options: [
-                                "Private key",
-                                "Public key",
-                                "Her ikisi de kullanılabilir",
-                                "Hiçbiri"
-                            ],
-                            correct: 1,
-                            explanation: "Public key kriptografide şifreleme için alıcının public key'i kullanılır."
-                        },
-                        {
-                            id: 3,
-                            question: "ECC (Elliptic Curve Cryptography) algoritmasının avantajı nedir?",
-                            options: [
-                                "Daha yavaş çalışması",
-                                "Daha büyük anahtar gerektirmesi",
-                                "Aynı güvenlik seviyesi için daha küçük anahtar kullanması",
-                                "Sadece hash işlemi yapabilmesi"
-                            ],
-                            correct: 2,
-                            explanation: "ECC, RSA'ya göre aynı güvenlik seviyesi için çok daha küçük anahtarlar kullanır."
-                        },
-                        {
-                            id: 4,
-                            question: "Dijital imzanın temel amacı nedir?",
-                            options: [
-                                "Veriyi şifrelemek",
-                                "Kimlik doğrulama ve bütünlük sağlamak",
-                                "Veriyi sıkıştırmak",
-                                "Ağ trafiğini hızlandırmak"
-                            ],
-                            correct: 1,
-                            explanation: "Dijital imza, gönderenin kimliğini doğrulamak ve verinin bütünlüğünü sağlamak için kullanılır."
-                        }
-                    ]
-                }
-            },
-            3: {
-                title: "Modül 3: Ağ Güvenliği",
-                description: "TCP/IP protokolleri, firewall teknolojileri ve ağ saldırı türleri",
-                videos: [
-                    {
-                        id: 1,
-                        title: "Bölüm 1: TCP/IP Güvenliği",
-                        description: "TCP/IP protokol ailesinin güvenlik açıkları",
-                        duration: "30:45",
-                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-                        completed: true
-                    },
-                    {
-                        id: 2,
-                        title: "Bölüm 2: Firewall Teknolojileri",
-                        description: "Ağ güvenlik duvarları ve filtreleme teknikleri",
-                        duration: "45:20",
-                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
-                        completed: true
-                    },
-                    {
-                        id: 3,
-                        title: "Bölüm 3: IDS ve IPS Sistemleri",
-                        description: "Saldırı tespit ve önleme sistemleri",
-                        duration: "35:15",
-                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-                        completed: true
-                    },
-                    {
-                        id: 4,
-                        title: "Bölüm 4: Ağ Saldırı Türleri",
-                        description: "DDoS, Man-in-the-Middle ve diğer ağ saldırıları",
-                        duration: "40:30",
-                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
-                        completed: true
-                    }
-                ],
-                questions: {
-                    1: [
-                        {
-                            id: 1,
-                            question: "TCP protokolünde hangi saldırı türü üç yollu el sıkışmayı hedefler?",
-                            options: [
-                                "DDoS saldırısı",
-                                "SYN Flood saldırısı",
-                                "Man-in-the-Middle",
-                                "SQL Injection"
-                            ],
-                            correct: 1,
-                            explanation: "SYN Flood saldırısı TCP'nin üç yollu el sıkışma mekanizmasını hedef alır."
-                        }
-                    ]
-                }
-            },
-            4: {
-                title: "Modül 4: Web Güvenliği",
-                description: "Web uygulaması güvenlik açıkları ve OWASP Top 10",
-                videos: [
-                    {
-                        id: 1,
-                        title: "Bölüm 1: OWASP Top 10",
-                        description: "Web uygulamalarındaki en yaygın güvenlik açıkları",
-                        duration: "38:20",
-                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-                        completed: true
-                    },
-                    {
-                        id: 2,
-                        title: "Bölüm 2: SQL Injection Saldırıları",
-                        description: "SQL injection saldırıları ve korunma yöntemleri",
-                        duration: "42:15",
-                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
-                        completed: false,
-                        current: true
-                    },
-                    {
-                        id: 3,
-                        title: "Bölüm 3: XSS Saldırıları",
-                        description: "Cross-Site Scripting saldırıları ve önleme teknikleri",
-                        duration: "50:30",
-                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-                        completed: false
-                    },
-                    {
-                        id: 4,
-                        title: "Bölüm 4: Güvenli Kodlama",
-                        description: "Güvenli web uygulaması geliştirme prensipleri",
-                        duration: "35:45",
-                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
-                        completed: false
-                    },
-                    {
-                        id: 5,
-                        title: "Bölüm 5: Web Application Firewall",
-                        description: "WAF teknolojileri ve konfigürasyonu",
-                        duration: "25:20",
-                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-                        completed: false
-                    },
-                    {
-                        id: 6,
-                        title: "Bölüm 6: HTTPS ve SSL/TLS",
-                        description: "Güvenli web iletişimi ve sertifika yönetimi",
-                        duration: "32:40",
-                        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
-                        completed: false
-                    }
-                ],
-                questions: {
-                    2: [
-                        {
-                            id: 1,
-                            question: "SQL Injection saldırısından korunmak için en etkili yöntem hangisidir?",
-                            options: [
-                                "Input validation",
-                                "Prepared statements kullanmak",
-                                "Firewall kurmak",
-                                "Şifreleme kullanmak"
-                            ],
-                            correct: 1,
-                            explanation: "Prepared statements kullanmak SQL Injection saldırılarına karşı en etkili koruma yöntemidir."
-                        }
-                    ]
-                }
-            }
-        };
-
-        let currentModule = 2;
-        let currentVideoId = 3;
-        let userAnswers = {};
-        let wrongAnswers = [];
-
         async function loadCoordinatorVideos() {
-            console.log('=== LOADING COORDINATOR VIDEOS FROM FIREBASE ===');
-            console.log('Current Module:', currentModule);
+            console.log('🔥 Loading coordinator videos for module:', currentModule);
             
             try {
-                // Use Firebase database system to load videos
-                const coordinatorVideosResult = await window.DB.load('coordinatorVideos');
-                const coordinatorVideos = (coordinatorVideosResult && coordinatorVideosResult.success) ? coordinatorVideosResult.data : [];
+                // Wait for Firebase to be ready
+                if (!window.DB || !window.DB.isFirebaseReady) {
+                    console.log('⏳ Firebase hazır değil, bekleniyor...');
+                    let waitAttempts = 0;
+                    while ((!window.DB || !window.DB.isFirebaseReady) && waitAttempts < 10) {
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        waitAttempts++;
+                        console.log(`⏳ Firebase bekleme denemesi: ${waitAttempts}/10`);
+                    }
+                }
+
+                if (!window.DB || !window.DB.isFirebaseReady) {
+                    console.error('❌ Firebase yüklenemedi');
+                    return;
+                }
+
+                // Load videos
+                const coordinatorVideos = await window.DB.getCoordinatorVideos();
+                const studentVideos = await window.DB.getStudentVideos();
+
+                console.log('🔍 Tüm koordinatör videoları:', coordinatorVideos);
+                console.log('🔍 Aranan modül ID:', currentModule, 'Tip:', typeof currentModule);
                 
-                const studentVideosResult = await window.DB.load('studentVideos');
-                const studentVideos = (studentVideosResult && studentVideosResult.success) ? studentVideosResult.data : [];
+                // Debug: Her videonun moduleId'sini kontrol et
+                coordinatorVideos.forEach((video, index) => {
+                    console.log(`Video ${index + 1}: moduleId = "${video.moduleId}" (tip: ${typeof video.moduleId}), title = "${video.title}"`);
+                });
+
+                // Filter by current module - tüm olası tipleri kontrol et
+                const moduleCoordinatorVideos = coordinatorVideos.filter(video => {
+                    const videoModuleId = String(video.moduleId).trim();
+                    const currentModuleStr = String(currentModule).trim();
+                    const match = videoModuleId === currentModuleStr || 
+                                  video.moduleId == currentModule ||
+                                  parseInt(videoModuleId) === parseInt(currentModuleStr);
+                    
+                    if (match) {
+                        console.log(`✅ Video eşleşti: "${video.title}" (moduleId: ${video.moduleId})`);
+                    }
+                    
+                    return match;
+                });
                 
-                console.log('Coordinator videos from Firebase:', coordinatorVideos);
-                console.log('Student videos from Firebase:', studentVideos);
+                const moduleStudentVideos = studentVideos.filter(video => {
+                    const videoModuleId = String(video.moduleId).trim();
+                    const currentModuleStr = String(currentModule).trim();
+                    return videoModuleId === currentModuleStr || 
+                           video.moduleId == currentModule ||
+                           parseInt(videoModuleId) === parseInt(currentModuleStr);
+                });
+
+                // Combine all videos
+                const allVideos = [...moduleCoordinatorVideos, ...moduleStudentVideos];
+
+                console.log(`📊 Modül ${currentModule} için ${allVideos.length} video bulundu`);
+                console.log('Coordinator videos:', moduleCoordinatorVideos.length);
+                console.log('Student videos:', moduleStudentVideos.length);
                 
-                // Only use coordinatorVideos and studentVideos (avoid moduleVideos to prevent index issues)
-                const allCoordinatorVideos = [...coordinatorVideos, ...studentVideos]
-                    .filter(video => {
-                        // Handle both string and numeric comparisons
-                        const videoModuleId = String(video.moduleId);
-                        const currentModuleId = String(currentModule);
-                        console.log(`🔍 Comparing video module ${videoModuleId} with current module ${currentModuleId}`);
-                        return videoModuleId === currentModuleId;
-                    })
-                    .filter((video, index, self) => 
-                        // Remove duplicates based on ID
-                        index === self.findIndex(v => v.id === video.id)
-                    );
-                
-                console.log('Filtered coordinator videos for module', currentModule, ':', allCoordinatorVideos);
-                
-                // Add coordinator videos to moduleData
-                if (allCoordinatorVideos.length > 0) {
+                if (allVideos.length > 0) {
+                    // Map to our format
+                    const videoObjects = allVideos.map((video, index) => ({
+                        id: index + 1,
+                        title: video.title || `Video ${index + 1}`,
+                        description: video.description || 'Açıklama yok',
+                        duration: video.duration || '0:00',
+                        videoUrl: video.youtubeUrl || video.videoUrl || '#',  // Try both fields
+                        youtubeVideoId: video.youtubeVideoId || '',
+                        completed: false,
+                        questions: video.questions || []
+                    }));
+
+                    // Update module data
                     if (!moduleData[currentModule]) {
                         moduleData[currentModule] = {
                             title: `Modül ${currentModule}`,
                             description: `Modül ${currentModule} içeriği`,
-                            videos: [],
-                            questions: {}
+                            videos: videoObjects
                         };
+                    } else {
+                        moduleData[currentModule].videos = videoObjects;
                     }
-                    
-                    // Add coordinator videos to the module
-                    allCoordinatorVideos.forEach(video => {
-                        const videoData = {
-                            id: video.id,
-                            title: video.title,
-                            description: video.description,
-                            duration: video.duration + ' dk',
-                            videoUrl: video.youtubeUrl,
-                            youtubeVideoId: video.youtubeVideoId,
-                            completed: video.progress >= 100,
-                            current: false,
-                            isCoordinatorVideo: true
+
+                    console.log(`✅ ${videoObjects.length} video yüklendi`);
+                } else {
+                    console.log('⚠️ No videos found for module', currentModule);
+                    if (!moduleData[currentModule]) {
+                        moduleData[currentModule] = {
+                            title: `Modül ${currentModule}`,
+                            description: `Bu modül için henüz video eklenmemiş`,
+                            videos: []
                         };
-                        
-                        // Add video to module videos
-                        moduleData[currentModule].videos.push(videoData);
-                        
-                        // Add questions to moduleData
-                        if (video.questions && video.questions.length > 0) {
-                            const questionData = video.questions.map((q, qIndex) => ({
-                                id: qIndex + 1,
-                                question: q.question,
-                                options: q.options,
-                                correct: q.correct,
-                                explanation: q.explanation || 'Açıklama mevcut değil.'
-                            }));
-                            
-                            // Store with multiple key formats
-                            moduleData[currentModule].questions[video.id] = questionData;
-                            moduleData[currentModule].questions[String(video.id)] = questionData;
-                            if (!isNaN(video.id)) {
-                                moduleData[currentModule].questions[parseInt(video.id)] = questionData;
-                            }
-                        }
-                    });
+                    } else {
+                        moduleData[currentModule].videos = [];
+                        moduleData[currentModule].description = `Bu modül için henüz video eklenmemiş`;
+                    }
                 }
-                
-                console.log('=== END LOADING COORDINATOR VIDEOS FROM FIREBASE ===');
-                return allCoordinatorVideos;
+
             } catch (error) {
-                console.error('Error loading coordinator videos:', error);
-                return [];
+                console.error('❌ Error loading videos:', error);
+                if (!moduleData[currentModule]) {
+                    moduleData[currentModule] = {
+                        title: `Modül ${currentModule}`,
+                        description: `Video yükleme hatası`,
+                        videos: []
+                    };
+                } else {
+                    moduleData[currentModule].videos = [];
+                    moduleData[currentModule].description = `Video yükleme hatası`;
+                }
             }
         }
 
-        function loadModule() {
-            const module = moduleData[currentModule];
-            if (!module) return;
-
-            // Update header
-            document.getElementById('module-title').innerHTML = `
-                <i class="fas fa-shield-alt text-cyber mr-3"></i>
-                ${module.title}
-            `;
+        async function loadModule() {
+            // Load module info from Firebase
+            const moduleResult = await window.DB.load('modules', currentModule);
+            const module = (moduleResult && moduleResult.success) ? moduleResult.data : null;
+            
+            console.log('📚 Modül bilgisi yüklendi:', module);
+            
+            if (!module) {
+                console.warn('⚠️ Modül bulunamadı, moduleData kontrol ediliyor...');
+                // Fallback to moduleData
+                const moduleFromData = moduleData[currentModule];
+                if (!moduleFromData) {
+                    document.getElementById('module-title').innerHTML = '<i class="fas fa-exclamation-triangle text-red-500 mr-3"></i>Modül Bulunamadı';
+                    document.getElementById('module-description').textContent = 'Bu modül mevcut değil.';
+                    return;
+                }
+                
+                // Use moduleData
+                document.getElementById('module-title').innerHTML = `<i class="fas fa-graduation-cap text-cyber mr-3"></i>${moduleFromData.title}`;
+                document.getElementById('module-description').textContent = moduleFromData.description;
+            } else {
+                // Use Firebase module
+                document.getElementById('module-title').innerHTML = `<i class="fas fa-graduation-cap text-cyber mr-3"></i>${module.title}`;
             document.getElementById('module-description').textContent = module.description;
+            }
 
             // Load video list
-            loadVideoList(module.videos);
+            loadVideoList();
             
-            // Load current video
-            loadCurrentVideo();
+            // Load first video or current video
+            const moduleVideos = moduleData[currentModule]?.videos || [];
+            if (moduleVideos.length > 0) {
+                let videoToLoad = moduleVideos.find(v => v.id === currentVideoId);
+                if (!videoToLoad) {
+                    videoToLoad = moduleVideos[0];
+                    currentVideoId = videoToLoad.id;
+                }
+                loadVideo(videoToLoad);
+            } else {
+                showNoVideosMessage();
+            }
         }
 
-        function loadVideoList(videos) {
-            const videoList = document.getElementById('video-list');
-            videoList.innerHTML = '';
-
-            videos.forEach(video => {
-                const videoItem = document.createElement('div');
-                videoItem.className = `flex items-center justify-between p-3 rounded-lg border ${
-                    video.current ? 'bg-blue-50 border-blue-200' : 'hover:bg-gray-50 border-gray-200'
-                } cursor-pointer`;
-                
-                // Special styling for coordinator videos
-                const coordinatorBadge = video.isCoordinatorVideo ? 
-                    '<span class="ml-2 bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">👨‍🏫 Koordinatör</span>' : '';
-                
-                const videoIcon = video.isCoordinatorVideo ? 
-                    '<i class="fab fa-youtube text-red-500 mr-2"></i>' : '';
-                
-                videoItem.innerHTML = `
-                    <div class="flex items-center">
-                        <div class="w-8 h-8 rounded-full ${
-                            video.completed ? 'bg-green-500' : 
-                            video.current ? 'bg-blue-500' : 'bg-gray-300'
-                        } flex items-center justify-center mr-3">
-                            <i class="fas ${
-                                video.completed ? 'fa-check' : 
-                                video.current ? 'fa-play' : 'fa-play'
-                            } text-white text-sm"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex items-center">
-                                ${videoIcon}
-                                <p class="font-medium text-sm">${video.title}</p>
-                                ${coordinatorBadge}
-                            </div>
-                            <p class="text-xs text-gray-600">${video.duration}</p>
-                        </div>
+        function showNoVideosMessage() {
+            document.getElementById('video-title').textContent = 'Video Mevcut Değil';
+            document.getElementById('video-description').textContent = 'Bu modül için henüz video eklenmemiştir.';
+            document.getElementById('video-placeholder').innerHTML = `
+                <div class="text-center">
+                    <i class="fas fa-video-slash text-6xl mb-4 opacity-75"></i>
+                    <p class="text-lg">Video Mevcut Değil</p>
+                    <p class="text-sm opacity-75 mt-2">Koordinatör tarafından video eklendiğinde burada görünecektir.</p>
                     </div>
                 `;
                 
+            document.getElementById('main-video').style.display = 'none';
+            document.getElementById('video-placeholder').style.display = 'flex';
+        }
+
+        async function loadVideoList() {
+            const module = moduleData[currentModule];
+            const videoList = document.getElementById('video-list');
+            
+            if (!module || !module.videos || module.videos.length === 0) {
+                videoList.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-video-slash text-3xl mb-3"></i>
+                        <p class="text-sm">Bu modül için henüz video eklenmemiştir.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Get user progress from Firebase
+            const userEmail = localStorage.getItem('userEmail');
+            let userProgress = {};
+            
+            if (userEmail && window.DB) {
+                try {
+                    const progressResult = await window.DB.load('userProgress');
+                    if (progressResult && progressResult.success) {
+                        const allProgress = Array.isArray(progressResult.data) 
+                            ? progressResult.data 
+                            : Object.values(progressResult.data || {});
+                        
+                        const userProgressData = allProgress.find(p => p.userEmail === userEmail && p.moduleId === currentModule);
+                        if (userProgressData && userProgressData.videoProgress) {
+                            userProgress = userProgressData.videoProgress;
+                        }
+                    }
+                } catch (error) {
+                    console.error('❌ İlerleme yükleme hatası:', error);
+                }
+            }
+            
+            videoList.innerHTML = '';
+            
+            module.videos.forEach((video, index) => {
+                const isActive = video.id === currentVideoId;
+                const videoProgress = userProgress[video.id] || {};
+                const isCompleted = videoProgress.completed || false;
+                const progressPercent = videoProgress.progressPercent || 0;
+                const questionsAnswered = videoProgress.questionsAnswered || 0;
+                const totalQuestions = video.questions ? video.questions.length : 0;
+                
+                const videoItem = document.createElement('div');
+                videoItem.className = `p-3 rounded-lg cursor-pointer transition-all mb-2 ${
+                    isActive 
+                        ? 'bg-cyber text-white shadow-lg' 
+                        : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'
+                }`;
+                
+                videoItem.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <h4 class="font-medium text-sm truncate ${isActive ? 'text-white' : 'text-gray-900'}">${video.title || 'İsimsiz Video'}</h4>
+                                ${isCompleted 
+                                    ? `<i class="fas fa-check-circle ${isActive ? 'text-white' : 'text-green-500'} flex-shrink-0"></i>`
+                                    : progressPercent > 0
+                                    ? `<i class="fas fa-play-circle ${isActive ? 'text-white' : 'text-blue-500'} flex-shrink-0"></i>`
+                                    : `<i class="far fa-circle ${isActive ? 'text-white' : 'text-gray-400'} flex-shrink-0"></i>`
+                                }
+                            </div>
+                            ${video.duration ? `<p class="text-xs ${isActive ? 'text-blue-100' : 'text-gray-500'} mb-2">${video.duration}</p>` : ''}
+                            
+                            ${totalQuestions > 0 ? `
+                                <div class="mt-2">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <span class="text-xs ${isActive ? 'text-blue-100' : 'text-gray-600'}">
+                                            Sorular: ${questionsAnswered}/${totalQuestions}
+                                        </span>
+                                        <span class="text-xs font-semibold ${isActive ? 'text-white' : 'text-gray-700'}">
+                                            ${progressPercent}%
+                                        </span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-1.5 ${isActive ? 'bg-white/20' : ''}">
+                                        <div class="bg-${isActive ? 'white' : 'primary'} h-1.5 rounded-full transition-all duration-300" 
+                                             style="width: ${progressPercent}%"></div>
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+
                 videoItem.addEventListener('click', () => {
-                    // Allow access to all coordinator videos
-                    if (video.isCoordinatorVideo || video.completed || video.current) {
-                        loadVideo(video.id);
+                    currentVideoId = video.id;
+                    const videoToLoad = moduleData[currentModule]?.videos?.find(v => v.id === currentVideoId);
+                    if (videoToLoad) {
+                        loadVideo(videoToLoad);
+                        loadVideoList(); // Refresh video list to update active state
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
                     }
                 });
-
+                
                 videoList.appendChild(videoItem);
             });
         }
 
-        function loadCurrentVideo() {
-            const module = moduleData[currentModule];
-            const currentVideo = module.videos.find(v => String(v.id) === String(currentVideoId));
-            
-            console.log('=== LOAD CURRENT VIDEO DEBUG ===');
-            console.log('Looking for video ID:', currentVideoId, 'Type:', typeof currentVideoId);
-            console.log('Available videos:', module.videos);
-            console.log('Found video:', currentVideo);
-            
-            if (currentVideo) {
-                document.getElementById('video-title').textContent = currentVideo.title;
-                document.getElementById('video-description').textContent = currentVideo.description;
-                
-                // Check if this is a coordinator video with YouTube URL
-                if (currentVideo.isCoordinatorVideo && currentVideo.youtubeVideoId) {
-                    // Hide placeholder and show YouTube iframe
-                    const videoPlaceholder = document.getElementById('video-placeholder');
-                    if (videoPlaceholder) {
-                        videoPlaceholder.style.display = 'none';
-                    }
-                    
-                    // Get the video container and replace content with YouTube iframe
-                    const videoContainer = document.getElementById('video-container');
-                    if (videoContainer) {
-                        videoContainer.innerHTML = `
-                            <iframe 
-                                width="100%" 
-                                height="100%" 
-                                src="https://www.youtube.com/embed/${currentVideo.youtubeVideoId}?autoplay=0&rel=0&modestbranding=1" 
-                                frameborder="0" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                                allowfullscreen
-                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-                            </iframe>
-                        `;
-                    }
-                    
-                    console.log('Loaded YouTube video:', currentVideo.youtubeVideoId);
-                } else {
-                    // Show placeholder for regular videos
-                    const videoPlaceholder = document.getElementById('video-placeholder');
-                    const mainVideo = document.getElementById('main-video');
-                    
-                    if (videoPlaceholder) {
-                        videoPlaceholder.style.display = 'flex';
-                    }
-                    if (mainVideo) {
-                        mainVideo.style.display = 'block';
-                    }
-                    
-                    console.log('Loading default video:', currentVideo.title);
-                }
-                
-                // Load questions for the current video
-                setTimeout(() => {
-                    console.log('Loading questions for video ID:', currentVideoId);
-                    loadQuestions();
-                }, 500);
-            } else {
-                console.log('Video not found for ID:', currentVideoId);
-            }
-            console.log('=== END LOAD CURRENT VIDEO DEBUG ===');
-        }
-
-        function loadVideo(videoId) {
-            console.log('=== LOAD VIDEO DEBUG ===');
-            console.log('Setting current video ID to:', videoId, 'Type:', typeof videoId);
-            currentVideoId = videoId;
-            
-            // Update video list highlighting
-            const module = moduleData[currentModule];
-            module.videos.forEach(video => {
-                video.current = String(video.id) === String(videoId);
-            });
-            
-            // Reload video list to update highlighting
-            loadVideoList(module.videos);
-            
-            loadCurrentVideo();
-            console.log('=== END LOAD VIDEO DEBUG ===');
-        }
-
-        function loadQuestions() {
-            console.log('=== LOAD QUESTIONS DEBUG ===');
-            console.log('Current module:', currentModule);
-            console.log('Current video ID:', currentVideoId, 'Type:', typeof currentVideoId);
-            console.log('Module data questions:', moduleData[currentModule].questions);
-            
-            // Try both string and number versions of the video ID
-            let questions = moduleData[currentModule].questions[currentVideoId];
-            if (!questions) {
-                // Try string version if number didn't work
-                questions = moduleData[currentModule].questions[String(currentVideoId)];
-            }
-            if (!questions) {
-                // Try number version if string didn't work
-                questions = moduleData[currentModule].questions[parseInt(currentVideoId)];
-            }
-            
-            console.log('Found questions for video ID', currentVideoId, ':', questions);
-            
-            if (!questions) {
-                console.log('No questions found for video ID:', currentVideoId);
-                console.log('Available question keys:', Object.keys(moduleData[currentModule].questions));
-                
-                // Hide questions section if no questions found
-                const questionsSection = document.getElementById('questions-section');
-                if (questionsSection) {
-                    questionsSection.style.display = 'none';
-                }
-                console.log('=== END LOAD QUESTIONS DEBUG ===');
+        function loadVideo(video) {
+            if (!video) {
+                showNoVideosMessage();
                 return;
             }
-
-            const questionsContainer = document.getElementById('questions-container');
-            questionsContainer.innerHTML = '';
-
-            questions.forEach((question, index) => {
-                const questionDiv = document.createElement('div');
-                questionDiv.className = 'mb-6 p-4 border border-gray-200 rounded-lg';
+            
+            // Store current video globally
+            currentVideo = video;
+            
+            console.log('🎬 Video yükleniyor:', video);
+            
+            document.getElementById('video-title').textContent = video.title;
+            document.getElementById('video-description').textContent = video.description;
+            
+            const videoPlaceholder = document.getElementById('video-placeholder');
+            
+            // Check if we have a YouTube URL
+            if (video.videoUrl && video.videoUrl !== '#') {
+                // Extract YouTube video ID and create embed URL
+                let youtubeId = video.youtubeVideoId;
                 
-                questionDiv.innerHTML = `
-                    <h4 class="font-semibold mb-3">${index + 1}. ${question.question}</h4>
-                    <div class="space-y-2">
-                        ${question.options.map((option, optIndex) => `
-                            <label class="flex items-center p-2 rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="radio" name="question_${question.id}" value="${optIndex}" 
-                                       class="mr-3 text-primary focus:ring-primary">
-                                <span>${option}</span>
-                            </label>
-                        `).join('')}
-                    </div>
-                `;
-
-                questionsContainer.appendChild(questionDiv);
-            });
-
-            document.getElementById('questions-section').style.display = 'block';
-            console.log('Questions loaded successfully, count:', questions.length);
-            console.log('=== END LOAD QUESTIONS DEBUG ===');
-        }
-
-        async function generateAIQuestions() {
-            const aiQuestionsContainer = document.getElementById('ai-questions');
-            aiQuestionsContainer.innerHTML = '<div class="text-center p-6"><i class="fas fa-robot fa-spin text-3xl text-primary mb-3"></i><p class="text-lg font-medium">🤖 AI Analiz Yapıyor...</p><p class="text-sm text-gray-600">Yanlış cevaplarınız analiz ediliyor ve kişiselleştirilmiş öneriler hazırlanıyor...</p></div>';
-
-            let aiAnalysisResults = [];
-
-            for (const wrongAnswer of wrongAnswers) {
-                // AI ile detaylı analiz yap
-                const analysis = await analyzeWrongAnswer(wrongAnswer);
-                if (analysis) {
-                    aiAnalysisResults.push(analysis);
+                if (!youtubeId && video.videoUrl) {
+                    // Try to extract from URL
+                    const match = video.videoUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
+                    if (match) {
+                        youtubeId = match[1];
+                    }
                 }
-            }
-
-            // Sonuçları göster
-            displayAIAnalysis(aiAnalysisResults);
-        }
-
-        async function analyzeWrongAnswer(wrongAnswer) {
-            try {
-                console.log('🤖 Gemini AI ile yanlış cevap analizi yapılıyor...');
                 
-                const context = `Sen bir çevik liderlik ve afet yönetimi uzmanısın. Okul müdürü eğitim programında yanlış cevaplanan sorulara dayanarak analiz ve öneriler yapıyorsun. Türkçe yanıt ver.`;
-                
-                const prompt = `Bu yanlış cevaplanan soruyu analiz et:
-
-SORU: ${wrongAnswer.question}
-KULLANICININ YANLIŞ CEVABI: ${wrongAnswer.userAnswer}
-DOĞRU CEVAP: ${wrongAnswer.correctAnswer}
-AÇIKLAMA: ${wrongAnswer.explanation}
-
-Lütfen şu analizi yap:
-1. Kullanıcının hangi konuda eksikliği olduğunu tespit et
-2. Bu eksikliği gidermek için hangi modül ve video bölümüne geri dönmesi gerektiğini öner
-3. Konuya dair 2 adet yeni pratik soru üret
-4. Kısa bir çalışma planı öner
-
-JSON formatında döndür:
-{
-    "eksikKonu": "eksik olan konu",
-    "onerilenModul": "Modül X",
-    "onerilenVideo": "Bölüm Y: Video Başlığı",
-    "aciklama": "Neden bu videoya dönmesi gerektiğinin açıklaması",
-    "yeniSorular": [
-        {
-            "soru": "pratik soru 1",
-            "secenekler": ["A", "B", "C", "D"],
-            "dogruCevap": 0,
-            "aciklama": "açıklama"
-        },
-        {
-            "soru": "pratik soru 2", 
-            "secenekler": ["A", "B", "C", "D"],
-            "dogruCevap": 1,
-            "aciklama": "açıklama"
-        }
-    ],
-    "calismaPlani": "kısa çalışma önerisi"
-}`;
-
-                const result = await window.GeminiAPI.generateContent(prompt, context);
-                
-                if (result.success) {
-                    console.log('✅ Gemini AI analiz yanıtı alındı:', result.text);
-                    
-                    // Try to parse JSON from response
-                    const jsonMatch = result.text.match(/\{[\s\S]*\}/);
-                    if (jsonMatch) {
-                        const analysis = JSON.parse(jsonMatch[0]);
-                        console.log('✅ Analiz başarıyla parse edildi:', analysis);
-                        return analysis;
+                if (youtubeId) {
+                    // Create YouTube embed iframe
+                    videoPlaceholder.style.display = 'block';
+                    videoPlaceholder.innerHTML = `
+                        <iframe 
+                            width="100%" 
+                            height="100%" 
+                            src="https://www.youtube.com/embed/${youtubeId}" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen
+                            style="border-radius: 0.5rem;">
+                        </iframe>
+                    `;
+                    console.log('✅ YouTube video yüklendi:', youtubeId);
                     } else {
-                        console.warn('⚠️ JSON formatı bulunamadı, fallback analiz kullanılıyor');
-                        return generateFallbackAnalysis(wrongAnswer);
+                    // No valid YouTube ID
+                    videoPlaceholder.style.display = 'flex';
+                    videoPlaceholder.innerHTML = `
+                        <div class="text-center">
+                            <i class="fas fa-video-slash text-6xl mb-4 opacity-75"></i>
+                            <p class="text-lg">Geçersiz Video URL</p>
+                            <p class="text-sm opacity-75 mt-2">YouTube video ID'si çıkarılamadı.</p>
+                        </div>
+                    `;
                     }
                 } else {
-                    console.warn('⚠️ Gemini API hatası:', result.error);
-                    return generateFallbackAnalysis(wrongAnswer);
-                }
-                
-            } catch (error) {
-                console.error('❌ AI analiz hatası:', error);
-                return generateFallbackAnalysis(wrongAnswer);
+                videoPlaceholder.style.display = 'flex';
+                videoPlaceholder.innerHTML = `
+                    <div class="text-center">
+                        <i class="fas fa-video-slash text-6xl mb-4 opacity-75"></i>
+                        <p class="text-lg">Video URL Mevcut Değil</p>
+                        <p class="text-sm opacity-75 mt-2">Bu video için henüz URL tanımlanmamıştır.</p>
+                    </div>
+                `;
             }
+            
+            // Load questions for this video
+            loadQuestions(video);
         }
         
-        // Generate fallback analysis when AI fails
-        function generateFallbackAnalysis(wrongAnswer) {
-            return {
-                eksikKonu: "Kriz Yönetimi Temelleri",
-                onerilenModul: "Modül 2",
-                onerilenVideo: "Bölüm 1: Kriz Liderliği Temelleri",
-                aciklama: "Bu konudaki temel prensipleri tekrar gözden geçirmeniz önerilir.",
-                yeniSorular: [
-                    {
-                        soru: "Bu konu hakkında daha fazla çalışma yapmanız gerekiyor. Hangi yaklaşım daha etkili olur?",
-                        secenekler: ["Sadece okumak", "Video izleyip not almak", "Başkalarından yardım istemek", "Konuyu atlamak"],
-                        dogruCevap: 1,
-                        aciklama: "Aktif öğrenme yöntemleri daha etkilidir."
-                    },
-                    {
-                        soru: "Yanlış cevapladığınız konularda hangi strateji önerilir?",
-                        secenekler: ["Konuyu görmezden gelmek", "Tekrar çalışıp pratik yapmak", "Başka konuya geçmek", "Sadece ezberlemek"],
-                        dogruCevap: 1,
-                        aciklama: "Tekrar çalışma ve pratik yapma en etkili öğrenme yöntemidir."
-                    }
-                ],
-                calismaPlani: "İlgili videoyu tekrar izleyin ve not alın."
-            };
-        }
-
-        function displayAIAnalysis(analysisResults) {
-            const aiQuestionsContainer = document.getElementById('ai-questions');
-            aiQuestionsContainer.innerHTML = '';
-
-            if (analysisResults.length === 0) {
-                aiQuestionsContainer.innerHTML = `
-                    <div class="text-center text-gray-500 p-6">
-                        <i class="fas fa-exclamation-triangle text-2xl mb-3"></i>
-                        <p>AI analizi tamamlanamadı. Lütfen daha sonra tekrar deneyin.</p>
+        function loadQuestions(video) {
+            const questionsContainer = document.getElementById('questions-container');
+            if (!questionsContainer) return;
+            
+            if (!video.questions || video.questions.length === 0) {
+                questionsContainer.innerHTML = `
+                    <div class="text-center text-gray-400 py-12">
+                        <i class="fas fa-question-circle text-5xl mb-4 opacity-30"></i>
+                        <p class="text-lg">Bu video için henüz soru eklenmemiş.</p>
+                        <p class="text-sm mt-2">Koordinatör tarafından sorular eklendiğinde burada görünecektir.</p>
                     </div>
                 `;
                 return;
             }
 
-            // Başlık ekle
-            const headerDiv = document.createElement('div');
-            headerDiv.className = 'bg-gradient-to-r from-purple-500 to-blue-500 text-white p-4 rounded-t-lg';
-            headerDiv.innerHTML = `
-                <h4 class="text-lg font-bold flex items-center">
-                    <i class="fas fa-robot mr-2"></i>
-                    🤖 AI Kişiselleştirilmiş Öneriler
-                </h4>
-                <p class="text-sm opacity-90 mt-1">Yanlış cevaplarınız analiz edildi ve size özel öneriler hazırlandı</p>
-            `;
-            aiQuestionsContainer.appendChild(headerDiv);
-
-            // Her analiz için kart oluştur
-            analysisResults.forEach((analysis, index) => {
-                const analysisCard = document.createElement('div');
-                analysisCard.className = 'bg-white border-l-4 border-purple-500 p-6 mb-4';
+            console.log(`📝 ${video.questions.length} soru yükleniyor...`);
+            
+            questionsContainer.innerHTML = video.questions.map((q, index) => {
+                const questionType = q.type || 'multiple-choice';
+                const difficulty = q.difficulty || 'medium';
                 
-                analysisCard.innerHTML = `
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="ai-text-content">
-                            <h5 class="font-bold text-lg text-purple-700">📚 Eksik Konu: ${analysis.eksikKonu}</h5>
-                            <p class="text-sm text-gray-600 mt-1">${analysis.aciklama}</p>
+                let questionHTML = `
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl border-2 border-blue-200 mb-6 hover:shadow-lg transition-shadow" data-question-index="${index}" data-question-type="${questionType}">
+                        <div class="flex items-start mb-4">
+                            <div class="flex-shrink-0 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold mr-4">
+                                ${index + 1}
                         </div>
-                        <span class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Analiz ${index + 1}</span>
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <h4 class="text-lg font-semibold text-gray-800">${q.question}</h4>
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full ${
+                                        questionType === 'multiple-choice' ? 'bg-blue-100 text-blue-800' :
+                                        questionType === 'open-ended' ? 'bg-green-100 text-green-800' :
+                                        'bg-orange-100 text-orange-800'
+                                    }">
+                                        ${questionType === 'multiple-choice' ? 'Çoktan Seçmeli' :
+                                          questionType === 'open-ended' ? 'Açık Uçlu' :
+                                          'Boşluk Doldurma'}
+                                    </span>
                     </div>
-
-                    <div class="ai-content-grid">
-                        <!-- Önerilen Video -->
-                        <div class="bg-blue-50 p-4 rounded-lg ai-text-content">
-                            <h6 class="font-semibold text-blue-800 mb-2 flex items-center">
-                                <i class="fas fa-video mr-2"></i>
-                                Tekrar İzlemeniz Önerilen Video
-                            </h6>
-                            <div class="bg-white p-3 rounded border border-blue-200">
-                                <p class="font-medium">${analysis.onerilenModul}</p>
-                                <p class="text-sm text-gray-600">${analysis.onerilenVideo}</p>
-                                <div class="ai-button-container">
-                                    <a href="module-detail.html?module=${analysis.onerilenModul.match(/\d+/)[0]}&video=1" 
-                                       class="ai-button ai-button-primary">
-                                        <i class="fas fa-play mr-1"></i> Videoyu İzle
-                                    </a>
+                                <span class="inline-block px-3 py-1 text-xs font-medium rounded-full ${
+                                    difficulty === 'easy' ? 'bg-green-100 text-green-800' : 
+                                    difficulty === 'hard' ? 'bg-red-100 text-red-800' : 
+                                    'bg-yellow-100 text-yellow-800'
+                                }">
+                                    ${difficulty === 'easy' ? 'Kolay' : difficulty === 'hard' ? 'Zor' : 'Orta'}
+                                </span>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Çalışma Planı -->
-                        <div class="bg-green-50 p-4 rounded-lg ai-text-content">
-                            <h6 class="font-semibold text-green-800 mb-2 flex items-center">
-                                <i class="fas fa-clipboard-list mr-2"></i>
-                                Önerilen Çalışma Planı
-                            </h6>
-                            <div class="bg-white p-3 rounded border border-green-200">
-                                <p class="text-sm">${analysis.calismaPlani}</p>
+                `;
+                
+                // Multiple choice questions
+                if (questionType === 'multiple-choice' && q.options && Array.isArray(q.options)) {
+                    questionHTML += `
+                        <div class="space-y-3 ml-14">
+                            ${q.options.map((option, optIndex) => `
+                                <div class="question-option group p-4 bg-white border-2 border-gray-200 rounded-lg hover:border-primary hover:bg-blue-50 cursor-pointer transition-all transform hover:scale-[1.02]" 
+                                     data-question="${index}" 
+                                     data-option="${optIndex}"
+                                     onclick="selectAnswer(${index}, ${optIndex}, ${q.correctAnswer || 0})">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 w-8 h-8 rounded-full border-2 border-gray-300 group-hover:border-primary flex items-center justify-center font-semibold text-gray-600 group-hover:text-primary mr-3">
+                                            ${String.fromCharCode(65 + optIndex)}
                             </div>
+                                        <span class="text-gray-700 group-hover:text-gray-900">${option}</span>
                         </div>
-                    </div>
-
-                    <!-- Yeni Sorular -->
-                    <div class="mt-6 ai-text-content">
-                        <h6 class="font-semibold text-orange-800 mb-3 flex items-center">
-                            <i class="fas fa-question-circle mr-2"></i>
-                            Konu Pekiştirme Soruları
-                        </h6>
-                        <div class="space-y-4">
-                            ${analysis.yeniSorular.map((soru, qIndex) => `
-                                <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 ai-question-card">
-                                    <p class="font-medium mb-3">${qIndex + 1}. ${soru.soru}</p>
-                                    <div class="ai-options-grid">
-                                        ${soru.secenekler.map((secenek, sIndex) => `
-                                            <div class="ai-option-item ${sIndex === soru.dogruCevap ? 'bg-green-100 border border-green-300' : 'bg-white border border-gray-200'}">
-                                                <span class="ai-option-icon ${sIndex === soru.dogruCevap ? 'bg-green-500 text-white' : 'bg-gray-300'}">
-                                                    ${String.fromCharCode(65 + sIndex)}
-                                                </span>
-                                                <span class="ai-option-text">${secenek}</span>
-                                                ${sIndex === soru.dogruCevap ? '<i class="fas fa-check text-green-500 ai-option-check"></i>' : ''}
                                             </div>
                                         `).join('')}
                                     </div>
-                                    <div class="bg-blue-50 border-l-4 border-blue-400 p-3 mt-3">
-                                        <p class="text-xs text-blue-800"><strong>Açıklama:</strong> ${soru.aciklama}</p>
+                    `;
+                }
+                // Open-ended questions
+                else if (questionType === 'open-ended') {
+                    questionHTML += `
+                        <div class="ml-14">
+                            <textarea id="open-ended-answer-${index}" 
+                                      class="w-full p-4 border-2 border-gray-300 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20" 
+                                      rows="4" 
+                                      placeholder="Cevabınızı buraya yazın..."></textarea>
+                            <button onclick="submitOpenEndedAnswer(${index})" 
+                                    class="mt-3 bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                                <i class="fas fa-check mr-2"></i>Cevabı Gönder
+                            </button>
                                     </div>
+                    `;
+                }
+                // Fill in the blank questions
+                else if (questionType === 'fill-blank') {
+                    // Replace ___ with input fields - limit to correctAnswers count
+                    const questionParts = q.question.split('___');
+                    const correctAnswers = q.correctAnswers || [];
+                    const blankCount = Math.min(questionParts.length - 1, correctAnswers.length);
+                    
+                    questionHTML += `
+                        <div class="ml-14">
+                            <div class="bg-white p-4 rounded-lg border-2 border-gray-300">
+                                ${questionParts.map((part, partIndex) => {
+                                    let html = part;
+                                    // Only create input if we have a corresponding correct answer
+                                    if (partIndex < blankCount) {
+                                        html += `<input type="text" 
+                                                       id="fill-blank-${index}-${partIndex}" 
+                                                       class="inline-block mx-2 px-3 py-2 border-2 border-primary rounded-lg focus:ring-2 focus:ring-primary/20" 
+                                                       placeholder="Boşluk ${partIndex + 1}" />`;
+                                    } else if (partIndex < questionParts.length - 1) {
+                                        // If there are more ___ than correctAnswers, show as text
+                                        html += `<span class="inline-block mx-2 px-3 py-2 bg-gray-100 rounded-lg text-gray-500">[Boşluk ${partIndex + 1}]</span>`;
+                                    }
+                                    return html;
+                                }).join('')}
                                 </div>
-                            `).join('')}
+                            <p class="text-xs text-gray-500 mt-2 ml-14">${blankCount} boşluk doldurmanız gerekiyor.</p>
+                            <button onclick="submitFillBlankAnswer(${index})" 
+                                    class="mt-3 ml-14 bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                                <i class="fas fa-check mr-2"></i>Cevabı Gönder
+                            </button>
+                    </div>
+                `;
+                }
+                
+                questionHTML += `
+                        <div class="explanation-box mt-4 ml-14 p-4 rounded-lg border-2" style="display: none;">
+                            <p class="text-sm">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                                <strong>Açıklama:</strong> <span class="explanation-text"></span>
+                            </p>
                         </div>
                     </div>
                 `;
-
-                aiQuestionsContainer.appendChild(analysisCard);
+                
+                return questionHTML;
+            }).join('');
+        }
+        
+        // Submit open-ended answer
+        function submitOpenEndedAnswer(questionIndex) {
+            const answerTextarea = document.getElementById(`open-ended-answer-${questionIndex}`);
+            const answer = answerTextarea?.value?.trim();
+            
+            if (!answer) {
+                alert('Lütfen bir cevap yazın.');
+                return;
+            }
+            
+            const question = currentVideo.questions[questionIndex];
+            if (!question) return;
+            
+            // Show feedback (for now, just show a message)
+            alert('Cevabınız kaydedildi. Koordinatör tarafından değerlendirilecektir.');
+            
+            // Disable the textarea and button
+            answerTextarea.disabled = true;
+            const button = answerTextarea.nextElementSibling;
+            if (button) button.disabled = true;
+        }
+        
+        // Submit fill-in-the-blank answer
+        async function submitFillBlankAnswer(questionIndex) {
+            const question = currentVideo.questions[questionIndex];
+            if (!question || !question.correctAnswers) return;
+            
+            const correctAnswers = question.correctAnswers || [];
+            const questionParts = question.question.split('___');
+            const blankCount = Math.min(questionParts.length - 1, correctAnswers.length);
+            
+            const userAnswers = [];
+            let allFilled = true;
+            
+            // Only check inputs up to blankCount
+            for (let i = 0; i < blankCount; i++) {
+                const input = document.getElementById(`fill-blank-${questionIndex}-${i}`);
+                if (input) {
+                    const answer = input.value.trim();
+                    if (answer) {
+                        userAnswers.push(answer);
+            } else {
+                        allFilled = false;
+                    }
+                } else {
+                    allFilled = false;
+                }
+            }
+            
+            if (!allFilled) {
+                alert('Lütfen tüm boşlukları doldurun.');
+                return;
+            }
+            
+            // Check answers
+            let correctCount = 0;
+            const wrongAnswers = [];
+            
+            userAnswers.forEach((answer, index) => {
+                const correct = correctAnswers[index];
+                if (answer.toLowerCase() === correct.toLowerCase()) {
+                    correctCount++;
+                            } else {
+                    wrongAnswers.push({ user: answer, correct: correct });
+                }
             });
-
-            // Genel öneriler ekle
-            const generalTipsDiv = document.createElement('div');
-            generalTipsDiv.className = 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white p-4 rounded-b-lg';
-            generalTipsDiv.innerHTML = `
-                <h5 class="font-bold mb-2 flex items-center">
-                    <i class="fas fa-lightbulb mr-2"></i>
-                    💡 Genel Öneriler
-                </h5>
-                <ul class="text-sm space-y-1 opacity-90">
-                    <li>• Önerilen videoları aktif bir şekilde izleyin ve not alın</li>
-                    <li>• Konuları günlük hayattaki örneklerle ilişkilendirin</li>
-                    <li>• Diğer okul müdürleriyle deneyimlerinizi paylaşın</li>
-                    <li>• Düzenli olarak konu tekrarı yapın</li>
-                </ul>
+            
+            const isCorrect = correctCount === correctAnswers.length;
+            
+            // Get question div for explanation box
+            const questionDiv = document.querySelector(`[data-question-index="${questionIndex}"]`);
+            const explanationBox = questionDiv?.querySelector('.explanation-box');
+            
+            // Show feedback
+            if (isCorrect) {
+                if (explanationBox) {
+                    explanationBox.style.display = 'block';
+                    explanationBox.classList.remove('border-red-200', 'bg-red-50');
+                    explanationBox.classList.add('border-green-200', 'bg-green-50');
+                    explanationBox.querySelector('.explanation-text').innerHTML = '✅ Doğru! Tüm boşluklar doğru dolduruldu.';
+                }
+                
+                // Update progress
+                updateVideoProgress();
+            } else {
+                // Show wrong answer feedback
+                const wrongAnswerText = wrongAnswers.map(w => `Kullanıcı: "${w.user}", Doğru: "${w.correct}"`).join('; ');
+                const correctAnswerText = correctAnswers.join(', ');
+                
+                if (explanationBox) {
+                    explanationBox.style.display = 'block';
+                    explanationBox.classList.remove('border-green-200', 'bg-green-50');
+                    explanationBox.classList.add('border-red-200', 'bg-red-50');
+                    explanationBox.querySelector('.explanation-text').innerHTML = 
+                        `❌ ${correctCount}/${correctAnswers.length} boşluk doğru. Doğru cevaplar: ${correctAnswerText}`;
+                    
+                    // Get AI recommendation for wrong answer
+                    await getAIRecommendationForFillBlank(questionIndex, wrongAnswerText, correctAnswerText, explanationBox);
+                }
+            }
+            
+            // Disable inputs
+            for (let i = 0; i < questionParts.length - 1; i++) {
+                const input = document.getElementById(`fill-blank-${questionIndex}-${i}`);
+                if (input) input.disabled = true;
+            }
+        }
+        
+        // Get AI recommendation for fill-in-the-blank wrong answers
+        async function getAIRecommendationForFillBlank(questionIndex, wrongAnswerText, correctAnswerText, explanationBox) {
+            try {
+                if (!window.GroqAPI && !window.GeminiAPI) {
+                    console.warn('⚠️ Groq API mevcut değil');
+                    return;
+                }
+                
+                const question = currentVideo.questions[questionIndex];
+                if (!question) return;
+                
+                const api = window.GroqAPI || window.GeminiAPI;
+                if (!api || typeof api.generateVideoRecommendation !== 'function') {
+                    console.error('❌ Groq API veya generateVideoRecommendation fonksiyonu bulunamadı');
+                    return;
+                }
+                
+                // Show loading
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'mt-4 p-4 bg-white/80 rounded-lg border border-blue-300';
+                loadingDiv.innerHTML = `
+                    <p class="text-sm text-gray-600">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>
+                        AI size özel öneriler hazırlıyor...
+                    </p>
+                `;
+                explanationBox.appendChild(loadingDiv);
+                
+                // Get all modules and videos
+                const modulesResult = await window.DB.load('modules');
+                let allModules = [];
+                if (modulesResult && modulesResult.success) {
+                    if (Array.isArray(modulesResult.data)) {
+                        allModules = modulesResult.data;
+                    } else if (typeof modulesResult.data === 'object') {
+                        allModules = Object.values(modulesResult.data);
+                    }
+                }
+                
+                const videosResult = await window.DB.load('coordinatorVideos');
+                let allVideos = [];
+                if (videosResult && videosResult.success) {
+                    if (Array.isArray(videosResult.data)) {
+                        allVideos = videosResult.data;
+                    } else if (typeof videosResult.data === 'object') {
+                        allVideos = Object.values(videosResult.data);
+                    }
+                }
+                
+                // Get AI recommendation
+                const recommendation = await api.generateVideoRecommendation(
+                    question.question,
+                    wrongAnswerText,
+                    correctAnswerText,
+                    allModules,
+                    allVideos
+                );
+                
+                // Remove loading
+                loadingDiv.remove();
+                
+                if (recommendation.success && recommendation.recommendedVideoId) {
+                    // Show recommendation with button
+                    const recommendationDiv = document.createElement('div');
+                    recommendationDiv.className = 'mt-4 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border-2 border-purple-300';
+                    recommendationDiv.innerHTML = `
+                        <div class="flex items-start">
+                            <i class="fas fa-robot text-purple-600 text-2xl mr-3 mt-1"></i>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-700 mb-3">${recommendation.feedback}</p>
+                                <div class="bg-white p-3 rounded-lg border border-purple-200 mb-3">
+                                    <p class="text-sm font-semibold text-purple-800 mb-1">
+                                        <i class="fas fa-video mr-2"></i>${recommendation.recommendedVideoTitle || 'Önerilen Video'}
+                                    </p>
+                                    <p class="text-xs text-gray-600">${recommendation.reason || ''}</p>
+                                </div>
+                                <button onclick="goToRecommendedVideo('${recommendation.recommendedVideoId}')" 
+                                        class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all transform hover:scale-105">
+                                    <i class="fas fa-play-circle mr-2"></i>Bu Videoyu İzle
+                    </button>
+                </div>
+                        </div>
+                    `;
+                    explanationBox.appendChild(recommendationDiv);
+                } else {
+                    // Show generic feedback or error message
+                    const feedbackDiv = document.createElement('div');
+                    feedbackDiv.className = 'mt-4 p-4 rounded-lg border';
+                    
+                    if (recommendation.error && recommendation.error.includes('Rate limit')) {
+                        feedbackDiv.classList.add('bg-red-50', 'border-red-300');
+                        feedbackDiv.innerHTML = `
+                            <p class="text-sm text-red-700">
+                                <i class="fas fa-exclamation-triangle text-red-600 mr-2"></i>
+                                <strong>API Limit Aşıldı:</strong> Çok fazla istek gönderildi. Lütfen birkaç dakika sonra tekrar deneyin.
+                            </p>
+                            <p class="text-xs text-red-600 mt-2">
+                                ${recommendation.feedback || 'Bu konuyu tekrar gözden geçirmenizi öneririz.'}
+                            </p>
+                        `;
+                } else {
+                        feedbackDiv.classList.add('bg-yellow-50', 'border-yellow-300');
+                        feedbackDiv.innerHTML = `
+                            <p class="text-sm text-gray-700">
+                                <i class="fas fa-info-circle text-yellow-600 mr-2"></i>
+                                ${recommendation.feedback || 'Bu konuyu tekrar gözden geçirmenizi öneririz.'}
+                            </p>
+                        `;
+                    }
+                    explanationBox.appendChild(feedbackDiv);
+                }
+                
+            } catch (error) {
+                console.error('❌ AI öneri hatası:', error);
+                if (loadingDiv && loadingDiv.parentNode) {
+                    loadingDiv.remove();
+                }
+                
+                // Show error message to user
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'mt-4 p-4 bg-red-50 rounded-lg border border-red-300';
+                errorDiv.innerHTML = `
+                    <p class="text-sm text-red-700">
+                        <i class="fas fa-exclamation-triangle text-red-600 mr-2"></i>
+                        <strong>Hata:</strong> AI önerisi alınamadı. Lütfen daha sonra tekrar deneyin.
+                    </p>
+                    <p class="text-xs text-red-600 mt-2">
+                        ${error.message || 'Bilinmeyen bir hata oluştu.'}
+                    </p>
+                `;
+                if (explanationBox) {
+                    explanationBox.appendChild(errorDiv);
+                }
+            }
+        }
+        
+        // Select answer function
+        function selectAnswer(questionIndex, selectedOption, correctAnswer) {
+            const questionDiv = document.querySelector(`[data-question-index="${questionIndex}"]`);
+            const options = questionDiv.querySelectorAll('.question-option');
+            const explanationBox = questionDiv.querySelector('.explanation-box');
+            const explanationText = questionDiv.querySelector('.explanation-text');
+            
+            // Remove previous selections
+            options.forEach(opt => {
+                opt.classList.remove('border-green-500', 'bg-green-50', 'border-red-500', 'bg-red-50', 'border-primary', 'bg-blue-50');
+                opt.classList.add('border-gray-200', 'bg-white');
+            });
+            
+            // Mark selected option
+            const selectedDiv = questionDiv.querySelector(`[data-option="${selectedOption}"]`);
+            
+            if (selectedOption === correctAnswer) {
+                // Correct answer
+                selectedDiv.classList.remove('border-gray-200', 'bg-white');
+                selectedDiv.classList.add('border-green-500', 'bg-green-50');
+                explanationBox.style.display = 'block';
+                explanationBox.classList.remove('border-red-200', 'bg-red-50');
+                explanationBox.classList.add('border-green-200', 'bg-green-50');
+                explanationText.innerHTML = '✅ Doğru cevap! ' + (currentVideo.questions[questionIndex].explanation || 'Tebrikler!');
+                
+                // Update progress
+                updateVideoProgress();
+            } else {
+                // Wrong answer
+                selectedDiv.classList.remove('border-gray-200', 'bg-white');
+                selectedDiv.classList.add('border-red-500', 'bg-red-50');
+                
+                // Show correct answer
+                const correctDiv = questionDiv.querySelector(`[data-option="${correctAnswer}"]`);
+                correctDiv.classList.remove('border-gray-200', 'bg-white');
+                correctDiv.classList.add('border-green-500', 'bg-green-50');
+                
+                explanationBox.style.display = 'block';
+                explanationBox.classList.remove('border-green-200', 'bg-green-50');
+                explanationBox.classList.add('border-red-200', 'bg-red-50');
+                explanationText.innerHTML = '❌ Yanlış cevap. Doğru cevap: ' + String.fromCharCode(65 + correctAnswer) + '. ' + (currentVideo.questions[questionIndex].explanation || '');
+                
+                // Get AI recommendation for wrong answer
+                getAIRecommendation(questionIndex, selectedOption, correctAnswer, explanationBox);
+            }
+        }
+        
+        // Get AI recommendation for wrong answers
+        async function getAIRecommendation(questionIndex, selectedOption, correctAnswer, explanationBox) {
+            try {
+                // Wait for GroqAPI to be available
+                let retries = 0;
+                while (!window.GroqAPI && !window.GeminiAPI && retries < 10) {
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                    retries++;
+                }
+                
+                // Show loading
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'mt-4 p-4 bg-white/80 rounded-lg border border-blue-300';
+                loadingDiv.innerHTML = `
+                    <p class="text-sm text-gray-600">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>
+                        AI size özel öneriler hazırlıyor...
+                    </p>
+                `;
+                explanationBox.appendChild(loadingDiv);
+                
+                // Get all modules and videos
+                const modulesResult = await window.DB.load('modules');
+                let allModules = [];
+                if (modulesResult && modulesResult.success) {
+                    if (Array.isArray(modulesResult.data)) {
+                        allModules = modulesResult.data;
+                    } else if (typeof modulesResult.data === 'object') {
+                        allModules = Object.values(modulesResult.data);
+                    }
+                }
+                
+                const videosResult = await window.DB.load('coordinatorVideos');
+                let allVideos = [];
+                if (videosResult && videosResult.success) {
+                    if (Array.isArray(videosResult.data)) {
+                        allVideos = videosResult.data;
+                    } else if (typeof videosResult.data === 'object') {
+                        allVideos = Object.values(videosResult.data);
+                    }
+                }
+                
+                const question = currentVideo.questions[questionIndex];
+                if (!question || !question.options) {
+                    console.error('❌ Soru veya seçenekler bulunamadı');
+                    loadingDiv.remove();
+                    return;
+                }
+                
+                const wrongAnswerText = question.options[selectedOption] || 'Seçilen cevap';
+                const correctAnswerText = question.options[correctAnswer] || 'Doğru cevap';
+                
+                console.log('🤖 AI önerisi isteniyor:', {
+                    question: question.question,
+                    wrongAnswer: wrongAnswerText,
+                    correctAnswer: correctAnswerText,
+                    modulesCount: allModules.length,
+                    videosCount: allVideos.length
+                });
+                
+                // Get API instance
+                const api = window.GroqAPI || window.GeminiAPI;
+                if (!api || typeof api.generateVideoRecommendation !== 'function') {
+                    console.error('❌ Groq API veya generateVideoRecommendation fonksiyonu bulunamadı');
+                    loadingDiv.remove();
+                    return;
+                }
+                
+                // Get AI recommendation
+                const recommendation = await api.generateVideoRecommendation(
+                    question.question,
+                    wrongAnswerText,
+                    correctAnswerText,
+                    allModules,
+                    allVideos
+                );
+                
+                // Remove loading
+                loadingDiv.remove();
+                
+                if (recommendation.success && recommendation.recommendedVideoId) {
+                    // Show recommendation with button
+                    const recommendationDiv = document.createElement('div');
+                    recommendationDiv.className = 'mt-4 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border-2 border-purple-300';
+                    recommendationDiv.innerHTML = `
+                        <div class="flex items-start">
+                            <i class="fas fa-robot text-purple-600 text-2xl mr-3 mt-1"></i>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-700 mb-3">${recommendation.feedback}</p>
+                                <div class="bg-white p-3 rounded-lg border border-purple-200 mb-3">
+                                    <p class="text-sm font-semibold text-purple-800 mb-1">
+                                        <i class="fas fa-video mr-2"></i>${recommendation.recommendedVideoTitle}
+                                    </p>
+                                    <p class="text-xs text-gray-600">${recommendation.reason}</p>
+                                </div>
+                                <button onclick="goToRecommendedVideo('${recommendation.recommendedVideoId}')" 
+                                        class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all transform hover:scale-105">
+                                    <i class="fas fa-play-circle mr-2"></i>Bu Videoyu İzle
+                                </button>
+                            </div>
+                </div>
             `;
-            aiQuestionsContainer.appendChild(generalTipsDiv);
+                    explanationBox.appendChild(recommendationDiv);
+                } else {
+                    // Show generic feedback or error message
+                    const feedbackDiv = document.createElement('div');
+                    feedbackDiv.className = 'mt-4 p-4 rounded-lg border';
+                    
+                    if (recommendation.error && recommendation.error.includes('Rate limit')) {
+                        feedbackDiv.classList.add('bg-red-50', 'border-red-300');
+                        feedbackDiv.innerHTML = `
+                            <p class="text-sm text-red-700">
+                                <i class="fas fa-exclamation-triangle text-red-600 mr-2"></i>
+                                <strong>API Limit Aşıldı:</strong> Çok fazla istek gönderildi. Lütfen birkaç dakika sonra tekrar deneyin.
+                            </p>
+                            <p class="text-xs text-red-600 mt-2">
+                                ${recommendation.feedback || 'Bu konuyu tekrar gözden geçirmenizi öneririz.'}
+                            </p>
+                        `;
+                    } else {
+                        feedbackDiv.classList.add('bg-yellow-50', 'border-yellow-300');
+                        feedbackDiv.innerHTML = `
+                            <p class="text-sm text-gray-700">
+                                <i class="fas fa-info-circle text-yellow-600 mr-2"></i>
+                                ${recommendation.feedback || 'Bu konuyu tekrar gözden geçirmenizi öneririz.'}
+                            </p>
+                        `;
+                    }
+                    explanationBox.appendChild(feedbackDiv);
+                }
+                
+            } catch (error) {
+                console.error('❌ AI öneri hatası:', error);
+                if (loadingDiv && loadingDiv.parentNode) {
+                    loadingDiv.remove();
+                }
+                
+                // Show error message to user
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'mt-4 p-4 bg-red-50 rounded-lg border border-red-300';
+                errorDiv.innerHTML = `
+                    <p class="text-sm text-red-700">
+                        <i class="fas fa-exclamation-triangle text-red-600 mr-2"></i>
+                        <strong>Hata:</strong> AI önerisi alınamadı. Lütfen daha sonra tekrar deneyin.
+                    </p>
+                    <p class="text-xs text-red-600 mt-2">
+                        ${error.message || 'Bilinmeyen bir hata oluştu.'}
+                    </p>
+                `;
+                if (explanationBox) {
+                    explanationBox.appendChild(errorDiv);
+                }
+            }
+        }
+        
+        // Go to recommended video
+        function goToRecommendedVideo(videoId) {
+            // Find the video in current module
+            const module = moduleData[currentModule];
+            if (module && module.videos) {
+                const video = module.videos.find(v => v.id === videoId || v.youtubeVideoId === videoId);
+                if (video) {
+                    currentVideoId = video.id;
+                    loadVideo(video);
+                    loadVideoList();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    return;
+                }
+            }
+            
+            // If not in current module, search in all modules
+            for (const moduleId in moduleData) {
+                const mod = moduleData[moduleId];
+                if (mod.videos) {
+                    const video = mod.videos.find(v => v.id === videoId || v.youtubeVideoId === videoId);
+                    if (video) {
+                        // Redirect to that module
+                        window.location.href = `module-detail.html?module=${moduleId}`;
+                        return;
+                    }
+                }
+            }
+            
+            alert('Önerilen video bulunamadı.');
+        }
+        
+        // Update video progress
+        async function updateVideoProgress() {
+            const module = moduleData[currentModule];
+            if (!module || !module.videos || !currentVideo) return;
+            
+            const video = module.videos.find(v => v.id === currentVideoId);
+            if (!video) return;
+            
+            // Calculate video-specific progress
+            const totalQuestions = video.questions ? video.questions.length : 0;
+            let questionsAnswered = 0;
+            let correctAnswers = 0;
+            
+            // Count answered questions (check if user has answered)
+            if (video.questions) {
+                video.questions.forEach((q, index) => {
+                    const questionDiv = document.querySelector(`[data-question-index="${index}"]`);
+                    if (questionDiv) {
+                        const explanationBox = questionDiv.querySelector('.explanation-box');
+                        if (explanationBox && explanationBox.style.display !== 'none') {
+                            questionsAnswered++;
+                            // Check if answer was correct (green background)
+                            if (explanationBox.classList.contains('bg-green-50')) {
+                                correctAnswers++;
+                            }
+                        }
+                    }
+                });
+            }
+            
+            const progressPercent = totalQuestions > 0 
+                ? Math.round((correctAnswers / totalQuestions) * 100) 
+                : 0;
+            const isCompleted = progressPercent === 100 && totalQuestions > 0;
+            
+            // Update video progress in module data
+            if (!video.progress) video.progress = {};
+            video.progress.questionsAnswered = questionsAnswered;
+            video.progress.correctAnswers = correctAnswers;
+            video.progress.progressPercent = progressPercent;
+            video.progress.completed = isCompleted;
+            
+            // Calculate overall module progress
+            let totalModuleProgress = 0;
+            let totalModuleQuestions = 0;
+            let totalModuleCorrect = 0;
+            
+            module.videos.forEach(v => {
+                if (v.questions && v.questions.length > 0) {
+                    totalModuleQuestions += v.questions.length;
+                    const vProgress = v.progress || {};
+                    totalModuleCorrect += (vProgress.correctAnswers || 0);
+                }
+            });
+            
+            const moduleProgress = totalModuleQuestions > 0 
+                ? Math.round((totalModuleCorrect / totalModuleQuestions) * 100) 
+                : 0;
+            
+            // Update UI
+            const progressElement = document.getElementById('module-progress');
+            const progressBar = document.getElementById('progress-bar');
+            if (progressElement) progressElement.textContent = moduleProgress + '%';
+            if (progressBar) progressBar.style.width = moduleProgress + '%';
+            
+            // Save progress to Firebase
+            await saveProgressToFirebase(moduleProgress, video.id, {
+                questionsAnswered,
+                correctAnswers,
+                progressPercent,
+                completed: isCompleted
+            });
+            
+            // Refresh video list to show updated progress
+            await loadVideoList();
+            
+            console.log(`📊 Video ilerleme güncellendi: ${correctAnswers}/${totalQuestions} = ${progressPercent}%`);
+            console.log(`📊 Modül ilerleme: ${totalModuleCorrect}/${totalModuleQuestions} = ${moduleProgress}%`);
+        }
+        
+        // Save progress to Firebase
+        async function saveProgressToFirebase(moduleProgress, videoId, videoProgress) {
+            try {
+                const userEmail = localStorage.getItem('userEmail');
+                if (!userEmail || !window.DB) return;
+                
+                // Get existing progress
+                const progressResult = await window.DB.load('userProgress');
+                let existingProgress = null;
+                let progressId = null;
+                
+                if (progressResult && progressResult.success) {
+                    const allProgress = Array.isArray(progressResult.data) 
+                        ? progressResult.data 
+                        : Object.values(progressResult.data || {});
+                    
+                    existingProgress = allProgress.find(p => p.userEmail === userEmail && p.moduleId === currentModule);
+                    if (existingProgress && existingProgress.id) {
+                        progressId = existingProgress.id;
+                    }
+                }
+                
+                // Update or create progress data
+                const progressData = {
+                    userEmail: userEmail,
+                    moduleId: currentModule,
+                    completionRate: moduleProgress,
+                    videoProgress: existingProgress?.videoProgress || {},
+                    lastAccessedAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                };
+                
+                // Update video-specific progress
+                if (videoId && videoProgress) {
+                    progressData.videoProgress[videoId] = {
+                        questionsAnswered: videoProgress.questionsAnswered,
+                        correctAnswers: videoProgress.correctAnswers,
+                        progressPercent: videoProgress.progressPercent,
+                        completed: videoProgress.completed,
+                        updatedAt: new Date().toISOString()
+                    };
+                }
+                
+                if (progressId) {
+                    // Update existing progress
+                    await window.DB.save('userProgress', progressData, progressId);
+                } else {
+                    // Create new progress
+                    await window.DB.save('userProgress', progressData);
+                }
+                
+                console.log('✅ İlerleme Firebase\'e kaydedildi');
+                
+            } catch (error) {
+                console.error('❌ İlerleme kaydetme hatası:', error);
+            }
         }
 
         function setupEventListeners() {
-            // Submit answers
-            document.getElementById('submit-answers').addEventListener('click', async function() {
-                const questions = moduleData[currentModule].questions[currentVideoId];
-                if (!questions) return;
-
-                let correctCount = 0;
-                wrongAnswers = [];
-
-                for (const question of questions) {
-                    const selectedOption = document.querySelector(`input[name="question_${question.id}"]:checked`);
-                    if (selectedOption) {
-                        const selectedValue = parseInt(selectedOption.value);
-                        userAnswers[question.id] = selectedValue;
-
-                        if (selectedValue === question.correct) {
-                            correctCount++;
-                        } else {
-                            wrongAnswers.push({
-                                question: question.question,
-                                userAnswer: question.options[selectedValue],
-                                correctAnswer: question.options[question.correct],
-                                explanation: question.explanation
-                            });
-                        }
+            // Previous/Next video buttons
+            document.getElementById('prev-video').addEventListener('click', () => {
+                const module = moduleData[currentModule];
+                if (module && module.videos) {
+                    const currentIndex = module.videos.findIndex(v => v.id === currentVideoId);
+                    if (currentIndex > 0) {
+                        currentVideoId = module.videos[currentIndex - 1].id;
+                        const videoToLoad = module.videos[currentIndex - 1];
+                        loadVideo(videoToLoad);
+                        loadVideoList();
                     }
                 }
-
-                // Show results
-                showResults(correctCount, questions.length);
-
-                // Only generate AI analysis if there are wrong answers
-                if (wrongAnswers.length > 0) {
-                    console.log('Yanlış cevaplar var, AI analizi başlatılıyor...');
-                    await analyzeWrongAnswers();
-                } else {
-                    console.log('Tüm sorular doğru cevaplandı, AI analizi gerekmiyor.');
-                }
             });
 
-            // Notes functionality
-            document.getElementById('save-note').addEventListener('click', saveQuickNote);
-            document.getElementById('add-note').addEventListener('click', openNoteModal);
-            document.getElementById('save-video-note').addEventListener('click', saveVideoNote);
-            document.getElementById('cancel-note').addEventListener('click', closeNoteModal);
-
-            // Video controls
             document.getElementById('next-video').addEventListener('click', () => {
-                const nextVideo = moduleData[currentModule].videos.find(v => v.id === currentVideoId + 1);
-                if (nextVideo) {
-                    loadVideo(nextVideo.id);
+                const module = moduleData[currentModule];
+                if (module && module.videos) {
+                    const currentIndex = module.videos.findIndex(v => v.id === currentVideoId);
+                    if (currentIndex < module.videos.length - 1) {
+                        currentVideoId = module.videos[currentIndex + 1].id;
+                        const videoToLoad = module.videos[currentIndex + 1];
+                        loadVideo(videoToLoad);
+                        loadVideoList();
+                    }
                 }
             });
 
-            document.getElementById('prev-video').addEventListener('click', () => {
-                const prevVideo = moduleData[currentModule].videos.find(v => v.id === currentVideoId - 1);
-                if (prevVideo) {
-                    loadVideo(prevVideo.id);
-                }
+            // Note functionality
+            document.getElementById('add-note').addEventListener('click', () => {
+                document.getElementById('note-modal').classList.remove('hidden');
             });
-        }
 
-        function showResults(correctCount, totalCount) {
-            const percentage = Math.round((correctCount / totalCount) * 100);
-            
-            const resultDiv = document.createElement('div');
-            
-            if (percentage === 100) {
-                // All answers correct
-                resultDiv.className = 'mt-6 p-4 rounded-lg bg-green-50 border border-green-200';
-                resultDiv.innerHTML = `
-                    <h4 class="font-semibold mb-2 text-green-800 flex items-center">
-                        <i class="fas fa-trophy mr-2"></i>
-                        Mükemmel Performans!
-                    </h4>
-                    <p class="text-lg text-green-700">Tüm soruları doğru cevapladınız! (%${percentage})</p>
-                    <p class="text-sm text-green-600 mt-2">Tebrikler! Bu konuda çok başarılısınız.</p>
-                `;
-            } else {
-                // Some answers wrong
-                resultDiv.className = 'mt-6 p-4 rounded-lg bg-blue-50 border border-blue-200';
-                resultDiv.innerHTML = `
-                    <h4 class="font-semibold mb-2 text-blue-800">Sonuçlar</h4>
-                    <p class="text-lg text-blue-700">Doğru Cevap: ${correctCount}/${totalCount} (%${percentage})</p>
-                    ${wrongAnswers.length > 0 ? '<p class="text-sm text-orange-600 mt-2"><i class="fas fa-brain mr-1"></i>Yanlış cevaplarınız için AI analizi hazırlanıyor...</p>' : ''}
-                `;
-            }
-
-            document.getElementById('questions-container').appendChild(resultDiv);
-            document.getElementById('submit-answers').style.display = 'none';
-            document.getElementById('continue-module').style.display = 'inline-block';
-        }
-
-        // Notes functionality
-        function saveQuickNote() {
-            const noteText = document.getElementById('quick-notes').value.trim();
-            if (!noteText) return;
-
-            const note = {
-                module_id: currentModule,
-                video_id: currentVideoId,
-                title: `Video ${currentVideoId} Notu`,
-                content: noteText,
-                video_time: 0
-            };
-
-            saveNoteToDatabase(note);
-            document.getElementById('quick-notes').value = '';
-        }
-
-        async function saveNoteToDatabase(note) {
-            try {
-                console.log('💾 Not kaydediliyor...');
-                
-                const userEmail = localStorage.getItem('userEmail');
-                if (!userEmail) {
-                    throw new Error('Kullanıcı e-postası bulunamadı');
-                }
-                
-                // Wait for DB to be ready
-                if (!window.DB) {
-                    console.warn('⚠️ DB henüz hazır değil, bekleniyor...');
-                    await new Promise(resolve => {
-                        const checkDB = () => {
-                            if (window.DB) {
-                                resolve();
-                            } else {
-                                setTimeout(checkDB, 100);
-                            }
-                        };
-                        checkDB();
-                    });
-                }
-                
-                // Yeni not için ID oluştur
-                const noteId = Date.now().toString() + Math.random().toString(36).substr(2, 9);
-                const newNote = {
-                    id: noteId,
-                    userEmail: userEmail,
-                    moduleId: note.module_id,
-                    videoId: note.video_id,
-                    moduleName: getModuleName(note.module_id),
-                    title: note.title,
-                    content: note.content,
-                    videoTime: note.video_time || 0,
-                    timestamp: new Date().toISOString(),
-                    createdAt: new Date().toISOString()
-                };
-                
-                // Firebase'e kaydet
-                const success = await DB.save('userNotes', newNote, noteId);
-                
-                if (success) {
-                    showNotification('Not başarıyla kaydedildi', 'success');
-                    loadSavedNotes(); // Notları yenile
-                    console.log('✅ Not başarıyla kaydedildi');
-                } else {
-                    throw new Error('Not kaydedilemedi');
-                }
-                
-            } catch (error) {
-                console.error('❌ Not kaydedilirken hata:', error);
-                showNotification('Not kaydedilirken hata oluştu: ' + error.message, 'error');
-            }
-        }
-        
-        function getModuleName(moduleId) {
-            const moduleNames = {
-                1: 'Temel Kavramlar',
-                2: 'Risk Değerlendirme',
-                3: 'Kriz Yönetimi',
-                4: 'İletişim',
-                5: 'Liderlik',
-                6: 'Uygulama',
-                7: 'İyileşme',
-                8: 'Mastery'
-            };
-            return moduleNames[moduleId] || 'Bilinmeyen Modül';
-        }
-
-        async function loadSavedNotes() {
-            try {
-                console.log('📝 Kaydedilmiş notlar yükleniyor...');
-                
-                const userEmail = localStorage.getItem('userEmail');
-                if (!userEmail) {
-                    console.warn('⚠️ Kullanıcı e-postası bulunamadı');
-                    return;
-                }
-                
-                // Wait for DB to be ready
-                if (!window.DB) {
-                    console.warn('⚠️ DB henüz hazır değil, bekleniyor...');
-                    await new Promise(resolve => {
-                        const checkDB = () => {
-                            if (window.DB) {
-                                resolve();
-                            } else {
-                                setTimeout(checkDB, 100);
-                            }
-                        };
-                        checkDB();
-                    });
-                }
-                
-                // Firebase'den notları al
-                let notesData = [];
-                try {
-                    const notesResult = await DB.load('userNotes');
-                    notesData = (notesResult && notesResult.success) ? notesResult.data : [];
-                    console.log('✅ Notes data yüklendi:', notesData.length);
-                } catch (error) {
-                    console.warn('⚠️ Notes data yüklenemedi:', error);
-                    notesData = [];
-                }
-                
-                // Ensure data is array
-                if (!Array.isArray(notesData)) {
-                    console.warn('⚠️ Notes data array değil, düzeltiliyor');
-                    notesData = [];
-                }
-                
-                // Kullanıcının ve mevcut modülün notlarını filtrele
-                const moduleNotes = notesData.filter(note => 
-                    note.userEmail === userEmail && 
-                    (note.moduleId === currentModule || note.moduleId === currentModule.toString())
-                );
-
-                const savedNotesContainer = document.getElementById('saved-notes');
-                if (savedNotesContainer) {
-                    savedNotesContainer.innerHTML = '';
-
-                    moduleNotes.forEach(note => {
-                        displaySavedNote(note);
-                    });
-                }
-                
-                console.log('✅ Kaydedilmiş notlar yüklendi:', moduleNotes.length);
-
-            } catch (error) {
-                console.error('❌ Notlar yüklenirken hata:', error);
-                showNotification('Notlar yüklenirken hata oluştu: ' + error.message, 'error');
-            }
-        }
-
-        function displaySavedNote(note) {
-            const noteDiv = document.createElement('div');
-            noteDiv.className = 'bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm';
-            noteDiv.innerHTML = `
-                <div class="flex justify-between items-start mb-1">
-                    <span class="text-xs text-gray-500">${formatDate(note.timestamp)}</span>
-                    <button class="text-red-500 hover:text-red-700 text-xs" onclick="deleteNote(${note.id})">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-                <p>${note.content}</p>
-                ${note.videoTime ? `<span class="text-xs text-gray-400 mt-1 block">Zaman: ${Math.floor(note.videoTime / 60)}:${(note.videoTime % 60).toString().padStart(2, '0')}</span>` : ''}
-            `;
-            document.getElementById('saved-notes').appendChild(noteDiv);
-        }
-
-        async function deleteNote(noteId) {
-            if (!confirm('Bu notu silmek istediğinizden emin misiniz?')) {
-                return;
-            }
-
-            try {
-                console.log('🗑️ Not siliniyor:', noteId);
-                
-                // Firebase'den notu sil
-                const success = await DB.delete('userNotes', noteId);
-                
-                if (success) {
-                    showNotification('Not başarıyla silindi', 'success');
-                    loadSavedNotes(); // Notları yenile
-                    console.log('✅ Not başarıyla silindi');
-                } else {
-                    throw new Error('Not silinemedi');
-                }
-                
-            } catch (error) {
-                console.error('❌ Not silinirken hata:', error);
-                showNotification('Not silinirken hata oluştu: ' + error.message, 'error');
-            }
-        }
-
-        function openNoteModal() {
-            document.getElementById('note-modal').classList.remove('hidden');
-        }
-
-        function closeNoteModal() {
+            document.getElementById('cancel-note').addEventListener('click', () => {
             document.getElementById('note-modal').classList.add('hidden');
             document.getElementById('video-note-text').value = '';
-        }
+            });
 
-        async function saveVideoNote() {
+            document.getElementById('save-video-note').addEventListener('click', () => {
             const noteText = document.getElementById('video-note-text').value.trim();
-            if (!noteText) return;
+                if (noteText) {
+                    saveVideoNote(noteText);
+                    document.getElementById('note-modal').classList.add('hidden');
+                    document.getElementById('video-note-text').value = '';
+                }
+            });
 
-            const videoTime = document.getElementById('main-video').currentTime || 0;
-            const note = {
-                module_id: currentModule,
-                video_id: currentVideoId,
-                title: `Video ${currentVideoId} - ${Math.floor(videoTime / 60)}:${(videoTime % 60).toString().padStart(2, '0')}`,
-                content: noteText,
-                video_time: Math.floor(videoTime)
-            };
-
-            await saveNoteToDatabase(note);
-            closeNoteModal();
-        }
-
-        // Tarihi formatla
-        function formatDate(timestamp) {
-            const date = new Date(timestamp);
-            const now = new Date();
-            const diffTime = Math.abs(now - date);
-            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            
-            if (diffDays === 0) {
-                return 'Bugün ' + date.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
-            } else if (diffDays === 1) {
-                return 'Dün ' + date.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
-            } else if (diffDays < 7) {
-                return diffDays + ' gün önce';
-            } else {
-                return date.toLocaleDateString('tr-TR');
-            }
-        }
-
-        // Bildirim göster
-        function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg text-white ${
-                type === 'success' ? 'bg-green-500' : 
-                type === 'error' ? 'bg-red-500' : 'bg-blue-500'
-            }`;
-            notification.textContent = message;
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
-        }
-
-        // AI Analysis Functions - Updated for Sidebar
-        async function analyzeWrongAnswers() {
-            console.log('=== AI ANALYSIS STARTED (SIDEBAR) ===');
-            console.log('Wrong answers:', wrongAnswers);
-            
-            if (wrongAnswers.length === 0) {
-                console.log('No wrong answers to analyze');
-                return;
-            }
-            
-            // Hide main AI analysis section and show sidebar
-            document.getElementById('ai-analysis-section').style.display = 'none';
-            document.getElementById('sidebar-ai-analysis').style.display = 'block';
-            document.getElementById('sidebar-ai-default').style.display = 'none';
-            
-            // Display wrong answers in sidebar
-            displayWrongAnswersSidebar();
-            
-            // Generate AI recommendations in sidebar
-            generateAIRecommendationsSidebar();
-            
-            // Generate similar questions in sidebar
-            await generateSimilarQuestionsSidebar();
-            
-            console.log('=== AI ANALYSIS COMPLETED (SIDEBAR) ===');
-        }
-        
-        function displayWrongAnswersSidebar() {
-            const wrongAnswersList = document.getElementById('sidebar-wrong-answers-list');
-            wrongAnswersList.innerHTML = '';
-            
-            wrongAnswers.forEach((wrongAnswer, index) => {
-                const wrongAnswerDiv = document.createElement('div');
-                wrongAnswerDiv.className = 'bg-red-50 border-l-2 border-red-400 p-2 rounded text-xs';
-                wrongAnswerDiv.innerHTML = `
-                    <p class="font-medium text-red-700 mb-1">Soru ${index + 1}:</p>
-                    <p class="text-gray-600 mb-1">${wrongAnswer.question.substring(0, 60)}...</p>
-                    <p class="text-red-600 text-xs">❌ ${wrongAnswer.userAnswer}</p>
-                    <p class="text-green-600 text-xs">✅ ${wrongAnswer.correctAnswer}</p>
-                `;
-                wrongAnswersList.appendChild(wrongAnswerDiv);
+            document.getElementById('save-note').addEventListener('click', () => {
+                const noteText = document.getElementById('quick-notes').value.trim();
+                if (noteText) {
+                    saveQuickNote(noteText);
+                    document.getElementById('quick-notes').value = '';
+                }
             });
         }
-        
-        function generateAIRecommendationsSidebar() {
-            const aiRecommendationsContent = document.getElementById('sidebar-ai-recommendations-content');
+
+        function saveVideoNote(noteText) {
+            const timestamp = new Date().toLocaleString('tr-TR');
+            const module = moduleData[currentModule];
+            const currentVideo = module?.videos?.find(v => v.id === currentVideoId);
             
-            const moduleTopics = {
-                1: 'Afet Yönetimi Temelleri',
-                2: 'Kriz Liderliği',
-                3: 'Acil Durum Planlaması',
-                4: 'İletişim Stratejileri',
-                5: 'Karar Verme Süreçleri',
-                6: 'Ekip Yönetimi',
-                7: 'Stres Yönetimi',
-                8: 'İyileştirme Süreçleri'
+            const note = {
+                id: Date.now(),
+                text: noteText,
+                timestamp: timestamp,
+                videoTitle: currentVideo?.title || 'Bilinmeyen Video',
+                moduleTitle: module?.title || 'Bilinmeyen Modül'
             };
-            
-            const currentModuleTopic = moduleTopics[currentModule] || 'Genel Konular';
-            
-            let recommendations = `
-                <div class="mb-2">
-                    <p class="font-medium text-blue-800 text-xs mb-1">📚 Öneriler:</p>
-                    <ul class="text-xs space-y-1">
-                        <li>• <strong>${currentModuleTopic}</strong> konusunda eksiklik tespit edildi</li>
-                        <li>• Modül ${currentModule} videolarını tekrar izleyin</li>
-                        <li>• Aşağıdaki benzer soruları çözün</li>
-                    </ul>
-                </div>
-            `;
-            
-            if (wrongAnswers.length >= 3) {
-                recommendations += `
-                    <div class="bg-yellow-100 border border-yellow-300 rounded p-2 mt-2">
-                        <p class="text-yellow-800 font-medium text-xs">⚠️ ${wrongAnswers.length} soru yanlış! Bu konuları tekrar çalışın.</p>
-                    </div>
-                `;
-            }
-            
-            aiRecommendationsContent.innerHTML = recommendations;
+
+            let notes = JSON.parse(localStorage.getItem('video-notes') || '[]');
+            notes.unshift(note);
+            localStorage.setItem('video-notes', JSON.stringify(notes));
+
+            displaySavedNotes();
         }
-        
-        async function generateSimilarQuestionsSidebar() {
-            const similarQuestionsContainer = document.getElementById('sidebar-similar-questions-container');
+
+        function saveQuickNote(noteText) {
+            const timestamp = new Date().toLocaleString('tr-TR');
             
-            // Show loading
-            similarQuestionsContainer.innerHTML = `
-                <div class="flex items-center justify-center py-4">
-                    <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-                    <span class="ml-2 text-xs text-gray-600">AI sorular üretiyor...</span>
-                </div>
-            `;
+            const note = {
+                id: Date.now(),
+                text: noteText,
+                timestamp: timestamp,
+                type: 'quick'
+            };
+
+            let notes = JSON.parse(localStorage.getItem('quick-notes') || '[]');
+            notes.unshift(note);
+            localStorage.setItem('quick-notes', JSON.stringify(notes));
+
+            displaySavedNotes();
+        }
+
+        function loadSavedNotes() {
+            displaySavedNotes();
+        }
+
+        function displaySavedNotes() {
+            const savedNotesContainer = document.getElementById('saved-notes');
+            const quickNotes = JSON.parse(localStorage.getItem('quick-notes') || '[]');
+            const videoNotes = JSON.parse(localStorage.getItem('video-notes') || '[]');
             
-            try {
-                const similarQuestions = await generateQuestionsBasedOnWrongAnswers(wrongAnswers);
-                
-                if (similarQuestions.length === 0) {
-                    similarQuestionsContainer.innerHTML = `
-                        <div class="text-center py-2">
-                            <p class="text-xs text-gray-600">Şu anda benzer sorular üretilemiyor.</p>
-                        </div>
-                    `;
+            const allNotes = [...quickNotes, ...videoNotes].sort((a, b) => b.id - a.id);
+            
+            if (allNotes.length === 0) {
+                savedNotesContainer.innerHTML = '<p class="text-gray-500 text-sm">Henüz not yok</p>';
                     return;
                 }
                 
-                // Display similar questions in compact format
-                let questionsHTML = '';
-                similarQuestions.forEach((question, index) => {
-                    questionsHTML += `
-                        <div class="bg-green-50 border border-green-200 rounded p-2 mb-2">
-                            <p class="font-medium text-green-800 text-xs mb-2">Soru ${index + 1}:</p>
-                            <p class="text-xs text-gray-700 mb-2">${question.question}</p>
-                            <div class="space-y-1">
-                                ${question.options.map((option, optIndex) => `
-                                    <div class="flex items-center text-xs">
-                                        <input type="radio" id="sidebar-q${index}-opt${optIndex}" 
-                                               name="sidebar-question-${index}" value="${optIndex}" 
-                                               class="mr-1 scale-75">
-                                        <label for="sidebar-q${index}-opt${optIndex}" class="text-gray-700 text-xs">
-                                            ${String.fromCharCode(65 + optIndex)}) ${option.substring(0, 30)}...
-                                        </label>
-                                    </div>
-                                `).join('')}
-                            </div>
-                            <div class="mt-2 hidden" id="sidebar-answer-${index}">
-                                <div class="bg-white border border-green-300 rounded p-2">
-                                    <p class="text-green-700 font-medium text-xs">Doğru: ${String.fromCharCode(65 + question.correctAnswer)}</p>
-                                </div>
-                            </div>
-                            <button onclick="checkSidebarQuestion(${index}, ${question.correctAnswer})" 
-                                    class="mt-2 bg-green-600 text-white px-2 py-1 rounded text-xs hover:bg-green-700">
-                                Kontrol Et
-                            </button>
-                        </div>
-                    `;
-                });
-                
-                similarQuestionsContainer.innerHTML = questionsHTML;
-                
-            } catch (error) {
-                console.error('Error generating similar questions:', error);
-                similarQuestionsContainer.innerHTML = `
-                    <div class="bg-red-50 border border-red-200 rounded p-2">
-                        <p class="text-red-600 text-xs">Sorular üretilirken hata oluştu.</p>
-                    </div>
+            savedNotesContainer.innerHTML = '';
+            
+            allNotes.slice(0, 3).forEach(note => {
+                const noteElement = document.createElement('div');
+                noteElement.className = 'bg-gray-50 p-2 rounded text-sm';
+                noteElement.innerHTML = `
+                    <p class="text-gray-800">${note.text}</p>
+                    <p class="text-gray-500 text-xs mt-1">${note.timestamp}</p>
+                    ${note.videoTitle ? `<p class="text-blue-600 text-xs">${note.videoTitle}</p>` : ''}
                 `;
+                savedNotesContainer.appendChild(noteElement);
+            });
+
+            if (allNotes.length > 3) {
+                const moreNotesElement = document.createElement('div');
+                moreNotesElement.className = 'text-center';
+                moreNotesElement.innerHTML = `
+                    <a href="my-notes.html" class="text-cyber text-sm hover:underline">
+                        +${allNotes.length - 3} daha fazla not görüntüle
+                    </a>
+                `;
+                savedNotesContainer.appendChild(moreNotesElement);
             }
         }
         
-        function checkSidebarQuestion(questionIndex, correctAnswer) {
-            const selectedOption = document.querySelector(`input[name="sidebar-question-${questionIndex}"]:checked`);
-            const answerDiv = document.getElementById(`sidebar-answer-${questionIndex}`);
-            
-            if (!selectedOption) {
-                alert('Lütfen bir seçenek seçin!');
-                return;
-            }
-            
-            const userAnswer = parseInt(selectedOption.value);
-            answerDiv.classList.remove('hidden');
-            
-            if (userAnswer === correctAnswer) {
-                answerDiv.querySelector('div').className = 'bg-green-100 border border-green-300 rounded p-2';
-                answerDiv.querySelector('p').innerHTML = '✅ Doğru!';
-            } else {
-                answerDiv.querySelector('div').className = 'bg-red-100 border border-red-300 rounded p-2';
-                answerDiv.querySelector('p').innerHTML = '❌ Yanlış';
-            }
-        }
-        
-        // Generate questions based on wrong answers - improved version
-        async function generateQuestionsBasedOnWrongAnswers(wrongAnswers) {
-            try {
-                console.log('🤖 Yanlış cevaplara dayalı sorular üretiliyor:', wrongAnswers);
+        // Logout function
+        function logout() {
+            if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('loginTime');
+                localStorage.removeItem('userRole');
                 
-                if (!wrongAnswers || wrongAnswers.length === 0) {
-                    console.warn('⚠️ Yanlış cevap bulunamadı');
-                    return getFallbackQuestions();
-                }
-
-                const newQuestions = [];
-
-                for (let i = 0; i < wrongAnswers.length && i < 3; i++) {
-                    const wrongAnswer = wrongAnswers[i];
-                    
-                    // Get the original question details
-                    const originalQuestion = wrongAnswer.question;
-                    const wrongOption = wrongAnswer.options[wrongAnswer.userAnswer];
-                    const correctOption = wrongAnswer.options[wrongAnswer.correct];
-                    const topic = extractTopicFromQuestion(originalQuestion);
-                    
-                    console.log(`📝 Soru ${i + 1} analizi:`, {
-                        originalQuestion: originalQuestion,
-                        topic: topic,
-                        wrongChoice: wrongOption,
-                        correctChoice: correctOption
-                    });
-
-                    try {
-                        // Try to use Gemini API if available
-                        if (window.GeminiAPI) {
-                            const prompt = `Aşağıdaki siber güvenlik sorusu yanlış cevaplanmıştır. Bu sorunun konusu ve yanlış cevaba dayanarak, aynı konuda ama farklı bir soru oluşturun:
-
-Orijinal Soru: "${originalQuestion}"
-Doğru Cevap: "${correctOption}"
-Yanlış Seçilen: "${wrongOption}"
-Konu: "${topic}"
-
-Lütfen aynı konuda ama tamamen farklı bir açıdan yaklaşan, 4 seçenekli çoktan seçmeli bir soru oluşturun. Cevabı JSON formatında verin:
-
-{
-    "question": "Yeni soru metni",
-    "options": ["A seçeneği", "B seçeneği", "C seçeneği", "D seçeneği"],
-    "correct": 0,
-    "explanation": "Doğru cevabın açıklaması"
-}`;
-
-                            const response = await window.GeminiAPI.generateContent(prompt);
-                            
-                            if (response && response.success) {
-                                try {
-                                    // Try to parse JSON from response
-                                    const jsonMatch = response.data.match(/\{[\s\S]*\}/);
-                                    if (jsonMatch) {
-                                        const questionData = JSON.parse(jsonMatch[0]);
-                                        
-                                        if (questionData.question && questionData.options && 
-                                            Array.isArray(questionData.options) && questionData.options.length === 4) {
-                                            
-                                            newQuestions.push({
-                                                question: questionData.question,
-                                                options: questionData.options,
-                                                correct: parseInt(questionData.correct) || 0,
-                                                explanation: questionData.explanation || '',
-                                                relatedTo: originalQuestion,
-                                                generatedFrom: 'ai-analysis'
-                                            });
-                                            
-                                            console.log(`✅ AI soru ${i + 1} başarıyla oluşturuldu`);
-                                            continue;
-                                        }
-                                    }
-                                } catch (parseError) {
-                                    console.warn('⚠️ AI yanıtı parse edilemedi:', parseError);
-                                }
-                            }
-                        }
-                        
-                        // Fallback: Generate topic-specific question
-                        const topicQuestion = generateTopicSpecificQuestion(topic, originalQuestion, wrongOption);
-                        if (topicQuestion) {
-                            newQuestions.push({
-                                ...topicQuestion,
-                                relatedTo: originalQuestion,
-                                generatedFrom: 'topic-analysis'
-                            });
-                            console.log(`✅ Konu bazlı soru ${i + 1} oluşturuldu`);
-                        }
-                        
-                    } catch (error) {
-                        console.error(`❌ Soru ${i + 1} üretim hatası:`, error);
-                        
-                        // Final fallback
-                        const fallbackQuestion = generateTopicSpecificQuestion(topic, originalQuestion, wrongOption);
-                        if (fallbackQuestion) {
-                            newQuestions.push({
-                                ...fallbackQuestion,
-                                relatedTo: originalQuestion,
-                                generatedFrom: 'fallback'
-                            });
-                        }
-                    }
-                }
-
-                if (newQuestions.length === 0) {
-                    console.warn('⚠️ Hiç yeni soru üretilemedi, fallback sorular kullanılıyor');
-                    return getFallbackQuestions();
-                }
-
-                console.log(`✅ ${newQuestions.length} yeni soru başarıyla üretildi`);
-                return newQuestions;
-
-            } catch (error) {
-                console.error('❌ Soru üretim genel hatası:', error);
-                return getFallbackQuestions();
+                console.log('🚪 Öğrenci çıkışı yapıldı');
+                window.location.href = 'index.html';
             }
-        }
-
-        // Extract topic from question text
-        function extractTopicFromQuestion(questionText) {
-            const topicKeywords = {
-                'şifreleme': 'Kriptoloji ve Şifreleme',
-                'kriptoloji': 'Kriptoloji ve Şifreleme',
-                'aes': 'Kriptoloji ve Şifreleme',
-                'rsa': 'Kriptoloji ve Şifreleme',
-                'hash': 'Kriptoloji ve Şifreleme',
-                'firewall': 'Ağ Güvenliği',
-                'ağ': 'Ağ Güvenliği',
-                'tcp': 'Ağ Güvenliği',
-                'ip': 'Ağ Güvenliği',
-                'ddos': 'Ağ Güvenliği',
-                'sql': 'Web Güvenliği',
-                'xss': 'Web Güvenliği',
-                'web': 'Web Güvenliği',
-                'https': 'Web Güvenliği',
-                'malware': 'Malware Analizi',
-                'virüs': 'Malware Analizi',
-                'trojan': 'Malware Analizi',
-                'cia': 'Bilgi Güvenliği Temelleri',
-                'güvenlik': 'Bilgi Güvenliği Temelleri',
-                'risk': 'Bilgi Güvenliği Temelleri'
-            };
-            
-            const lowerText = questionText.toLowerCase();
-            for (const [keyword, topic] of Object.entries(topicKeywords)) {
-                if (lowerText.includes(keyword)) {
-                    return topic;
-                }
-            }
-            
-            return 'Bilgi Güvenliği Temelleri';
-        }
-
-        // Generate topic-specific question
-        function generateTopicSpecificQuestion(topic, originalQuestion, wrongOption) {
-            const questionTemplates = {
-                'Kriptoloji ve Şifreleme': [
-                    {
-                        question: "Hangi şifreleme algoritması simetrik anahtar kullanır?",
-                        options: ["AES", "RSA", "ECC", "DSA"],
-                        correct: 0,
-                        explanation: "AES (Advanced Encryption Standard) simetrik şifreleme algoritmasıdır."
-                    },
-                    {
-                        question: "Hash fonksiyonlarının temel özelliği nedir?",
-                        options: ["Geri çevrilebilir olması", "Tek yönlü olması", "Anahtarlı olması", "Hızlı olması"],
-                        correct: 1,
-                        explanation: "Hash fonksiyonları tek yönlü fonksiyonlardır, geri çevrilemezler."
-                    }
-                ],
-                'Ağ Güvenliği': [
-                    {
-                        question: "IDS ve IPS arasındaki temel fark nedir?",
-                        options: ["Hız farkı", "IDS izler, IPS engeller", "Maliyet farkı", "Kurulum farkı"],
-                        correct: 1,
-                        explanation: "IDS sadece izler ve uyarı verir, IPS aktif olarak saldırıları engeller."
-                    },
-                    {
-                        question: "Firewall hangi katmanda çalışır?",
-                        options: ["Fiziksel", "Veri bağı", "Ağ", "Uygulama"],
-                        correct: 2,
-                        explanation: "Geleneksel firewall'lar ağ katmanında (Layer 3) çalışır."
-                    }
-                ],
-                'Web Güvenliği': [
-                    {
-                        question: "SQL Injection saldırısını önlemenin en etkili yolu nedir?",
-                        options: ["Güçlü şifre", "Parameterized queries", "HTTPS kullanımı", "Firewall"],
-                        correct: 1,
-                        explanation: "Parameterized queries (hazır ifadeler) SQL Injection'ı önlemenin en etkili yoludur."
-                    },
-                    {
-                        question: "XSS saldırısının hedefi nedir?",
-                        options: ["Sunucu", "Veritabanı", "Kullanıcının tarayıcısı", "Ağ"],
-                        correct: 2,
-                        explanation: "XSS saldırıları kullanıcının web tarayıcısında zararlı kod çalıştırmayı hedefler."
-                    }
-                ],
-                'Bilgi Güvenliği Temelleri': [
-                    {
-                        question: "CIA üçlüsünde 'I' harfi neyi temsil eder?",
-                        options: ["Information", "Integrity", "Implementation", "Infrastructure"],
-                        correct: 1,
-                        explanation: "CIA üçlüsünde 'I' Integrity (Bütünlük) anlamına gelir."
-                    },
-                    {
-                        question: "Risk değerlendirmesinde hangi faktörler dikkate alınır?",
-                        options: ["Sadece tehditler", "Sadece zafiyetler", "Tehdit, zafiyet ve etki", "Sadece etki"],
-                        correct: 2,
-                        explanation: "Risk değerlendirmesinde tehdit, zafiyet ve etki faktörleri birlikte değerlendirilir."
-                    }
-                ]
-            };
-
-            const templates = questionTemplates[topic] || questionTemplates['Bilgi Güvenliği Temelleri'];
-            const randomIndex = Math.floor(Math.random() * templates.length);
-            return templates[randomIndex];
-        }
-
-        // Get fallback questions when AI fails
-        function getFallbackQuestions() {
-            return [
-                {
-                    question: "Siber güvenlikte en önemli ilke hangisidir?",
-                    options: ["Hız", "Güvenlik", "Maliyet", "Kullanım kolaylığı"],
-                    correct: 1,
-                    explanation: "Siber güvenlikte güvenlik her zaman öncelikli ilkedir."
-                },
-                {
-                    question: "Güçlü bir şifrenin özelliği nedir?",
-                    options: ["Kısa olması", "Sadece harf içermesi", "Karmaşık ve uzun olması", "Kolay hatırlanması"],
-                    correct: 2,
-                    explanation: "Güçlü şifreler karmaşık, uzun ve farklı karakter tiplerini içerir."
-                }
-            ];
         }
     </script>
 </body>
 </html> 
+
+
+
+

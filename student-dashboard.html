@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Kriptarium</title>
+    <title>Dashboard - EduPlatform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -32,8 +32,8 @@
     <aside class="bg-dark text-white w-64 min-h-screen fixed left-0 top-0 z-20 hidden md:block">
         <div class="p-4">
             <a href="student-dashboard.html" class="font-bold text-xl text-cyber block mb-8 flex items-center">
-                <i class="fas fa-key text-2xl mr-3"></i>
-                Kriptarium
+                <i class="fas fa-graduation-cap text-2xl mr-3"></i>
+                EduPlatform
             </a>
             
             <div class="mb-8">
@@ -62,10 +62,6 @@
                     <i class="fas fa-sticky-note mr-3"></i>
                     <span>Notlarım</span>
                 </a>
-                <a href="downloads.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
-                    <i class="fas fa-download mr-3"></i>
-                    <span>Kaynaklar</span>
-                </a>
                 <a href="account.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
                     <i class="fas fa-user-cog mr-3"></i>
                     <span>Profil Ayarları</span>
@@ -73,7 +69,7 @@
             </nav>
 
             <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
-                <a href="index.html" class="flex items-center text-gray-400 hover:text-white">
+                <a href="#" onclick="logout()" class="flex items-center text-gray-400 hover:text-white">
                     <i class="fas fa-sign-out-alt mr-3"></i>
                     <span>Çıkış Yap</span>
                 </a>
@@ -89,7 +85,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <h1 class="text-3xl font-bold text-gray-900 mb-2">Genel Bakış</h1>
-                        <p class="text-gray-600">Bilgi Sistemleri ve Güvenlik Eğitimi İlerlemeniz</p>
+                        <p class="text-gray-600">Online Eğitim Platformu İlerlemeniz</p>
                     </div>
                     <div class="text-right">
                         <p class="text-lg font-semibold text-gray-900" id="header-user-name"></p>
@@ -133,16 +129,16 @@
                     <p class="text-xs text-gray-500 mt-1">ortalama puan</p>
             </div>
             
-                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-sm font-medium text-gray-600">Güvenlik Seviyesi</h3>
-                        <div class="h-10 w-10 bg-secondary/10 text-secondary rounded-lg flex items-center justify-center">
-                            <i class="fas fa-shield-alt"></i>
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-sm font-medium text-gray-600">Öğrenme Seviyesi</h3>
+                            <div class="h-10 w-10 bg-secondary/10 text-secondary rounded-lg flex items-center justify-center">
+                                <i class="fas fa-star"></i>
         </div>
                     </div>
-                    <p class="text-2xl font-bold text-gray-900" id="security-level">Başlangıç</p>
-                    <p class="text-xs text-gray-500 mt-1" id="security-description">Temel seviye</p>
-                </div>
+                        <p class="text-2xl font-bold text-gray-900" id="security-level">Başlangıç</p>
+                        <p class="text-xs text-gray-500 mt-1" id="security-description">Temel seviye</p>
+                    </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -170,18 +166,18 @@
                         </div>
                     </div>
 
-                    <!-- Continue Watching -->
-                    <div class="bg-white rounded-xl shadow-sm p-6" id="continue-watching-section">
+                    <!-- AI Learning Analysis -->
+                    <div class="bg-white rounded-xl shadow-sm p-6" id="ai-analysis-section">
                         <h2 class="text-xl font-semibold mb-4 flex items-center">
-                            <i class="fas fa-play text-cyber mr-2"></i>
-                            Kaldığın Yerden Devam Et
+                            <i class="fas fa-brain text-cyber mr-2"></i>
+                            AI Öğrenme Analizi
                         </h2>
                         
-                        <div class="flex items-center p-4 bg-gradient-to-r from-cyber/10 to-primary/10 rounded-lg border border-cyber/20" id="continue-watching-content">
-                            <!-- Continue watching content will be loaded here -->
-                                </div>
-                                </div>
-                            </div>
+                        <div id="ai-analysis-content" class="space-y-4">
+                            <!-- AI analysis content will be loaded here -->
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Sidebar -->
                 <div class="lg:col-span-1">
@@ -209,15 +205,15 @@
                         </div>
                     </div>
 
-                    <!-- Security Tips -->
+                    <!-- Learning Tips -->
                     <div class="bg-gradient-to-br from-secondary/10 to-primary/10 rounded-xl p-6 border border-secondary/20">
                         <h3 class="text-lg font-semibold mb-4 flex items-center text-secondary">
                             <i class="fas fa-lightbulb mr-2"></i>
-                            Günün Güvenlik İpucu
+                            Günün Öğrenme İpucu
                         </h3>
                         
                         <div class="bg-white/50 rounded-lg p-4" id="security-tip">
-                            <!-- Security tip will be loaded here -->
+                            <!-- Learning tip will be loaded here -->
                         </div>
                     </div>
                 </div>
@@ -232,6 +228,7 @@
     <!-- Firebase Production DB -->
     <script src="js/firebase-production.js"></script>
     <script src="js/user-utils.js"></script>
+    <script src="js/groq-api.js"></script>
     <script src="js/main.js"></script>
 
     <script>
@@ -242,11 +239,11 @@
             
             // Load Firebase data
             await loadDashboardData();
-            await loadContinueWatching(); 
             await loadProgressOverview(); 
             await loadActiveTasks();
             await loadRecentAchievements();
             await loadSecurityTip();
+            await loadAIAnalysis();
         });
         
         // Load real dashboard data from Firebase
@@ -315,104 +312,204 @@
             }
         }
         
-        // Load continue watching video
-        async function loadContinueWatching() {
+        // Load AI Learning Analysis
+        async function loadAIAnalysis() {
             try {
-                console.log('🎬 Son izlenen videolar yükleniyor...');
+                console.log('🤖 AI öğrenme analizi yükleniyor...');
                 
-                // Get user progress
-                const progressResult = await DB.load('userProgress');
-                const userProgress = (progressResult && progressResult.success) ? progressResult.data : [];
-                
-                // Get user's progress
                 const userEmail = localStorage.getItem('userEmail');
-                const myProgress = userProgress.filter(p => p.userEmail === userEmail);
+                if (!userEmail) return;
                 
-                if (myProgress.length === 0) {
-                    // No progress yet, show first available video
-                    const videosResult = await DB.load('coordinatorVideos');
-                    const videos = (videosResult && videosResult.success) ? videosResult.data : [];
-                    
-                    if (videos.length > 0) {
-                        const firstVideo = videos[0];
-                        updateContinueWatchingUI({
-                            title: firstVideo.title,
-                            moduleTitle: 'Kriptografi Temelleri',
-                            progress: 0,
-                            videoId: firstVideo.id,
-                            moduleId: firstVideo.moduleId,
-                            thumbnail: `https://img.youtube.com/vi/${firstVideo.youtubeVideoId}/maxresdefault.jpg`
-                        });
+                // Get user's quiz responses and wrong answers
+                const responsesResult = await window.DB.load('quizResponses');
+                const responses = (responsesResult && responsesResult.success) ? responsesResult.data : [];
+                const userResponses = responses.filter(r => r.userEmail === userEmail);
+                
+                // Get user's exam progress for wrong answers
+                const progressResult = await window.DB.load('userProgress');
+                const progressData = (progressResult && progressResult.success) ? progressResult.data : [];
+                const userProgressData = progressData.filter(p => p.userEmail === userEmail);
+                
+                // Analyze recent wrong answers
+                const wrongAnswers = [];
+                userProgressData.forEach(progress => {
+                    if (progress.wrongAnswers && progress.wrongAnswers.length > 0) {
+                        wrongAnswers.push(...progress.wrongAnswers.slice(0, 3)); // Son 3 yanlış cevap
                     }
+                });
+                
+                if (wrongAnswers.length === 0) {
+                    displayNoAnalysisMessage();
                     return;
                 }
                 
-                // Get the most recent video progress
-                const recentProgress = myProgress.sort((a, b) => 
-                    new Date(b.lastWatched || b.createdAt) - new Date(a.lastWatched || a.createdAt)
-                )[0];
-                
-                // Get video details
-                const videosResult = await DB.load('coordinatorVideos');
-                const videos = (videosResult && videosResult.success) ? videosResult.data : [];
-                const currentVideo = videos.find(v => v.id === recentProgress.videoId);
-                
-                // Get module details
-                const modulesResult = await DB.load('modules');
-                const modules = (modulesResult && modulesResult.success) ? modulesResult.data : [];
-                const currentModule = modules.find(m => m.id === recentProgress.moduleId);
-                
-                if (currentVideo) {
-                    updateContinueWatchingUI({
-                        title: currentVideo.title,
-                        moduleTitle: currentModule ? currentModule.title : 'Bilinmeyen Modül',
-                        progress: recentProgress.progress || 0,
-                        videoId: currentVideo.id,
-                        moduleId: currentVideo.moduleId,
-                        thumbnail: `https://img.youtube.com/vi/${currentVideo.youtubeVideoId}/maxresdefault.jpg`
-                    });
-                }
+                // Generate AI analysis for wrong answers
+                await generateAIAnalysisForWrongAnswers(wrongAnswers);
                 
             } catch (error) {
-                console.error('❌ Son izlenen video yüklenirken hata:', error);
+                console.error('❌ AI analizi yüklenirken hata:', error);
+                displayNoAnalysisMessage();
             }
         }
         
-        function updateContinueWatchingUI(videoData) {
-            const container = document.getElementById('continue-watching-content');
+        function displayNoAnalysisMessage() {
+            const container = document.getElementById('ai-analysis-content');
             if (!container) return;
             
             container.innerHTML = `
-                <div class="bg-gradient-to-r from-cyber/10 to-primary/10 rounded-xl p-6 border border-cyber/20">
-                    <div class="flex items-center space-x-4">
-                        <div class="relative">
-                            <img src="${videoData.thumbnail}" alt="${videoData.title}" 
-                                 class="w-24 h-16 object-cover rounded-lg">
-                            <div class="absolute inset-0 bg-black bg-opacity-40 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-play text-white text-xl"></i>
-                            </div>
-                        </div>
-                        <div class="flex-1">
-                            <h3 class="font-semibold text-gray-900 mb-1">${videoData.title}</h3>
-                            <p class="text-sm text-gray-600 mb-2">${videoData.moduleTitle}</p>
-                            <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-cyber h-2 rounded-full" style="width: ${videoData.progress}%"></div>
-                            </div>
-                            <p class="text-xs text-gray-500 mt-1">%${Math.round(videoData.progress)} tamamlandı</p>
-                            </div>
-                        <button onclick="continueWatching('${videoData.moduleId}', '${videoData.videoId}')" 
-                                class="bg-cyber text-white px-4 py-2 rounded-lg hover:bg-cyber/90 transition-colors">
-                            <i class="fas fa-play mr-2"></i>
-                            Devam Et
-                        </button>
-                    </div>
+                <div class="text-center py-8">
+                    <i class="fas fa-brain text-4xl text-gray-300 mb-4"></i>
+                    <h3 class="text-lg font-medium text-gray-600 mb-2">Henüz Analiz Edilecek Veri Yok</h3>
+                    <p class="text-gray-500">Sınavları çözdükçe yanlış yaptığınız sorular analiz edilecek ve öneriler sunulacak.</p>
                 </div>
             `;
         }
         
-        // Continue watching function
-        function continueWatching(moduleId, videoId) {
-            window.location.href = `module-detail.html?module=${moduleId}&video=${videoId}`;
+        async function generateAIAnalysisForWrongAnswers(wrongAnswers) {
+            const container = document.getElementById('ai-analysis-content');
+            if (!container) return;
+            
+            container.innerHTML = `
+                <div class="text-center py-6">
+                    <i class="fas fa-brain fa-spin text-3xl text-cyber mb-3"></i>
+                    <p class="text-lg font-medium">AI Analiz Yapıyor...</p>
+                    <p class="text-sm text-gray-600">Yanlış cevaplarınız analiz ediliyor...</p>
+                </div>
+            `;
+            
+            const analyses = [];
+            
+            for (let i = 0; i < Math.min(wrongAnswers.length, 3); i++) {
+                const wrongAnswer = wrongAnswers[i];
+                const analysis = await analyzeWrongAnswerAI(wrongAnswer);
+                if (analysis) {
+                    analyses.push(analysis);
+                }
+            }
+            
+            displayAIAnalysisResults(analyses);
+        }
+        
+        async function analyzeWrongAnswerAI(wrongAnswer) {
+            try {
+                const api = window.GroqAPI || window.GeminiAPI;
+                if (!api) {
+                    return generateFallbackAnalysis(wrongAnswer);
+                }
+                
+                const context = `Sen bir siber güvenlik eğitim uzmanısın. Öğrencinin yanlış cevapladığı soruları analiz edip hatalarını açıklıyorsun. Türkçe yanıt ver.`;
+                
+                const prompt = `Bu yanlış cevaplanan soruyu analiz et ve öğrenciye açıkla:
+
+SORU: ${wrongAnswer.question}
+ÖĞRENCİNİN YANLIŞ CEVABI: ${wrongAnswer.userAnswer}
+DOĞRU CEVAP: ${wrongAnswer.correctAnswer}
+
+Lütfen şu analizi yap:
+1. Öğrencinin neden bu hatayı yaptığını açıkla
+2. Doğru cevabın neden doğru olduğunu detaylı açıkla
+3. Bu konuda dikkat edilmesi gereken önemli noktaları belirt
+4. Benzer hatalar yapmamak için öneriler sun
+
+JSON formatında döndür:
+{
+    "hataAciklamasi": "Neden yanlış cevap verildiğinin açıklaması",
+    "dogruCevapAciklamasi": "Doğru cevabın detaylı açıklaması",
+    "onemliNoktalar": ["nokta 1", "nokta 2", "nokta 3"],
+    "oneriler": ["öneri 1", "öneri 2"]
+}`;
+
+                const result = await api.generateContent(prompt, context);
+                
+                if (result.success) {
+                    const jsonMatch = result.text.match(/\{[\s\S]*\}/);
+                    if (jsonMatch) {
+                        const analysis = JSON.parse(jsonMatch[0]);
+                        return {
+                            ...analysis,
+                            originalQuestion: wrongAnswer.question,
+                            wrongAnswer: wrongAnswer.userAnswer,
+                            correctAnswer: wrongAnswer.correctAnswer
+                        };
+                    }
+                }
+                
+                return generateFallbackAnalysis(wrongAnswer);
+                
+            } catch (error) {
+                console.error('❌ AI analiz hatası:', error);
+                return generateFallbackAnalysis(wrongAnswer);
+            }
+        }
+        
+        function generateFallbackAnalysis(wrongAnswer) {
+            return {
+                originalQuestion: wrongAnswer.question,
+                wrongAnswer: wrongAnswer.userAnswer,
+                correctAnswer: wrongAnswer.correctAnswer,
+                hataAciklamasi: "Bu soruda konuyla ilgili temel kavramları karıştırmış olabilirsiniz.",
+                dogruCevapAciklamasi: "Doğru cevap bu konu hakkında daha detaylı bilgi gerektirir.",
+                onemliNoktalar: [
+                    "Konu ile ilgili temel kavramları tekrar gözden geçirin",
+                    "Benzer örnekleri inceleyin",
+                    "Pratik yaparak konuyu pekiştirin"
+                ],
+                oneriler: [
+                    "İlgili modülü tekrar izleyin",
+                    "Not alarak çalışın"
+                ]
+            };
+        }
+        
+        function displayAIAnalysisResults(analyses) {
+            const container = document.getElementById('ai-analysis-content');
+            if (!container) return;
+            
+            if (analyses.length === 0) {
+                displayNoAnalysisMessage();
+                return;
+            }
+            
+            container.innerHTML = analyses.map((analysis, index) => `
+                <div class="border border-gray-200 rounded-lg p-4 mb-4">
+                    <div class="flex items-start space-x-3 mb-3">
+                        <div class="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center font-bold text-sm">
+                            ${index + 1}
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-medium text-gray-900 mb-2">${analysis.originalQuestion}</h4>
+                            <div class="text-sm space-y-1">
+                                <p><span class="font-medium text-red-600">Yanlış Cevabınız:</span> ${analysis.wrongAnswer}</p>
+                                <p><span class="font-medium text-green-600">Doğru Cevap:</span> ${analysis.correctAnswer}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-3 mb-3">
+                        <h5 class="font-medium text-red-800 mb-1">🔍 Hata Analizi:</h5>
+                        <p class="text-sm text-red-700">${analysis.hataAciklamasi}</p>
+                    </div>
+                    
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-3 mb-3">
+                        <h5 class="font-medium text-green-800 mb-1">✅ Doğru Cevap Açıklaması:</h5>
+                        <p class="text-sm text-green-700">${analysis.dogruCevapAciklamasi}</p>
+                    </div>
+                    
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3">
+                        <h5 class="font-medium text-blue-800 mb-2">💡 Önemli Noktalar:</h5>
+                        <ul class="text-sm text-blue-700 space-y-1">
+                            ${analysis.onemliNoktalar.map(nokta => `<li>• ${nokta}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-3">
+                        <h5 class="font-medium text-purple-800 mb-2">🎯 Öneriler:</h5>
+                        <ul class="text-sm text-purple-700 space-y-1">
+                            ${analysis.oneriler.map(oneri => `<li>• ${oneri}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `).join('');
         }
         
         // Load progress overview
@@ -514,37 +611,37 @@
                 console.log('🔧 Örnek modüller oluşturuluyor...');
                 const sampleModules = [
                     {
-                        title: 'Bilgi Güvenliği Temelleri',
-                        description: 'Bilgi güvenliğinin temel prensipleri ve kavramları',
+                        title: 'Temel Programlama',
+                        description: 'Programlama mantığı, algoritma geliştirme ve temel kavramlar',
                         category: 'Temel',
                         difficulty: 'beginner',
                         order: 1
                     },
                     {
-                        title: 'Kriptoloji ve Şifreleme',
-                        description: 'Kriptografi, hash fonksiyonları ve dijital imzalar',
-                        category: 'Güvenlik',
+                        title: 'Web Geliştirme',
+                        description: 'HTML, CSS, JavaScript ile modern web uygulamaları',
+                        category: 'Web',
                         difficulty: 'intermediate',
                         order: 2
                     },
                     {
-                        title: 'Ağ Güvenliği',
-                        description: 'Ağ protokolleri, firewall ve VPN teknolojileri',
-                        category: 'Ağ',
+                        title: 'Veri Analizi',
+                        description: 'Veri işleme, analiz teknikleri ve görselleştirme',
+                        category: 'Analiz',
                         difficulty: 'intermediate',
                         order: 3
                     },
                     {
-                        title: 'Web Güvenliği',
-                        description: 'OWASP Top 10, XSS, SQL Injection ve güvenli kodlama',
-                        category: 'Web',
+                        title: 'Mobil Uygulama Geliştirme',
+                        description: 'iOS ve Android platformları için uygulama geliştirme',
+                        category: 'Mobil',
                         difficulty: 'advanced',
                         order: 4
                     },
                     {
-                        title: 'Malware Analizi',
-                        description: 'Zararlı yazılım türleri, analiz teknikleri ve korunma',
-                        category: 'Analiz',
+                        title: 'Veritabanı Yönetimi',
+                        description: 'SQL, NoSQL ve veritabanı tasarım prensipleri',
+                        category: 'Veritabanı',
                         difficulty: 'advanced',
                         order: 5
                     }
@@ -693,47 +790,47 @@
             }
         }
         
-        // Load security tip
+        // Load learning tip
         function loadSecurityTip() {
-            const securityTips = [
-                "Güçlü şifreler her zaman büyük harf, küçük harf, rakam ve özel karakter içermelidir.",
-                "İki faktörlü kimlik doğrulama (2FA) hesap güvenliğinizi %99 artırır.",
-                "Şüpheli e-postaların eklerini asla açmayın ve linklerine tıklamayın.",
-                "Yazılımlarınızı ve işletim sisteminizi düzenli olarak güncelleyin.",
-                "Genel Wi-Fi ağlarında hassas işlemler yapmaktan kaçının.",
-                "Düzenli veri yedekleme alarak fidye yazılımlarına karşı korunun.",
-                "Sosyal mühendislik saldırılarına karşı dikkatli olun.",
-                "VPN kullanarak internet trafiğinizi şifreleyin."
+            const learningTips = [
+                "Düzenli çalışma programı oluşturmak öğrenme verimliliğinizi artırır.",
+                "Not alarak çalışmak bilgilerin kalıcılığını %70 artırır.",
+                "Öğrendiklerinizi başkalarına anlatmak konuyu daha iyi kavramanızı sağlar.",
+                "Kısa molalar vererek çalışmak konsantrasyonunuzu artırır.",
+                "Farklı öğrenme yöntemlerini deneyerek size en uygun olanı bulun.",
+                "Hedefler belirleyerek çalışmak motivasyonunuzu yüksek tutar.",
+                "Tekrar yaparak öğrendiklerinizi pekiştirin.",
+                "Merak ettiğiniz konularda araştırma yaparak bilginizi derinleştirin."
             ];
             
-            const randomTip = securityTips[Math.floor(Math.random() * securityTips.length)];
+            const randomTip = learningTips[Math.floor(Math.random() * learningTips.length)];
             const securityTipContainer = document.getElementById('security-tip');
             
             securityTipContainer.innerHTML = `
                 <div class="flex items-start space-x-3">
-                    <i class="fas fa-shield-alt text-secondary text-lg mt-1"></i>
+                    <i class="fas fa-lightbulb text-secondary text-lg mt-1"></i>
                     <p class="text-sm text-gray-700 leading-relaxed">${randomTip}</p>
                 </div>
             `;
         }
         
-        // Update security level
+        // Update learning level
         function updateSecurityLevel(completedModules, totalModules, examAverage) {
             const progressPercent = (completedModules / totalModules) * 100;
             let level = 'Başlangıç';
             let description = 'Temel seviye';
             
             if (progressPercent >= 90 && examAverage >= 85) {
-                level = 'Siber Güvenlik Uzmanı';
+                level = 'Uzman';
                 description = 'Uzman seviye';
             } else if (progressPercent >= 70 && examAverage >= 75) {
-                level = 'Güvenlik Analisti';
+                level = 'İleri Öğrenci';
                 description = 'İleri seviye';
             } else if (progressPercent >= 50 && examAverage >= 65) {
-                level = 'Güvenlik Teknisyeni';
+                level = 'Orta Seviye';
                 description = 'Orta seviye';
             } else if (progressPercent >= 25) {
-                level = 'Güvenlik Öğrencisi';
+                level = 'Gelişen Öğrenci';
                 description = 'Gelişen seviye';
             }
             
@@ -755,16 +852,29 @@
         
         function getModuleIcon(moduleId) {
             const icons = {
-                1: 'fa-shield-alt',
-                2: 'fa-key',
-                3: 'fa-network-wired',
-                4: 'fa-globe',
-                5: 'fa-bug',
-                6: 'fa-search',
-                7: 'fa-exclamation-triangle',
+                1: 'fa-graduation-cap',
+                2: 'fa-code',
+                3: 'fa-chart-bar',
+                4: 'fa-mobile-alt',
+                5: 'fa-database',
+                6: 'fa-project-diagram',
+                7: 'fa-book',
                 8: 'fa-certificate'
             };
             return icons[moduleId] || 'fa-book';
+        }
+        
+        // Logout function
+        function logout() {
+            if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('loginTime');
+                localStorage.removeItem('userRole');
+                
+                console.log('🚪 Öğrenci çıkışı yapıldı');
+                window.location.href = 'index.html';
+            }
         }
     </script>
 </body>

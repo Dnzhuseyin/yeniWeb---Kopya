@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soru Yönetimi - EduPlatform Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#dc2626',
+                        accent: '#059669',
+                        cyber: '#6366f1',
+                        dark: '#0f172a'
+                    }
+                },
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ULTRA STRONG SIDEBAR FIX - NEVER DISAPPEAR */
+        .sidebar-container {
+            position: fixed !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 256px !important;
+            height: 100vh !important;
+            z-index: 999999 !important;
+            background-color: #0f172a !important;
+            overflow-y: auto !important;
+            transform: none !important;
+            will-change: auto !important;
+            pointer-events: auto !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        
+        .main-content {
+            margin-left: 256px !important;
+            z-index: 1 !important;
+            position: relative !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Sidebar -->
+    <aside class="sidebar-container bg-dark text-white w-64 min-h-screen hidden md:block">
+        <div class="p-4">
+            <a href="instructor-dashboard.html" class="font-bold text-xl text-secondary block mb-8 flex items-center">
+                <i class="fas fa-key text-2xl mr-3"></i>
+                EduPlatform Admin
+            </a>
+            
+            <div class="mb-8">
+                <div class="flex items-center mb-4">
+                    <div>
+                        <p class="font-medium" id="instructor-name">Koordinatör</p>
+                        <p class="text-sm text-gray-400" id="instructor-email">admin@kriptarium.com</p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="space-y-1">
+                <a href="instructor-dashboard.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    <span>Genel Bakış</span>
+                </a>
+                <a href="instructor-courses.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-graduation-cap mr-3"></i>
+                    <span>Eğitim Modülleri</span>
+                </a>
+                <a href="instructor-content.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-video mr-3"></i>
+                    <span>Video Yönetimi</span>
+                </a>
+                <a href="instructor-students.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-slate-800">
+                    <i class="fas fa-users mr-3"></i>
+                    <span>Öğrenci Yönetimi</span>
+                </a>
+                <a href="instructor-quiz.html" class="flex items-center px-4 py-3 rounded-lg bg-slate-800">
+                    <i class="fas fa-question-circle mr-3 text-secondary"></i>
+                    <span>Soru Yönetimi</span>
+                </a>
+            </nav>
+
+            <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-800">
+                <button onclick="logout()" class="flex items-center text-gray-400 hover:text-white w-full text-left bg-transparent border-none">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    <span>Çıkış Yap</span>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main-content p-4 md:p-8 w-full min-h-screen">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <header class="mb-8">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Canlı Soru Yönetimi</h1>
+                        <p class="text-gray-600">Kahoot benzeri canlı soru-cevap sistemi</p>
+                    </div>
+                    <div class="flex space-x-3">
+                        <button id="create-quiz-btn" class="bg-cyber text-white px-4 py-2 rounded-lg flex items-center">
+                            <i class="fas fa-plus mr-2"></i>
+                            Yeni Quiz Oluştur
+                        </button>
+                        <button id="start-live-quiz-btn" class="bg-accent text-white px-4 py-2 rounded-lg flex items-center" disabled>
+                            <i class="fas fa-play mr-2"></i>
+                            Canlı Quiz Başlat
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Quiz Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Toplam Quiz</h3>
+                        <div class="h-10 w-10 bg-cyber/10 text-cyber rounded-lg flex items-center justify-center">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-900" id="total-quizzes">0</div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Aktif Quiz</h3>
+                        <div class="h-10 w-10 bg-accent/10 text-accent rounded-lg flex items-center justify-center">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-900" id="active-quiz">Yok</div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Canlı Katılımcı</h3>
+                        <div class="h-10 w-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-900" id="live-participants">0</div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">Toplam Soru</h3>
+                        <div class="h-10 w-10 bg-secondary/10 text-secondary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-question"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-900" id="total-questions">0</div>
+                </div>
+            </div>
+
+            <!-- Quiz Creation Form -->
+            <div id="quiz-creation-form" class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 mb-8" style="display: none;">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-plus text-cyber mr-2"></i>
+                    Yeni Quiz Oluştur
+                </h2>
+                
+                <form id="quizForm" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="quizTitle" class="block text-sm font-medium text-gray-700 mb-2">Quiz Başlığı *</label>
+                            <input type="text" id="quizTitle" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent">
+                        </div>
+                        
+                        <div>
+                            <label for="quizDescription" class="block text-sm font-medium text-gray-700 mb-2">Açıklama</label>
+                            <input type="text" id="quizDescription"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <!-- Questions Section -->
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-medium text-gray-900">Sorular</h3>
+                            <button type="button" id="add-question-btn" class="bg-primary text-white px-3 py-1 rounded text-sm">
+                                <i class="fas fa-plus mr-1"></i>Soru Ekle
+                            </button>
+                        </div>
+                        
+                        <div id="questions-container">
+                            <!-- Questions will be added here -->
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3 pt-4">
+                        <button type="button" onclick="hideQuizForm()" 
+                                class="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">
+                            İptal
+                        </button>
+                        <button type="submit" 
+                                class="px-4 py-2 bg-cyber text-white rounded-lg hover:bg-cyber/90">
+                            <i class="fas fa-save mr-2"></i>Quiz Kaydet
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Live Quiz Control -->
+            <div id="live-quiz-control" class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 mb-8" style="display: none;">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-broadcast-tower text-accent mr-2"></i>
+                    Canlı Quiz Kontrolü
+                </h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                        <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                            <h3 class="font-medium text-gray-900 mb-2">Mevcut Soru</h3>
+                            <p class="text-gray-700" id="current-question-text">Henüz soru seçilmedi</p>
+                        </div>
+                        
+                        <div class="space-y-2 mb-4" id="current-question-options">
+                            <!-- Question options will appear here -->
+                        </div>
+                        
+                        <div class="flex space-x-2">
+                            <button id="prev-question-btn" class="bg-gray-500 text-white px-3 py-2 rounded" disabled>
+                                <i class="fas fa-chevron-left mr-1"></i>Önceki
+                            </button>
+                            <button id="next-question-btn" class="bg-primary text-white px-3 py-2 rounded" disabled>
+                                Sonraki<i class="fas fa-chevron-right ml-1"></i>
+                            </button>
+                            <button id="stop-quiz-btn" class="bg-secondary text-white px-3 py-2 rounded">
+                                <i class="fas fa-stop mr-1"></i>Quiz Durdur
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-medium text-gray-900 mb-2">Canlı Sonuçlar</h3>
+                        <div id="live-results" class="space-y-2">
+                            <!-- Live results will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz List -->
+            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-list text-primary mr-2"></i>
+                    Oluşturulan Quizler
+                </h2>
+                
+                <div id="quiz-list" class="space-y-4">
+                    <!-- Quiz list will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase Production DB -->
+    <script src="js/firebase-production.js"></script>
+    <script src="js/user-utils.js"></script>
+    
+    <script>
+        let currentQuiz = null;
+        let currentQuestionIndex = 0;
+        let liveQuizActive = false;
+        let participants = {};
+        let questionStartTime = null;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            loadQuizzes();
+            loadLiveQuizData();
+        });
+
+        function setupEventListeners() {
+            document.getElementById('create-quiz-btn').addEventListener('click', showQuizForm);
+            document.getElementById('add-question-btn').addEventListener('click', addQuestion);
+            document.getElementById('quizForm').addEventListener('submit', saveQuiz);
+            document.getElementById('start-live-quiz-btn').addEventListener('click', startLiveQuiz);
+            document.getElementById('prev-question-btn').addEventListener('click', previousQuestion);
+            document.getElementById('next-question-btn').addEventListener('click', nextQuestion);
+            document.getElementById('stop-quiz-btn').addEventListener('click', stopLiveQuiz);
+        }
+
+        function showQuizForm() {
+            document.getElementById('quiz-creation-form').style.display = 'block';
+            document.getElementById('create-quiz-btn').style.display = 'none';
+            addQuestion(); // Add first question by default
+        }
+
+        function hideQuizForm() {
+            document.getElementById('quiz-creation-form').style.display = 'none';
+            document.getElementById('create-quiz-btn').style.display = 'block';
+            document.getElementById('quizForm').reset();
+            document.getElementById('questions-container').innerHTML = '';
+        }
+
+        function addQuestion() {
+            const questionsContainer = document.getElementById('questions-container');
+            const questionCount = questionsContainer.children.length + 1;
+            
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'bg-gray-50 rounded-lg p-4 mb-4';
+            questionDiv.innerHTML = `
+                <div class="flex justify-between items-center mb-3">
+                    <h4 class="font-medium text-gray-900">Soru ${questionCount}</h4>
+                    <button type="button" onclick="removeQuestion(this)" class="text-red-500 hover:text-red-700">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Soru Metni *</label>
+                        <input type="text" name="questionText" required 
+                               class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-cyber focus:border-transparent">
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Seçenek A *</label>
+                            <input type="text" name="optionA" required 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-cyber focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Seçenek B *</label>
+                            <input type="text" name="optionB" required 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-cyber focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Seçenek C *</label>
+                            <input type="text" name="optionC" required 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-cyber focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Seçenek D *</label>
+                            <input type="text" name="optionD" required 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-cyber focus:border-transparent">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Doğru Cevap *</label>
+                        <select name="correctAnswer" required 
+                                class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-cyber focus:border-transparent">
+                            <option value="">Doğru cevabı seçin</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Süre (saniye)</label>
+                        <input type="number" name="timeLimit" value="30" min="10" max="120"
+                               class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-cyber focus:border-transparent">
+                    </div>
+                </div>
+            `;
+            
+            questionsContainer.appendChild(questionDiv);
+            updateQuestionNumbers();
+        }
+
+        function removeQuestion(button) {
+            const questionDiv = button.closest('.bg-gray-50');
+            questionDiv.remove();
+            updateQuestionNumbers();
+        }
+
+        function updateQuestionNumbers() {
+            const questions = document.querySelectorAll('#questions-container .bg-gray-50');
+            questions.forEach((question, index) => {
+                const title = question.querySelector('h4');
+                title.textContent = `Soru ${index + 1}`;
+            });
+        }
+
+        async function saveQuiz(e) {
+            e.preventDefault();
+            
+            try {
+                const title = document.getElementById('quizTitle').value;
+                const description = document.getElementById('quizDescription').value;
+                
+                const questions = [];
+                const questionDivs = document.querySelectorAll('#questions-container .bg-gray-50');
+                
+                questionDivs.forEach((div, index) => {
+                    const questionText = div.querySelector('input[name="questionText"]').value;
+                    const optionA = div.querySelector('input[name="optionA"]').value;
+                    const optionB = div.querySelector('input[name="optionB"]').value;
+                    const optionC = div.querySelector('input[name="optionC"]').value;
+                    const optionD = div.querySelector('input[name="optionD"]').value;
+                    const correctAnswer = div.querySelector('select[name="correctAnswer"]').value;
+                    const timeLimit = parseInt(div.querySelector('input[name="timeLimit"]').value) || 30;
+                    
+                    questions.push({
+                        id: index + 1,
+                        text: questionText,
+                        options: {
+                            A: optionA,
+                            B: optionB,
+                            C: optionC,
+                            D: optionD
+                        },
+                        correctAnswer: correctAnswer,
+                        timeLimit: timeLimit
+                    });
+                });
+
+                if (questions.length === 0) {
+                    alert('En az bir soru eklemelisiniz!');
+                    return;
+                }
+
+                const quiz = {
+                    title: title,
+                    description: description,
+                    questions: questions,
+                    createdAt: new Date().toISOString(),
+                    createdBy: 'Koordinatör',
+                    isActive: false
+                };
+
+                // Wait for Firebase to be ready
+                await new Promise(resolve => {
+                    const checkDB = () => {
+                        if (window.DB && window.DB.isFirebaseReady !== false) {
+                            console.log('✅ Firebase hazır, quiz kaydedilebilir');
+                            resolve();
+                        } else {
+                            console.log('⏳ Firebase bekleniyor...');
+                            setTimeout(checkDB, 500);
+                        }
+                    };
+                    checkDB();
+                });
+
+                console.log('💾 Quiz kaydediliyor:', quiz);
+                
+                const result = await window.DB.save('quizzes', quiz);
+                console.log('💾 Kaydetme sonucu:', result);
+                
+                if (result && result.success) {
+                    console.log('✅ Quiz başarıyla kaydedildi:', result.id);
+                    alert('✅ Quiz başarıyla oluşturuldu!');
+                    hideQuizForm();
+                    loadQuizzes();
+                } else {
+                    console.error('❌ Quiz kaydetme hatası:', result);
+                    throw new Error('Quiz kaydedilemedi: ' + (result?.error || 'Bilinmeyen hata'));
+                }
+                
+            } catch (error) {
+                console.error('Quiz kaydetme hatası:', error);
+                alert('Quiz kaydedilirken hata oluştu: ' + error.message);
+            }
+        }
+
+        async function loadQuizzes() {
+            try {
+                // Wait for Firebase to be ready
+                await new Promise(resolve => {
+                    const checkDB = () => {
+                        if (window.DB) {
+                            resolve();
+                        } else {
+                            setTimeout(checkDB, 100);
+                        }
+                    };
+                    checkDB();
+                });
+
+                const result = await window.DB.load('quizzes');
+                const quizzes = (result && result.success) ? result.data : [];
+                
+                displayQuizzes(quizzes);
+                updateQuizStats(quizzes);
+                
+            } catch (error) {
+                console.error('Quiz yükleme hatası:', error);
+                displayQuizzes([]);
+                updateQuizStats([]);
+            }
+        }
+
+        function displayQuizzes(quizzes) {
+            const quizList = document.getElementById('quiz-list');
+            
+            if (quizzes.length === 0) {
+                quizList.innerHTML = `
+                    <div class="text-center py-8">
+                        <i class="fas fa-clipboard-list text-6xl text-gray-300 mb-4"></i>
+                        <h3 class="text-xl font-medium text-gray-500 mb-2">Henüz quiz oluşturulmamış</h3>
+                        <p class="text-gray-400">İlk quizi oluşturmak için "Yeni Quiz Oluştur" butonuna tıklayın</p>
+                    </div>
+                `;
+                return;
+            }
+
+            quizList.innerHTML = quizzes.map(quiz => `
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">${quiz.title}</h3>
+                            <p class="text-gray-600 mb-3">${quiz.description || 'Açıklama yok'}</p>
+                            <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                <span><i class="fas fa-question mr-1"></i>${quiz.questions.length} soru</span>
+                                <span><i class="fas fa-clock mr-1"></i>Oluşturulma: ${new Date(quiz.createdAt).toLocaleDateString('tr-TR')}</span>
+                                <span class="flex items-center">
+                                    <i class="fas fa-circle mr-1 ${quiz.isActive ? 'text-green-500' : 'text-gray-400'}"></i>
+                                    ${quiz.isActive ? 'Aktif' : 'Pasif'}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2 ml-4">
+                            <button onclick="selectQuiz('${quiz.id}')" 
+                                    class="px-3 py-1 bg-cyber text-white rounded text-sm hover:bg-cyber/90">
+                                <i class="fas fa-play mr-1"></i>Seç
+                            </button>
+                            <button onclick="editQuiz('${quiz.id}')" 
+                                    class="px-3 py-1 bg-primary text-white rounded text-sm hover:bg-primary/90">
+                                <i class="fas fa-edit mr-1"></i>Düzenle
+                            </button>
+                            <button onclick="deleteQuiz('${quiz.id}')" 
+                                    class="px-3 py-1 bg-secondary text-white rounded text-sm hover:bg-secondary/90">
+                                <i class="fas fa-trash mr-1"></i>Sil
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateQuizStats(quizzes) {
+            document.getElementById('total-quizzes').textContent = quizzes.length;
+            
+            const totalQuestions = quizzes.reduce((sum, quiz) => sum + quiz.questions.length, 0);
+            document.getElementById('total-questions').textContent = totalQuestions;
+            
+            const activeQuiz = quizzes.find(q => q.isActive);
+            if (activeQuiz) {
+                document.getElementById('active-quiz').textContent = activeQuiz.title;
+                document.getElementById('start-live-quiz-btn').disabled = false;
+            } else {
+                document.getElementById('active-quiz').textContent = 'Yok';
+                document.getElementById('start-live-quiz-btn').disabled = true;
+            }
+        }
+
+        async function selectQuiz(quizId) {
+            try {
+                const result = await window.DB.load('quizzes');
+                const quizzes = (result && result.success) ? result.data : [];
+                const quiz = quizzes.find(q => q.id === quizId);
+                
+                if (quiz) {
+                    currentQuiz = quiz;
+                    document.getElementById('start-live-quiz-btn').disabled = false;
+                    alert(`"${quiz.title}" quiz seçildi. Artık canlı quiz başlatabilirsiniz.`);
+                }
+            } catch (error) {
+                console.error('Quiz seçme hatası:', error);
+                alert('Quiz seçilirken hata oluştu');
+            }
+        }
+
+        async function startLiveQuiz() {
+            if (!currentQuiz) {
+                alert('Önce bir quiz seçin!');
+                return;
+            }
+
+            try {
+                liveQuizActive = true;
+                currentQuestionIndex = 0;
+                participants = {};
+                
+                // Save live quiz state
+                const liveQuizData = {
+                    quizId: currentQuiz.id,
+                    quizTitle: currentQuiz.title,
+                    currentQuestionIndex: 0,
+                    isActive: true,
+                    startTime: new Date().toISOString(),
+                    participants: {}
+                };
+                
+                await window.DB.save('liveQuiz', liveQuizData, 'current');
+                
+                document.getElementById('live-quiz-control').style.display = 'block';
+                document.getElementById('start-live-quiz-btn').disabled = true;
+                
+                showCurrentQuestion();
+                alert('Canlı quiz başlatıldı! Öğrenciler artık katılabilir.');
+                
+            } catch (error) {
+                console.error('Canlı quiz başlatma hatası:', error);
+                alert('Canlı quiz başlatılırken hata oluştu');
+            }
+        }
+
+        function showCurrentQuestion() {
+            if (!currentQuiz || currentQuestionIndex >= currentQuiz.questions.length) return;
+            
+            const question = currentQuiz.questions[currentQuestionIndex];
+            questionStartTime = Date.now();
+            
+            document.getElementById('current-question-text').textContent = question.text;
+            
+            const optionsContainer = document.getElementById('current-question-options');
+            optionsContainer.innerHTML = Object.entries(question.options).map(([key, value]) => `
+                <div class="flex items-center space-x-2 p-2 bg-gray-100 rounded">
+                    <span class="font-bold text-${key === 'A' ? 'red' : key === 'B' ? 'blue' : key === 'C' ? 'green' : 'yellow'}-500">${key}:</span>
+                    <span>${value}</span>
+                    ${key === question.correctAnswer ? '<i class="fas fa-check text-green-500 ml-2"></i>' : ''}
+                </div>
+            `).join('');
+            
+            // Update navigation buttons
+            document.getElementById('prev-question-btn').disabled = currentQuestionIndex === 0;
+            document.getElementById('next-question-btn').disabled = currentQuestionIndex >= currentQuiz.questions.length - 1;
+            
+            // Clear live results
+            document.getElementById('live-results').innerHTML = '<p class="text-gray-500">Cevaplar bekleniyor...</p>';
+            
+            // Start monitoring for responses
+            monitorLiveResponses();
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showCurrentQuestion();
+                updateLiveQuizState();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < currentQuiz.questions.length - 1) {
+                currentQuestionIndex++;
+                showCurrentQuestion();
+                updateLiveQuizState();
+            }
+        }
+
+        async function updateLiveQuizState() {
+            try {
+                const liveQuizData = {
+                    quizId: currentQuiz.id,
+                    quizTitle: currentQuiz.title,
+                    currentQuestionIndex: currentQuestionIndex,
+                    isActive: true,
+                    participants: participants
+                };
+                
+                await window.DB.save('liveQuiz', liveQuizData, 'current');
+            } catch (error) {
+                console.error('Canlı quiz durumu güncelleme hatası:', error);
+            }
+        }
+
+        async function stopLiveQuiz() {
+            try {
+                liveQuizActive = false;
+                
+                // Clear live quiz state
+                await window.DB.delete('liveQuiz', 'current');
+                
+                document.getElementById('live-quiz-control').style.display = 'none';
+                document.getElementById('start-live-quiz-btn').disabled = false;
+                document.getElementById('live-participants').textContent = '0';
+                
+                alert('Canlı quiz durduruldu!');
+                
+            } catch (error) {
+                console.error('Canlı quiz durdurma hatası:', error);
+                alert('Canlı quiz durdurulurken hata oluştu');
+            }
+        }
+
+        async function monitorLiveResponses() {
+            if (!liveQuizActive) return;
+            
+            try {
+                const result = await window.DB.load('quizResponses');
+                const responses = (result && result.success) ? result.data : [];
+                
+                // Filter responses for current question
+                const currentResponses = responses.filter(r => 
+                    r.quizId === currentQuiz.id && 
+                    r.questionIndex === currentQuestionIndex &&
+                    r.timestamp && Date.now() - new Date(r.timestamp).getTime() < 60000 // Last minute
+                );
+                
+                // Count responses
+                const responseCounts = { A: 0, B: 0, C: 0, D: 0 };
+                currentResponses.forEach(response => {
+                    if (responseCounts.hasOwnProperty(response.answer)) {
+                        responseCounts[response.answer]++;
+                    }
+                });
+                
+                // Update live results
+                const totalResponses = Object.values(responseCounts).reduce((a, b) => a + b, 0);
+                const correctAnswer = currentQuiz.questions[currentQuestionIndex].correctAnswer;
+                
+                const resultsHTML = Object.entries(responseCounts).map(([option, count]) => {
+                    const percentage = totalResponses > 0 ? Math.round((count / totalResponses) * 100) : 0;
+                    const isCorrect = option === correctAnswer;
+                    
+                    return `
+                        <div class="flex items-center justify-between p-2 rounded ${isCorrect ? 'bg-green-100' : 'bg-gray-100'}">
+                            <span class="font-medium ${isCorrect ? 'text-green-700' : 'text-gray-700'}">
+                                Seçenek ${option} ${isCorrect ? '✓' : ''}
+                            </span>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-20 h-2 bg-gray-200 rounded-full">
+                                    <div class="h-2 ${isCorrect ? 'bg-green-500' : 'bg-blue-500'} rounded-full" style="width: ${percentage}%"></div>
+                                </div>
+                                <span class="text-sm font-medium">${count} (%${percentage})</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                document.getElementById('live-results').innerHTML = resultsHTML;
+                document.getElementById('live-participants').textContent = totalResponses;
+                
+                // Continue monitoring if quiz is still active
+                if (liveQuizActive) {
+                    setTimeout(monitorLiveResponses, 2000); // Check every 2 seconds
+                }
+                
+            } catch (error) {
+                console.error('Canlı cevap izleme hatası:', error);
+                if (liveQuizActive) {
+                    setTimeout(monitorLiveResponses, 5000); // Retry after 5 seconds
+                }
+            }
+        }
+
+        async function loadLiveQuizData() {
+            try {
+                const result = await window.DB.load('liveQuiz');
+                const liveQuizData = (result && result.success) ? result.data : [];
+                const currentLive = liveQuizData.find(q => q.id === 'current');
+                
+                if (currentLive && currentLive.isActive) {
+                    // Resume live quiz
+                    const quizzesResult = await window.DB.load('quizzes');
+                    const quizzes = (quizzesResult && quizzesResult.success) ? quizzesResult.data : [];
+                    currentQuiz = quizzes.find(q => q.id === currentLive.quizId);
+                    
+                    if (currentQuiz) {
+                        liveQuizActive = true;
+                        currentQuestionIndex = currentLive.currentQuestionIndex;
+                        participants = currentLive.participants || {};
+                        
+                        document.getElementById('live-quiz-control').style.display = 'block';
+                        document.getElementById('start-live-quiz-btn').disabled = true;
+                        showCurrentQuestion();
+                    }
+                }
+            } catch (error) {
+                console.error('Canlı quiz veri yükleme hatası:', error);
+            }
+        }
+
+        async function deleteQuiz(quizId) {
+            if (!confirm('Bu quizi silmek istediğinizden emin misiniz?')) {
+                return;
+            }
+            
+            try {
+                const result = await window.DB.delete('quizzes', quizId);
+                if (result && result.success) {
+                    alert('Quiz başarıyla silindi!');
+                    loadQuizzes();
+                } else {
+                    throw new Error('Quiz silinemedi');
+                }
+            } catch (error) {
+                console.error('Quiz silme hatası:', error);
+                alert('Quiz silinirken hata oluştu: ' + error.message);
+            }
+        }
+
+        function editQuiz(quizId) {
+            alert('Quiz düzenleme özelliği yakında eklenecek!');
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('loginTime');
+                localStorage.removeItem('userRole');
+                
+                console.log('🚪 Koordinatör çıkışı yapıldı');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>
