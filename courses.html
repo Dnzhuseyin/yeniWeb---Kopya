@@ -120,8 +120,8 @@
                         <div class="text-sm text-gray-600">Devam Eden</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-2xl font-bold text-gray-400" id="locked-modules">8</div>
-                        <div class="text-sm text-gray-600">Kilitli</div>
+                        <div class="text-2xl font-bold text-gray-400" id="locked-modules">0</div>
+                        <div class="text-sm text-gray-600">Erişilebilir</div>
                     </div>
                 </div>
             </div>
@@ -465,7 +465,7 @@
             const totalModules = allModules.length || 8;
             const completedCount = Object.values(userProgress).filter(p => p >= 100).length;
             const currentCount = Object.values(userProgress).filter(p => p > 0 && p < 100).length;
-            const lockedCount = totalModules - completedCount - currentCount;
+            const accessibleCount = totalModules; // All modules are accessible
             const overallProgress = Math.round((completedCount / totalModules) * 100);
             
             // Update progress bar
@@ -479,7 +479,7 @@
             document.getElementById('completion-stats').textContent = `${completedCount}/${totalModules} modül tamamlandı`;
             document.getElementById('completed-modules').textContent = completedCount;
             document.getElementById('current-modules').textContent = currentCount;
-            document.getElementById('locked-modules').textContent = lockedCount;
+            document.getElementById('locked-modules').textContent = accessibleCount;
         }
 
         function openModule(moduleId) {

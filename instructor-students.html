@@ -974,10 +974,13 @@
         }
 
         // View student detail
-        async function viewStudentDetail(studentId) {
+        function viewStudentDetail(studentId) {
+            console.log('viewStudentDetail çağrıldı:', studentId);
+            
             const student = allStudents.find(s => s.id === studentId);
             if (!student) {
                 console.error('Öğrenci bulunamadı:', studentId);
+                alert('Öğrenci bulunamadı!');
                 return;
             }
 
@@ -986,35 +989,11 @@
             
             if (!modal || !content) {
                 console.error('Modal elementleri bulunamadı');
+                alert('Modal elementleri bulunamadı!');
                 return;
             }
             
-            // Show loading first
-            content.innerHTML = '<div class="text-center py-8"><div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-cyber"></div><p class="mt-4 text-gray-600">Yükleniyor...</p></div>';
-            modal.classList.remove('hidden');
-            
-            // Load additional data
-            let additionalData = {};
-            try {
-                const progressResult = await DB.load('userProgress');
-                const notesResult = await DB.load('userNotes');
-                
-                if (progressResult && progressResult.success) {
-                    const userProgress = Array.isArray(progressResult.data) 
-                        ? progressResult.data.find(p => p.userEmail === student.email)
-                        : null;
-                    additionalData.progress = userProgress;
-                }
-                
-                if (notesResult && notesResult.success) {
-                    const userNotes = Array.isArray(notesResult.data)
-                        ? notesResult.data.filter(n => n.userEmail === student.email)
-                        : [];
-                    additionalData.notes = userNotes;
-                }
-            } catch (error) {
-                console.error('Ek veriler yüklenirken hata:', error);
-            }
+            console.log('Modal açılıyor...');
             
             content.innerHTML = `
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1114,7 +1093,7 @@
                     <h3 class="text-lg font-semibold mb-4">Ek Bilgiler</h3>
                     <div class="bg-blue-50 p-4 rounded-lg">
                         <p class="text-sm text-gray-700">
-                            <strong>Notlar:</strong> ${additionalData.notes ? additionalData.notes.length : 0} adet
+                            <strong>E-posta:</strong> ${student.email}
                         </p>
                         <p class="text-sm text-gray-700 mt-2">
                             <strong>Son Aktivite:</strong> ${formatRelativeTime(student.lastActivity)}
@@ -1127,9 +1106,15 @@
                                 ${student.isActive ? 'Aktif' : 'Pasif'}
                             </span>
                         </p>
+                        <p class="text-sm text-gray-700 mt-2">
+                            <strong>Toplam İlerleme:</strong> ${student.totalProgress}%
+                        </p>
                     </div>
                 </div>
             `;
+            
+            modal.classList.remove('hidden');
+            console.log('Modal açıldı!');
         }
 
         // Close student modal
