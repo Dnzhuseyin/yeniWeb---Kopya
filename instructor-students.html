@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Öğrenci Yönetimi - EduPlatform Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -975,25 +978,37 @@
 
         // View student detail
         function viewStudentDetail(studentId) {
-            console.log('viewStudentDetail çağrıldı:', studentId);
+            console.log('🔍 viewStudentDetail çağrıldı:', studentId);
+            console.log('📊 allStudents:', allStudents.length, 'öğrenci');
+            
+            // Test alert
+            alert('Detay butonu çalışıyor! Öğrenci ID: ' + studentId);
             
             const student = allStudents.find(s => s.id === studentId);
             if (!student) {
-                console.error('Öğrenci bulunamadı:', studentId);
-                alert('Öğrenci bulunamadı!');
+                console.error('❌ Öğrenci bulunamadı:', studentId);
+                alert('❌ Öğrenci bulunamadı: ' + studentId);
                 return;
             }
+
+            console.log('✅ Öğrenci bulundu:', student.name);
 
             const modal = document.getElementById('student-modal');
             const content = document.getElementById('student-detail-content');
             
-            if (!modal || !content) {
-                console.error('Modal elementleri bulunamadı');
-                alert('Modal elementleri bulunamadı!');
+            if (!modal) {
+                console.error('❌ Modal bulunamadı');
+                alert('❌ Modal element bulunamadı!');
                 return;
             }
             
-            console.log('Modal açılıyor...');
+            if (!content) {
+                console.error('❌ Content bulunamadı');
+                alert('❌ Content element bulunamadı!');
+                return;
+            }
+            
+            console.log('🎯 Modal açılıyor...');
             
             content.innerHTML = `
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
